@@ -1,0 +1,427 @@
+================================================================================
+PRD ADDENDUM — INTRO STORYBOARD (LOADING EXPERIENCE) & VISUAL DEPTH UPDATE
+================================================================================
+
+PARENT DOCUMENT:
+This addendum extends MASTER_PRD.txt (3D Immersive Developer Portfolio).
+All rules, design principles, and constraints in MASTER_PRD.txt still apply.
+This document does NOT replace it — it REPLACES the placeholder concept in
+Section 33 (Loading Experience) with the detailed storyboard defined below,
+and adds detail to Section 20 (Visual Design Direction). It also relates to,
+but is distinct from, Section 6 (3D / Immersive Visual Direction) — see
+"ARCHITECTURE & PLACEMENT" below for the important distinction.
+
+CONTEXT:
+Current implementation (About + Skills sections) is functional but has two
+gaps identified during review:
+1. No intro/loading sequence exists yet — the site currently jumps straight
+   to content with no entrance moment.
+2. The visual surface is flat and overly dominated by a single black tone,
+   lacking depth and a sense of "life".
+
+This addendum defines a concrete full-screen intro storyboard sequence and
+a set of depth/color adjustments to close both gaps. Work on this addendum
+may proceed in parallel with, or after, existing phases — but must not
+break what is already working in About/Skills.
+
+IMPORTANT:
+Read this entire document before implementing.
+Do not implement this addendum before Phase 1 (Foundation) of MASTER_PRD.txt
+is complete, since it depends on the global layout, color tokens, and
+navigation already being in place.
+Do not skip straight to advanced polish (Section 4 of this addendum) before
+the storyboard sequence itself (Section 1) is working end-to-end.
+
+================================================================================
+1. INTRO STORYBOARD SEQUENCE (FULL-SCREEN LOADING EXPERIENCE)
+================================================================================
+
+Goal: tell a literal, relatable micro-story — the site itself appears to
+fail to load, breaks down into visible broken code, then the developer's
+identity is revealed as the resolution, and the real site loads in. This
+is more concrete than a purely abstract motion/color metaphor, so it needs
+one explicit safety rule (below) to avoid reading as a real technical
+failure.
+
+SAFETY RULE — DO NOT MIMIC A REAL BROWSER/OS ERROR:
+The "failure" must always read as a stylized in-scene event, never as an
+actual browser or OS error. Do NOT reproduce real browser chrome, real
+"This site can't be reached" / DNS-error / crash-screen styling, or
+anything that could make a visitor think their connection or the site
+itself is genuinely broken. Keep the failure expressed entirely within
+this project's own dark/code visual language (the 3D panels, syntax
+colors, glitch effects already defined elsewhere in this PRD) so it is
+unambiguously part of an intentional scene, not a real error state. Avoid
+rapid high-contrast flashing during the glitch moment (Beat B) for
+photosensitivity safety — keep any glitch effect brief and restrained.
+
+--------------------------------------------------------------------------
+ARCHITECTURE & PLACEMENT — READ BEFORE IMPLEMENTING
+--------------------------------------------------------------------------
+This sequence is NOT part of the Hero section's own 3D canvas, and it does
+NOT play "inside" the page while the visitor is browsing. It is a
+full-screen, fixed-position INTRO OVERLAY that covers the entire viewport
+(z-index above all page content) and plays BEFORE the website itself is
+revealed — this is the site's loading/entrance experience, replacing the
+simple progress-bar placeholder in MASTER_PRD.txt Section 33.
+
+Sequence of events:
+1. Visitor loads or refreshes the page.
+2. The full-screen intro overlay renders immediately, on top of everything.
+3. Scenes 1 → 2 → 3 (defined below) play once, full-screen.
+4. At the end of Scene 3, the overlay fades/dissolves out and is removed
+   from the DOM (or hidden), REVEALING the actual homepage underneath.
+5. The homepage's Hero section is shown already in its normal resting
+   state (per MASTER_PRD.txt Section 6 — mouse parallax, scroll-linked
+   movement, etc.) — the storyboard does NOT replay again inside the Hero
+   itself. The Hero's own 3D scene (Section 6) is a separate, ongoing
+   experience that exists only AFTER the intro has finished.
+
+Frequency: this intro plays on EVERY page load and every refresh — it is
+NOT gated behind sessionStorage/localStorage/cookies. Every visit shows
+the full sequence again, by explicit product decision.
+
+Note: because this now doubles as the loading experience, tie the scene
+transitions loosely to actual asset/JS readiness where practical (e.g. do
+not dissolve into the homepage before critical Hero/fonts/assets are
+ready) — but do not block or artificially extend the ~8s sequence if
+assets load faster; see Timing & Behavior Rules below.
+
+--------------------------------------------------------------------------
+BEAT A — "The Glimpse"   (approx. 0s – 1.2s)
+--------------------------------------------------------------------------
+Visual:
+* A brief, dim/low-opacity glimpse of the real homepage attempting to
+  render: the actual nav bar and a rough silhouette of the Hero layout
+  appear faintly, as if the page is normally starting to load.
+* No 3D panels yet — this beat is short and intentionally underwhelming,
+  a false start.
+
+Purpose: sell the premise that "this is the site loading" before it
+visibly fails, so Beat B reads as a disruption of something real rather
+than an abstract animation starting cold.
+
+--------------------------------------------------------------------------
+BEAT B — "The Crash"   (approx. 1.2s – 3s)
+--------------------------------------------------------------------------
+Visual:
+* The glimpsed layout fractures — a brief, restrained glitch/chromatic-
+  aberration moment (see SAFETY RULE above: no rapid flashing) — and
+  breaks apart into ONE hero code panel, large, centered/front-of-frame,
+  in sharp focus. Do not scatter 4-5 similarly-sized panels; at most one
+  additional panel may exist, smaller, behind the hero panel with a soft
+  depth-of-field blur, purely for depth. Ambient decorative geometry
+  (floating diamonds/octahedra) stays minimal — one dim instance at most.
+* Do NOT show the resolved "LIFECYCLE PIPELINE / CODE-BUILD-ITERATE-SHIP"
+  panel here — that belongs only to Beat D. Showing it now spoils the
+  resolution before the problem is established.
+
+HERO PANEL CONTENT (concrete copy — use this or a close variant, not
+generic/abstract filler text):
+
+REVISED — the bug is now a multi-line, cascading problem rather than a
+single broken line. A single-line highlight made the eventual "fixed"
+payoff in Beat D feel low-stakes/low-value. A problem that visibly touches
+several related lines reads as more substantial, so the resolution feels
+more earned.
+
+  Filename label: build.pipeline.ts
+
+  Code:
+    async function deployRelease() {
+      const artifact = await pipeline.run();
+      const signature = await sign(artifact.output.hash);
+      const target = await resolveEdgeRegion(artifact.meta.region);
+      return deploy(artifact, signature, target);
+    }
+
+  Visual diagnostic markers (no literal words like "Error"/"Bug"/"Failed"):
+  * THREE lines get the solid full-line red highlight treatment (not
+    just one): `const signature = await sign(artifact.output.hash);`,
+    `const target = await resolveEdgeRegion(artifact.meta.region);`, and
+    `return deploy(artifact, signature, target);` — this reads as a
+    cascading failure (one bad value flowing downstream into two more
+    broken calls), which is more visually substantial than a single flat
+    line, without needing any literal "Error" text.
+  * A small solid red dot in the left gutter next to each of those three
+    lines, matching the IDE error-indicator convention.
+  * A faint connecting line/bracket in the gutter linking the three
+    flagged lines top-to-bottom is optional (nice-to-have, not required)
+    to visually reinforce "these are related", but do not let it add
+    visual clutter — a plain gutter dot on each line is sufficient if the
+    connector proves fiddly to implement well.
+  * The first line (`const artifact = await pipeline.run();`) and the
+    closing brace stay in the normal syntax palette — do not tint the
+    whole panel red; the red signal stays localized to the three related
+    broken lines, but together they must read as an obvious, connected
+    problem, not three isolated unrelated errors.
+
+  In Beat D, all three lines transition together from red to the green
+  "fixed" highlight (see Beat D FIX ANIMATION below) — the multi-line
+  problem resolving together is what makes the payoff feel substantial.
+
+  This filename and function deliberately echo the "Code → Build → Iterate
+  → Ship" pipeline shown resolved in Beat D — the hero panel is an early,
+  broken version of the same idea, giving the sequence narrative
+  continuity (same subject, before vs. after).
+
+Camera & lighting:
+* Subtle camera micro-jitter/instability (small, restrained — not
+  violent), focused on the hero panel.
+* Lighting: slightly cooler/dimmer than the resting state, with the hero
+  panel itself still clearly legible.
+
+Purpose: establish tension through ONE clear, readable, authentic signal
+(a real broken line of code) rather than through visual clutter or
+literal error messaging.
+
+CAPTION COPY (new — approved wording, use verbatim):
+Once the crash/fracture has settled and the hero panel with its red
+highlight is visible, fade in a short caption near/below the panel:
+
+    "Every build breaks somewhere."
+
+Keep it small, restrained typography (not competing with the code panel
+itself), fades in shortly after the panel settles, and fades out as
+Beat C begins. This is the ONLY new copy in Beat B — do not add any other
+text.
+
+--------------------------------------------------------------------------
+BEAT C — "The Reveal"   (approx. 3s – 6s — the emotional payoff; give it
+room, do not rush this beat)
+--------------------------------------------------------------------------
+CRITICAL: this beat must NOT render as empty/blank space with the panel
+just sitting there — the copy reveal IS the content of this beat and must
+be clearly, deliberately animated on screen. An implementation where this
+beat feels "bland" or empty (no visible text motion) is incorrect.
+
+Visual:
+* The full-line red highlight and gutter dot on the hero panel resolve
+  away first (the highlight shrinks/fades, the specific "broken line"
+  signal disappears/corrects).
+* Out of this resolution, the identity/role copy reveals — reuse the
+  EXISTING Hero name/title from MASTER_PRD.txt Section 5 verbatim (no
+  eyebrow — "PORTFOLIO / 2026" has been removed from the Hero per Section
+  5's revision and must NOT appear here either, for consistency), PLUS
+  one new approved personal line (replacing the standard tagline for this
+  intro moment only — the standard tagline still appears normally in the
+  persistent Hero section once the overlay dissolves, so it is not lost,
+  just not repeated twice). Give the whole stack a deliberate staggered
+  reveal so the beat has presence:
+    [YOUR NAME]                         (fades + slides up first,
+                                          largest, with a soft accent-
+                                          color glow behind/around it)
+    FULL-STACK DEVELOPER                (fades + slides up, ~0.15-0.2s
+                                          after the name)
+    "I don't just design interfaces —   (fades + slides up last, ~0.15-
+    I fix what's underneath."            0.2s after the title; may use a
+                                          subtle typewriter/character-
+                                          reveal on this line specifically
+                                          for extra presence)
+  Each line should use a short stagger (roughly 0.15-0.25s offset between
+  lines), not all lines appearing simultaneously — this staggered timing
+  is what gives the beat life instead of feeling flat.
+  This new personal line is the ONLY new copy in Beat C beyond the
+  existing Section 5 name/title — do not introduce further text, and do
+  not add any eyebrow/status label (see MASTER_PRD.txt Section 5 revision
+  — no "SYSTEM: ONLINE" or similar invented badges anywhere).
+* Any remaining red/amber tint fades out and transitions into the accent
+  color (#8AB4FF) via a smooth color interpolation, not a hard cut.
+* Camera stabilizes; jitter reduces to zero.
+* Hold the fully-revealed copy on screen for a brief beat (~0.5-0.8s)
+  before Beat D begins, so the viewer actually has time to read it — do
+  not cut away the instant the last line finishes animating in.
+
+Purpose: this beat IS the "who's behind this" moment — resolved through a
+calm visual shift (chaos → order, warning tone → accent tone) paired with
+the developer's actual name/title, given real presence through staggered
+motion and a touch of glow — not through any "let me help you"
+service-style copy, and not through static, motionless text either.
+
+--------------------------------------------------------------------------
+BEAT D — "The Load"   (approx. 6s – 8s)
+--------------------------------------------------------------------------
+Visual:
+* FIX ANIMATION (new): the hero panel's three broken lines, which no
+  longer carry the red full-line highlight (resolved at the start of
+  Beat C), now play their resolution payoff — a GREEN full-line highlight
+  sweeps/fades in across all three lines in quick succession (top to
+  bottom, ~0.1-0.15s apart — same treatment as the Beat B red highlight,
+  but green, using a success-toned green consistent with the overall
+  palette, not a jarring neon green), clearly signaling "fixed/working"
+  before fading out as the panel transitions into the Section 6
+  composition. This is a brief beat-opening moment (~0.6-1s total for all
+  three), not a lingering effect.
+* CLOSING CAPTION COPY (new — approved wording, use verbatim), appearing
+  briefly alongside or just after the green-highlight moment, then fading
+  out before the overlay fully dissolves:
+
+      "This is what I do — turn broken into shipped."
+
+  This is the ONLY new copy in Beat D — do not add further text. Keep it
+  brief on screen (~1-1.5s) so it doesn't delay the dissolve.
+* The additional panels/nodes needed for the full Hero composition
+  (browser windows, project cards, data nodes, the resolved "LIFECYCLE
+  PIPELINE / CODE-BUILD-ITERATE-SHIP" panel) fade and scale in around the
+  hero panel, settling into the clean layered composition already
+  specified in MASTER_PRD.txt Section 6.
+* Motion comes to rest; the overlay dissolves per the dissolve rules in
+  ARCHITECTURE & PLACEMENT above, revealing the real homepage underneath,
+  already in its resting/idle state.
+* From this point on, standard Section 6 interactions apply (mouse
+  influences camera, scroll changes composition, hover reveals info,
+  click opens project preview).
+
+Purpose: resolution — the bug is visibly fixed (red → green), the site has
+"loaded", the workspace is calm and structured, and the visitor is now on
+the real site.
+
+--------------------------------------------------------------------------
+TIMING & BEHAVIOR RULES
+--------------------------------------------------------------------------
+* REVISED: total sequence duration is approximately 8 seconds across
+  Beats A-D (A: ~1.2s, B: ~1.8s, C: ~3s, D: ~2s). This was previously
+  ~5.5s and played back feeling too fast/rushed in testing — 8 seconds is
+  the corrected target. Implement the timeline to actually match these
+  per-beat durations; do not compress them to make the sequence feel
+  "snappier" than specified. Do not extend beyond ~9 seconds total.
+* Plays in full on EVERY page load and every refresh (not once-per-session,
+  not once-per-device — see ARCHITECTURE & PLACEMENT above). Do NOT loop
+  the sequence repeatedly within a single load; it plays exactly once per
+  load, then dissolves into the homepage.
+* If `prefers-reduced-motion` is enabled, skip directly to the Beat D
+  end-state with no animated transition (including skipping the Beat B
+  glitch entirely) per MASTER_PRD.txt Section 22 and Section 31, then
+  reveal the homepage immediately.
+* If WebGL is unavailable, fall back per MASTER_PRD.txt Section 34 (2D
+  version of the hero visual) — the fallback may use a simple CSS
+  crossfade between a "scattered" and "organized" static illustration to
+  approximate the same story beat, but this is optional, not required.
+* While the intro overlay is visible, it MAY block interaction with the
+  underlying page (this is expected and acceptable, since it is a loading
+  screen) — but it must never hang indefinitely; if assets are not ready
+  by the end of the ~8-9s sequence, dissolve into the homepage anyway
+  rather than extending the overlay further.
+* Once dissolved, the overlay is fully removed/hidden and the Hero
+  section's own separate idle 3D experience (Section 6) takes over —
+  there is no replay of Beats A-D inside the Hero itself.
+
+================================================================================
+2. TECHNICAL APPROACH
+================================================================================
+
+* Implement as a dedicated overlay component (e.g. `IntroOverlay` /
+  `LoadingExperience`) rendered at the top of the app layout, `position:
+  fixed`, full viewport, highest z-index — separate from and mounted
+  ABOVE the `Hero` component and its own 3D scene. Do not build this by
+  reusing or extending the Hero's canvas/component directly; they are two
+  independent 3D scenes with two independent purposes (intro vs. ongoing
+  Hero background).
+* Use the existing stack already defined in MASTER_PRD.txt Section 27:
+  Three.js / React Three Fiber for the scene, GSAP for timeline
+  sequencing. Do not introduce a new animation or 3D library for this
+  addendum.
+* Structure the sequence as a single GSAP timeline driving: the Beat A
+  layout-glimpse opacity, the Beat B glitch/fracture and hero-panel
+  reveal, material/emissive color interpolation, camera position/shake,
+  and the Beat D panel fade/scale-ins — rather than independently-timed
+  animations per beat, to keep the transitions coherent.
+* Keep the geometry/asset count restrained (per MASTER_PRD.txt Section 26
+  Performance Requirements) — reuse the same fragment/panel meshes across
+  all four beats; only their position, rotation, and color change.
+* On dissolve, fully unmount the overlay's 3D scene/canvas (dispose of
+  the WebGL context, stop its render loop) rather than hiding it with
+  CSS — it must not keep consuming GPU/render cycles in the background
+  once the homepage is revealed, since it plays again fresh on next load
+  anyway.
+* The Hero section's own 3D scene (MASTER_PRD.txt Section 6) starts fresh,
+  independently, once revealed — respecting its own idle/interaction and
+  render-loop rules already defined there.
+
+================================================================================
+3. VISUAL DEPTH & COLOR ADJUSTMENTS
+================================================================================
+
+These changes apply site-wide, not just to the Hero, and extend
+MASTER_PRD.txt Section 20 (Visual Design Direction).
+
+3.1 Background depth
+* Replace flat single-color section backgrounds with a subtle radial
+  gradient or vignette (e.g. from #111111 toward #0A0A0A) so sections
+  read as having depth rather than a single flat plane.
+* Add a very light film-grain / noise texture at low opacity across dark
+  backgrounds to avoid a flat, synthetic look. Must remain subtle enough
+  not to affect text legibility or contrast requirements (Section 31).
+
+3.2 Accent color usage
+* The accent color (#8AB4FF) is currently underused — mostly confined to
+  small labels and numerals. Extend its use to:
+  - A soft glow/halo behind key 3D elements in the Hero.
+  - Active/hover states on navigation items (underline or glow, not a
+    solid fill).
+  - Hover state borders or glows on interactive cards (skills, projects).
+* Keep usage restrained and intentional — this is still a single-accent
+  system per Section 20; do not introduce additional accent colors.
+
+3.3 Surface hierarchy
+* Reinforce the existing three-tier surface system (Base #0A0A0A / Primary
+  Surface #111111 / Secondary Surface #171717) by using it more
+  consistently to separate foreground cards from their background section,
+  rather than relying on borders alone.
+
+================================================================================
+4. DEFINITION OF DONE (ADDENDUM)
+================================================================================
+
+[ ] Full-screen intro overlay plays Beat A (Glimpse) → Beat B (Crash) →
+    Beat C (Reveal) → Beat D (Load) on EVERY page load and refresh, then
+    dissolves to reveal the homepage.
+[ ] The "crash" in Beat B never mimics a real browser/OS error screen —
+    it stays within this project's own dark/code visual language (see
+    SAFETY RULE in Section 1).
+[ ] Beat B, C, and D use ONLY the approved copy lines specified in Section
+    1 ("Every build breaks somewhere." / eyebrow+name+title from Section 5
+    + the new personal line / "This is what I do — turn broken into
+    shipped.") — no additional ad-hoc marketing copy is introduced beyond
+    these.
+[ ] Beat C copy is visibly, deliberately animated with a staggered
+    line-by-line reveal (not static/instant, not blank/empty-feeling).
+[ ] Beat D plays the red-to-green fix-highlight animation across all
+    three broken lines (not just one) before the panel transitions into
+    the Section 6 composition.
+[ ] No eyebrow label or invented status/verification badges ("SYSTEM:
+    ONLINE", "VERIFIED STACK 2026", or similar) appear anywhere in the
+    intro or the persistent Hero — see MASTER_PRD.txt Section 5 revision.
+[ ] Hero's 3D composition includes at least one non-code-panel element
+    (browser/UI mockup, project card, or data-node graphic) per
+    MASTER_PRD.txt Section 6 revision — not code panels repeated.
+[ ] Total sequence duration is approximately 8 seconds (not ~5s) — verify
+    actual playback time, not just the timeline code's intended duration.
+[ ] The broken line in Beat B uses a solid full-line red highlight, not a
+    subtle squiggly underline — it must be obvious at a glance.
+[ ] Intro overlay is a separate component/3D scene from the Hero's own 3D
+    scene — implemented as a fixed, full-viewport, top z-index overlay,
+    not embedded inside the Hero component.
+[ ] Overlay's 3D canvas/render loop is fully unmounted/disposed after
+    dissolve — not just hidden via CSS.
+[ ] After dissolve, the Hero section appears already in its normal resting
+    state per Section 6 — the storyboard does not replay inside the Hero.
+[ ] No literal "error" or "help" text/iconography appears — the emotional
+    arc is communicated through motion and color only.
+[ ] Sequence respects prefers-reduced-motion (jumps to end-state, then
+    reveals homepage immediately).
+[ ] Sequence respects the WebGL-unavailable fallback path.
+[ ] Overlay never hangs indefinitely — dissolves into the homepage even if
+    assets are still loading past the ~8-9s sequence.
+[ ] No new 3D/animation dependency introduced beyond what MASTER_PRD.txt
+    Section 27 already specifies.
+[ ] Background depth (gradient/vignette + subtle grain) applied across
+    dark sections without harming contrast/legibility.
+[ ] Accent color visibly present in at least: Hero glow, nav active/hover
+    state, and card hover state.
+[ ] Existing About and Skills sections remain unaffected/working after
+    this addendum is implemented.
+
+================================================================================
+END OF ADDENDUM
+================================================================================

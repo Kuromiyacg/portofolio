@@ -1,0 +1,1164 @@
+================================================================================
+MASTER PRD — 3D IMMERSIVE DEVELOPER PORTFOLIO
+================================================================================
+
+IMPORTANT:
+This document is the single source of truth for this project.
+
+Before making implementation decisions:
+1. Read this entire PRD.
+2. Inspect the existing project structure.
+3. Inspect the available installed skills and use relevant ones.
+4. Do not blindly rewrite existing code.
+5. Follow the requirements and design principles defined here.
+6. If an implementation detail is not explicitly specified, choose the
+   solution that best preserves the design philosophy and technical
+   requirements of this PRD.
+7. Do not introduce unnecessary dependencies.
+8. Do not generate generic AI-style UI.
+9. Build incrementally by phase.
+10. Do not skip a phase without validating the previous phase.
+
+IMPLEMENTATION RULE:
+Complete one phase at a time.
+
+After completing each phase:
+- Verify the implementation.
+- Fix obvious issues.
+- Check responsiveness.
+- Check console errors.
+- Check interactions.
+- Only then proceed to the next phase.
+
+Do not attempt to build all phases simultaneously.
+
+================================================================================
+TABLE OF CONTENTS
+================================================================================
+1.  Product Overview
+2.  Personal Information
+3.  Personal Profile
+4.  Core Skills
+5.  Hero Section
+6.  3D / Immersive Visual Direction
+7.  Navigation
+8.  About Section
+9.  Skills Section
+10. Project Showcase
+11. Functional HTML Project Previews
+12. Project Preview Architecture
+13. Upcoming Projects
+14. Project Timeline
+15. Experience / Development Journey
+16. LinkedIn Integration
+17. Email Contact
+18. Contact Section
+19. Footer
+20. Visual Design Direction
+21. Typography
+22. Motion Design
+23. Cursor Interaction
+24. Scroll Experience
+25. Responsive Design
+26. Performance Requirements
+27. Technology Direction
+28. Content Architecture
+29. Dummy Data Rules
+30. Anti-AI-Slop Design Rules
+31. Accessibility
+32. SEO
+33. Loading Experience
+34. Error / Fallback Behavior
+35. Component Structure
+36. Project Preview System
+37. Initial Projects
+38. Development Requirements
+39. Quality Bar
+40. Implementation Order (Phase 1-7)
+41. Final Creative Direction
+42. Agent Operating Instructions
+43. Definition of Done
+
+================================================================================
+1. PRODUCT OVERVIEW
+================================================================================
+
+Build a premium, immersive 3D portfolio website for a software developer /
+full-stack developer.
+
+The website should feel like a real personal digital environment, not a
+conventional portfolio template.
+
+The core experience should combine:
+
+* Premium editorial portfolio design
+* Immersive 3D / WebGL elements
+* Smooth scroll-based storytelling
+* Interactive project showcases
+* Functional HTML project previews
+* Developer-focused visual language
+* Subtle motion and micro-interactions
+* Strong typography and spacing
+* Professional information hierarchy
+* Responsive behavior across desktop, tablet, and mobile
+
+The final result must feel human-designed, intentional, sophisticated, and
+production-quality.
+
+Avoid the visual characteristics commonly associated with generic
+AI-generated websites ("AI slop"), including excessive gradients, random
+glowing blobs, excessive glassmorphism, unnecessary rounded cards, excessive
+animations, generic SaaS layouts, and meaningless decorative elements.
+
+The website should prioritize art direction, usability, hierarchy, and
+storytelling over adding effects simply because they are technically
+possible.
+
+================================================================================
+2. PERSONAL INFORMATION
+================================================================================
+
+All personal information must be implemented as easily replaceable
+placeholders.
+
+Do NOT hardcode fictional personal information as if it were real.
+
+Use placeholders such as:
+
+* [YOUR NAME]
+* [YOUR PROFESSIONAL TITLE]
+* [YOUR LOCATION]
+* [YOUR EMAIL]
+* [YOUR LINKEDIN URL]
+* [YOUR GITHUB URL]
+* [YOUR PROFILE IMAGE]
+* [YOUR SHORT BIO]
+
+The portfolio owner will replace these values later.
+
+================================================================================
+3. PERSONAL PROFILE
+================================================================================
+
+Name:
+[YOUR NAME]
+
+Professional Title:
+Example: "Full-Stack Developer & Web Builder"
+This is only a placeholder and should be easy to change.
+
+Short Introduction:
+Use a concise, professional introduction describing the person as a
+developer who builds websites, applications, interfaces, and digital
+products. Avoid exaggerated claims.
+
+Example structure:
+"I build websites and digital products with a focus on functionality,
+clean interfaces, and practical user experiences."
+
+The final text should be editable from a central configuration/data object
+where possible.
+
+================================================================================
+4. CORE SKILLS
+================================================================================
+
+Create a dedicated Skills section.
+
+Primary Skills:
+* Website Builder & Development
+* Full-Stack Development
+* Frontend Development
+* Backend Development
+* UI / UX Implementation
+* Database Integration
+* API Integration
+* Problem Solving
+
+Programming Languages:
+* JavaScript
+* Python
+* C++
+* PHP
+* HTML
+* CSS
+
+Development Experience (editable metrics):
+* +5 Projects
+* 2+ Years Using Claude / AI-Assisted Development
+* [X]+ Websites Built
+* [X]+ Technologies Used
+
+The metrics must be stored as editable values rather than being deeply
+embedded throughout the UI. Do not exaggerate the numbers.
+
+================================================================================
+5. HERO SECTION
+================================================================================
+
+The hero section should immediately communicate:
+1. Who the developer is
+2. What they build
+3. The interactive nature of the portfolio
+
+Suggested structure:
+
+Large headline: [YOUR NAME]
+Secondary headline: "FULL-STACK DEVELOPER"
+Supporting copy: "Building functional digital experiences, websites, and
+software products."
+
+CTA buttons:
+* "Explore Work"
+* "Contact Me"
+
+Secondary social link: "LinkedIn ↗"
+
+The hero should contain the primary 3D visual.
+
+REVISED — no eyebrow label, no invented status badges:
+Do NOT add an eyebrow label above the headline (an earlier "PORTFOLIO /
+2026" eyebrow has been removed by product decision). Do NOT invent
+additional system-status or verification badges anywhere in the Hero or
+elsewhere on the site — e.g. "SYSTEM: ONLINE", "VERIFIED STACK 2026", or
+similar decorative labels that imply a live system status. These are not
+real information and read as "AI slop" filler per Section 30. If a
+metric/status strip is wanted below the headline, it must use ONLY the
+concrete, editable metrics already defined in Section 4 (e.g. "+5
+Projects", "2+ Years Using Claude / AI-Assisted Development") — never
+invented buzzword pairs like "Modular Core" or "Production Grade" that
+sound technical but carry no real information.
+
+================================================================================
+6. 3D / IMMERSIVE VISUAL DIRECTION
+================================================================================
+
+Create a custom interactive 3D visual rather than using a generic 3D model
+simply for decoration.
+
+Possible concept: a floating digital workspace / abstract developer
+environment consisting of:
+
+* Floating browser windows
+* Code fragments
+* UI panels
+* Small project cards
+* Data nodes
+* Subtle geometric structures
+* Interactive cursor movement
+* Depth layers
+* Soft lighting
+
+The 3D scene should communicate: Code → Build → Iterate → Ship
+rather than simply being an abstract object.
+
+Interaction ideas:
+* Mouse movement subtly influences camera position
+* Scroll changes the scene composition
+* Project elements move slightly based on scroll depth
+* Hovering over important objects reveals information
+* Clicking a project object opens its project preview
+
+Animations must be smooth and restrained.
+
+Avoid:
+* Constant spinning
+* Excessive particle effects
+* Giant glowing spheres
+* Rainbow gradients
+* Overly aggressive camera movement
+* Effects that make the website difficult to use
+
+The 3D layer must never compromise readability or performance.
+
+REVISED — visual variety is required, not optional:
+Current implementation only used two flat code-text panels ("engine.ts"
+and a "LIFECYCLE PIPELINE" list), which reads as repetitive and visually
+flat despite being technically "3D". Code fragments are only ONE of the
+element types listed above — the scene must include at least one element
+from a DIFFERENT category to create real visual variety, for example:
+* A floating browser-window mockup showing an actual mini UI (buttons,
+  cards, a small chart or layout) — not more code text — so the eye has
+  something other than syntax-highlighted text to read.
+* A small project card with a title/thumbnail-style treatment.
+* A data-node/network element (connected dots/lines suggesting a system
+  graph) purely as a visual/geometric element, not more text.
+Do not build the Hero scene as "the same code-panel component, repeated
+with different text" — vary the element TYPE, not just its content.
+
+================================================================================
+7. NAVIGATION
+================================================================================
+
+Create a minimal floating navigation.
+
+Navigation items:
+* Home
+* About
+* Skills
+* Projects
+* Experience
+* Contact
+
+The navigation should:
+* Become visible or change state while scrolling
+* Smoothly navigate to sections
+* Indicate the current section
+* Work on mobile
+* Avoid taking excessive screen space
+
+Use a compact mobile menu.
+
+================================================================================
+8. ABOUT SECTION
+================================================================================
+
+Create an editorial-style About section.
+
+Instead of using a generic profile card, use a combination of:
+* Large typography
+* Short biography
+* Personal information
+* Experience metrics
+* Technical interests
+* Small visual elements
+
+Example:
+"ABOUT"
+"I build digital products from interface to backend."
+[YOUR BIO]
+
+Display editable information:
+Location: [YOUR LOCATION]
+Focus: [YOUR DEVELOPMENT FOCUS]
+Experience: [YOUR EXPERIENCE]
+Current Goal: [YOUR CURRENT GOAL]
+
+================================================================================
+9. SKILLS SECTION
+================================================================================
+
+Create an interactive skills visualization.
+
+Primary categories:
+
+Development:
+* JavaScript, Python, C++, PHP, HTML, CSS
+
+Full-Stack:
+* Frontend, Backend, Database, API, Authentication, Deployment
+
+Tools / Workflow:
+* Git, GitHub, AI-assisted development, Claude, [OTHER TOOL]
+
+Do not represent skill levels with misleading progress bars such as
+"JavaScript 97%" unless the user explicitly provides those values.
+
+Instead, use:
+* Technology clusters
+* Tags
+* Interactive nodes
+* Experience labels
+* Project associations
+
+This should feel more professional and honest.
+
+================================================================================
+10. PROJECT SHOWCASE
+================================================================================
+
+This is one of the most important sections.
+
+Create a project gallery that presents the user's actual work.
+
+Each project should support:
+Project Name
+Project Type
+Short Description
+Technologies
+Status
+Role
+Project URL
+Repository URL
+
+Use editable project data.
+
+Example project:
+
+PROJECT 01
+LifeTrack AI
+Habit & Expense Management Platform
+
+Type: Full-Stack Web Application
+Technologies: JavaScript / Python / Database / AI
+Status: In Development
+Description: A personal productivity platform for tracking habits,
+daily tasks, expenses, and financial behavior.
+
+Do not claim that these are production statistics.
+
+================================================================================
+11. FUNCTIONAL HTML PROJECT PREVIEWS
+================================================================================
+
+Project previews must NOT simply be static screenshots.
+
+When the user opens a project, display an interactive miniature version of
+the application.
+
+Example — Dashboard Project:
+
+Create a functional HTML/CSS/JavaScript mock dashboard containing:
+* Sidebar
+* Navigation
+* Dashboard cards
+* Charts
+* Tables
+* Search
+* Filters
+* Buttons
+* Tabs
+* Modal windows where appropriate
+* Dummy data
+
+The data must clearly be fictional/template data, e.g.:
+Revenue: $24,820
+Active Users: 1,284
+Projects: 24
+Completion: 78%
+
+The dashboard must actually work:
+* Tabs should switch
+* Filters should function
+* Buttons should provide feedback
+* Search should filter dummy records
+* Navigation should change the visible section
+* Modal/dialog interactions should work
+
+However, it does NOT need a backend. This is a portfolio demonstration, not
+the real application.
+
+================================================================================
+12. PROJECT PREVIEW ARCHITECTURE
+================================================================================
+
+Every project should have two layers:
+
+Layer 1 — Portfolio Presentation:
+* Project title
+* Description
+* Technology stack
+* Development status
+* Role
+* Key features
+
+Layer 2 — Interactive Preview:
+Open a dedicated immersive preview panel/page.
+
+Example:
+[PROJECT NAME]
+Overview / Technology / Features / Interactive Demo
+--------------------------------
+LIVE HTML PREVIEW
+[ Functional Dummy Application ]
+--------------------------------
+← Back to Projects
+
+The preview should feel like the portfolio is temporarily transforming into
+the project itself.
+
+================================================================================
+13. UPCOMING PROJECTS
+================================================================================
+
+Add an "UPCOMING / IN DEVELOPMENT" section.
+
+Projects should have progress information, e.g.:
+
+PROJECT: AI Productivity Platform
+STATUS: In Development
+PROGRESS: 68%
+CURRENT PHASE: Frontend & API Integration
+NEXT: Authentication System
+
+Progress values must be editable.
+
+Do not automatically invent realistic progress values for the user's real
+projects. Use placeholder values such as [PROGRESS %], [CURRENT PHASE],
+[NEXT MILESTONE] until the user replaces them.
+
+================================================================================
+14. PROJECT TIMELINE
+================================================================================
+
+Create a subtle project timeline.
+
+Example (2026):
+01 Project Started
+02 Core Architecture
+03 Frontend Development
+04 Backend Integration
+05 Testing
+06 Deployment
+
+The timeline should support different project phases. Use motion to reveal
+phases while scrolling.
+
+================================================================================
+15. EXPERIENCE / DEVELOPMENT JOURNEY
+================================================================================
+
+Create a section showing the developer's progression.
+
+Example structure:
+
+01 Started Building — Learning the fundamentals of web development.
+02 Building Projects — Started developing complete websites and applications.
+03 Full-Stack — Working across frontend, backend, databases and APIs.
+04 AI-Assisted Development — Integrating AI tools into the development
+   workflow.
+05 Current — Building increasingly complex digital products.
+
+All content should remain editable.
+
+================================================================================
+16. LINKEDIN INTEGRATION
+================================================================================
+
+Add a LinkedIn connection.
+
+Placeholder: [YOUR LINKEDIN URL]
+
+LinkedIn should appear in:
+* Hero
+* Footer
+* Contact section
+
+Use an external link, opening in a new tab: "LinkedIn ↗"
+
+Do not fake LinkedIn API integration. A normal external profile link is
+sufficient unless an API integration is explicitly requested later.
+
+================================================================================
+17. EMAIL CONTACT
+================================================================================
+
+Create a direct email CTA.
+
+Placeholder: [YOUR EMAIL]
+
+Example: "Let's build something."
+CTA: "EMAIL ME →"
+
+Use a mailto: link.
+
+Optional:
+Email: [YOUR EMAIL]
+
+================================================================================
+18. CONTACT SECTION
+================================================================================
+
+The contact section should feel like the end of the digital journey.
+
+Example:
+"HAVE A PROJECT IN MIND?"
+"Let's talk."
+[YOUR EMAIL]
+[EMAIL ME]  [LINKEDIN ↗]
+
+Avoid generic contact forms unless there is a real backend. A direct email
+interaction is preferable for the initial version.
+
+================================================================================
+19. FOOTER
+================================================================================
+
+Minimal footer. Include:
+[YOUR NAME]
+Full-Stack Developer / Web Builder
+LinkedIn | GitHub | Email
+© 2026 [YOUR NAME]
+
+Optional: "Built with [TECHNOLOGIES]"
+
+Do not add fake credits.
+
+================================================================================
+20. VISUAL DESIGN DIRECTION
+================================================================================
+
+The visual language should be:
+Premium, Minimal, Technical, Editorial, Dark but readable, Sophisticated,
+Calm, High contrast, Modern, Human-designed.
+
+Use a restrained color system.
+
+Suggested direction:
+Base (near-black / charcoal background): #0A0A0A
+Primary Surface: #111111
+Secondary Surface: #171717
+Main Text: #F5F5F5
+Secondary Text: #A1A1AA
+Accent (choose ONE restrained accent color), e.g.: #8AB4FF
+
+Do not use multiple neon colors unless there is a strong design reason.
+
+================================================================================
+21. TYPOGRAPHY
+================================================================================
+
+Use a professional typography system. Recommended:
+Inter, Geist, Manrope, or IBM Plex Sans.
+
+For large headings, use strong typography with careful tracking.
+
+Typography should create hierarchy through:
+Size, Weight, Spacing, Line height, Position.
+
+Do not rely on excessive containers and cards to create hierarchy.
+
+================================================================================
+22. MOTION DESIGN
+================================================================================
+
+Motion should communicate hierarchy and navigation. Use:
+* Smooth section transitions
+* Scroll reveal
+* Parallax
+* Depth movement
+* Hover states
+* Magnetic CTA effects where appropriate
+* Project transitions
+* Subtle 3D camera movement
+
+Motion should have purpose. Every animation should answer:
+"Why does this element need to move?"
+
+Avoid:
+* Random floating elements
+* Excessive bounce animations
+* Constant looping animations
+* Excessive blur
+* Long loading animations
+* Animations that block interaction
+
+Respect prefers-reduced-motion.
+
+================================================================================
+23. CURSOR INTERACTION
+================================================================================
+
+Desktop version may use a custom cursor.
+
+Possible states:
+Normal: ●
+Interactive: VIEW
+Project: OPEN
+External link: ↗
+
+The cursor must disappear/disable on mobile. Do not make the cursor so
+large or animated that it becomes distracting.
+
+================================================================================
+24. SCROLL EXPERIENCE
+================================================================================
+
+The website should feel like one continuous story.
+
+Suggested sequence:
+HERO → ABOUT → SKILLS → SELECTED PROJECTS → PROJECT EXPERIENCE →
+UPCOMING PROJECTS → DEVELOPMENT JOURNEY → CONTACT → FOOTER
+
+Each section should transition naturally into the next. Avoid making every
+section look like a completely different website.
+
+================================================================================
+25. RESPONSIVE DESIGN
+================================================================================
+
+Desktop:
+* Full immersive 3D experience
+* Large typography
+* Multi-column project layouts
+* Advanced hover interactions
+
+Tablet:
+* Reduce 3D complexity
+* Adapt grid
+* Reduce typography scale
+
+Mobile:
+* Prioritize readability
+* Simplify 3D
+* Disable expensive effects when necessary
+* Use touch-friendly interactions
+* Keep project previews functional
+* Maintain the same visual identity
+
+The mobile version must not simply be a compressed desktop version.
+
+================================================================================
+26. PERFORMANCE REQUIREMENTS
+================================================================================
+
+The 3D experience must not unnecessarily destroy performance.
+
+Requirements:
+* Lazy-load heavy assets
+* Optimize 3D models
+* Avoid unnecessary render loops
+* Use GPU-friendly effects
+* Compress images
+* Code-split where appropriate
+* Lazy-load project previews
+* Do not load every project demo simultaneously
+
+Provide a graceful fallback if WebGL is unavailable. The portfolio must
+remain usable even without advanced 3D rendering.
+
+================================================================================
+27. TECHNOLOGY DIRECTION
+================================================================================
+
+Use modern web technologies where appropriate.
+
+Preferred architecture:
+Frontend: React / Next.js
+Styling: CSS / Tailwind where appropriate
+3D: Three.js / React Three Fiber
+Animation: GSAP / Framer Motion where appropriate
+Icons: Lucide or another minimal icon system
+Data: Local structured project data / JSON / TypeScript objects
+
+Do not introduce a library merely because it is popular. Every dependency
+should have a clear purpose.
+
+If the existing project structure already uses a different stack, preserve
+the existing architecture unless there is a strong technical reason to
+change it.
+
+Runtime & Deployment Clarification:
+
+* Node.js and npm are development-time tools only (dev server, build
+  process, package management). They are NOT part of what ships to the
+  visitor's browser.
+* This project does NOT require a backend server, database, or API routes.
+  All content (personal info, skills, projects) is local structured data
+  (JSON/TypeScript objects) as described in Section 28 — there is no
+  dynamic server-side logic.
+* Target deployment platforms are Vercel and/or Netlify via a connected
+  Git repository (automatic build on push). Do not assume or require a
+  custom Node.js server, a VPS, or manual server management.
+* Prefer Next.js static export (`output: 'export'`) or an equivalent
+  fully static build output, so the final deployed artifact is plain
+  HTML/CSS/JS with no server runtime required at request time.
+* Do NOT create API routes, server actions, middleware, or any backend
+  functionality unless a feature explicitly and unavoidably requires it
+  (this PRD does not require any such feature). If a chosen library or
+  approach would force a non-static/server-rendered deployment, flag it
+  and prefer a static-compatible alternative instead.
+
+================================================================================
+28. CONTENT ARCHITECTURE
+================================================================================
+
+Keep portfolio content separate from UI components.
+
+Example:
+
+const portfolio = {
+  personal: {
+    name: "[YOUR NAME]",
+    title: "[YOUR TITLE]",
+    location: "[YOUR LOCATION]",
+    email: "[YOUR EMAIL]",
+    linkedin: "[YOUR LINKEDIN URL]",
+    github: "[YOUR GITHUB URL]"
+  },
+  skills: [
+    "JavaScript", "Python", "C++", "PHP", "HTML", "CSS"
+  ],
+  projects: [
+    {
+      title: "[PROJECT NAME]",
+      description: "[PROJECT DESCRIPTION]",
+      technologies: [],
+      status: "[STATUS]",
+      progress: "[PROGRESS]",
+      preview: "[PREVIEW TYPE]"
+    }
+  ]
+}
+
+This allows the owner to update the portfolio without modifying the main UI
+architecture.
+
+================================================================================
+29. DUMMY DATA RULES
+================================================================================
+
+Any project preview that does not represent the real production application
+must use clearly fictional data.
+
+Never expose:
+* Real customer information
+* Real financial information
+* Real credentials
+* API keys
+* Private database data
+* Private company information
+
+Use fictional/demo values, e.g.:
+Alex Morgan / alex@example.com / Project Alpha / $12,420
+or generic values such as: User 001 / Project Alpha / $12,420
+
+================================================================================
+30. ANTI-AI-SLOP DESIGN RULES
+================================================================================
+
+This is a critical requirement. The website must NOT look like a generic
+AI-generated portfolio.
+
+Avoid:
+* Excessive glassmorphism
+* Excessive rounded cards
+* Purple-blue gradient backgrounds
+* Random glowing blobs
+* Generic 3D spheres
+* Huge meaningless statistics
+* Excessive badges
+* "Innovative / Passionate / Creative Developer" filler copy
+* Generic SaaS dashboard aesthetic
+* Every section inside a card
+* Excessive shadows
+* Excessive gradients
+* Random particles
+* Excessive animations
+* Stock-photo-looking imagery
+* Fake testimonials
+* Fake clients
+* Fake awards
+* Fake experience
+
+Instead:
+* Use strong typography
+* Use intentional whitespace
+* Use visual rhythm
+* Use real project structure
+* Use restrained color
+* Use meaningful interaction
+* Use functional demonstrations
+* Use editorial composition
+* Use subtle imperfections where appropriate
+* Make the portfolio feel personally authored
+
+The design should look like a developer with strong product taste built it,
+rather than an AI assembling a collection of fashionable UI components.
+
+================================================================================
+31. ACCESSIBILITY
+================================================================================
+
+Implement:
+* Semantic HTML
+* Keyboard navigation
+* Visible focus states
+* Accessible buttons
+* Accessible links
+* Proper heading hierarchy
+* Alt text
+* Sufficient contrast
+* Reduced motion support
+
+3D must never be required to understand the content.
+
+================================================================================
+32. SEO
+================================================================================
+
+Include:
+* Proper page title
+* Meta description
+* Open Graph metadata
+* Semantic structure
+* Descriptive links
+* Favicon
+* Social preview metadata
+
+Example:
+Title: [YOUR NAME] — Full-Stack Developer
+Description: [YOUR SHORT DESCRIPTION]
+
+================================================================================
+33. LOADING EXPERIENCE
+================================================================================
+
+Create a very short and elegant loading transition.
+
+Possible concept:
+INITIALIZING PORTFOLIO
+[████████░░] 80%
+
+Keep it short. Do not force users to wait unnecessarily. If the website
+loads quickly, skip or minimize the loading screen.
+
+================================================================================
+34. ERROR / FALLBACK BEHAVIOR
+================================================================================
+
+If a 3D asset fails: show a static / CSS-based fallback.
+
+If a project preview fails, show:
+"Preview unavailable — View project information →"
+
+If WebGL is unavailable: use a 2D version of the hero visual.
+
+The website must remain functional.
+
+================================================================================
+35. COMPONENT STRUCTURE
+================================================================================
+
+Create reusable components such as:
+Navbar, Hero, ThreeScene, AboutSection, SkillsSection, SkillNode,
+ProjectSection, ProjectCard, ProjectPreview, DashboardPreview,
+UpcomingProject, Timeline, ContactSection, Footer, CustomCursor,
+PageTransition
+
+Avoid creating one enormous component containing the entire application.
+
+================================================================================
+36. PROJECT PREVIEW SYSTEM
+================================================================================
+
+Build the preview system so additional project types can easily be added
+later.
+
+Example:
+ProjectPreview
+ ├── DashboardPreview
+ ├── EcommercePreview
+ ├── LandingPagePreview
+ ├── ManagementSystemPreview
+ └── CustomPreview
+
+Each preview should be independently functional.
+
+================================================================================
+37. INITIAL PROJECTS
+================================================================================
+
+Create several placeholder projects.
+
+Project 01: [FULL-STACK DASHBOARD]
+Type: Full-Stack Web Application
+Preview: Interactive HTML dashboard.
+
+Project 02: [WEBSITE PROJECT]
+Type: Website
+Preview: Functional landing page.
+
+Project 03: [MANAGEMENT SYSTEM]
+Type: Web Application
+Preview: Functional management interface.
+
+Project 04: [AI PROJECT]
+Type: AI / Web Application
+Preview: Functional UI prototype.
+
+The owner will replace these placeholders with real projects later.
+
+================================================================================
+38. DEVELOPMENT REQUIREMENTS
+================================================================================
+
+Before implementing the UI:
+1. Inspect the existing project structure.
+2. Determine the existing framework.
+3. Preserve useful existing architecture.
+4. Inspect available dependencies.
+5. Reuse existing components when appropriate.
+6. Do not rewrite the entire project unnecessarily.
+7. Check available installed development/design skills and use relevant
+   ones.
+8. Follow the established coding conventions of the project.
+9. Keep the implementation modular.
+
+Use installed development/design skills where relevant rather than
+recreating solutions manually. Do not assume a skill exists if it is not
+actually available.
+
+================================================================================
+39. QUALITY BAR
+================================================================================
+
+The finished website should pass the following test:
+
+Visual: Does it look like a professionally art-directed portfolio rather
+than a template?
+
+Interaction: Do interactions feel intentional?
+
+3D: Does the 3D component contribute to the storytelling?
+
+Projects: Can visitors actually interact with project demonstrations?
+
+Content: Can personal information and projects easily be replaced?
+
+Performance: Does the site remain responsive?
+
+Mobile: Does the experience remain polished on small screens?
+
+Code: Is the implementation maintainable and modular?
+
+================================================================================
+40. IMPLEMENTATION ORDER (PHASE 1-7)
+================================================================================
+
+Do NOT attempt to build everything blindly at once. Build progressively.
+
+--- Phase 1 — Foundation ---
+* Inspect project
+* Set up design system
+* Typography
+* Color system
+* Global layout
+* Navigation
+* Responsive foundation
+
+--- Phase 2 — Hero + 3D ---
+* Hero
+* 3D scene
+* Camera interaction
+* Scroll interaction
+* Fallback
+
+--- Phase 3 — Portfolio Content ---
+* About
+* Skills
+* Experience
+* Metrics
+
+--- Phase 4 — Project System ---
+* Project cards
+* Project data architecture
+* Project detail views
+* Functional HTML previews
+
+--- Phase 5 — Advanced Experience ---
+* Upcoming projects
+* Progress indicators
+* Timeline
+* Page transitions
+* Cursor interactions
+
+--- Phase 6 — Contact + Polish ---
+* LinkedIn
+* Email
+* Footer
+* SEO
+* Accessibility
+* Performance
+* Mobile refinement
+
+--- Phase 7 — Final QA ---
+Test:
+* Desktop
+* Tablet
+* Mobile
+* Keyboard
+* Reduced motion
+* WebGL fallback
+* Project previews
+* External links
+* Broken states
+* Performance
+
+================================================================================
+41. FINAL CREATIVE DIRECTION
+================================================================================
+
+The portfolio should communicate: "This person builds things."
+Not: "This person downloaded a portfolio template."
+
+The experience should feel like entering a developer's digital workspace.
+The visitor should gradually discover:
+
+WHO I AM
+   ↓
+WHAT I CAN BUILD
+   ↓
+WHAT I HAVE BUILT
+   ↓
+WHAT I AM BUILDING
+   ↓
+HOW TO CONTACT ME
+
+The website should be memorable because of its interaction design, project
+demonstrations, typography, composition, and storytelling, not because it
+contains the maximum possible number of visual effects.
+
+Build with restraint. Prioritize quality over quantity.
+
+Every visual element must have a purpose.
+Every animation must have a reason.
+Every section must contribute to the story.
+Every project preview should demonstrate actual interaction.
+
+The final result should feel like a premium personal developer portfolio /
+interactive digital showcase, not a generic AI-generated landing page.
+
+================================================================================
+42. AGENT OPERATING INSTRUCTIONS
+================================================================================
+
+These instructions govern HOW the coding agent (Antigravity) should work
+through this PRD, independent of the design content above.
+
+1. Never fabricate personal information, project details, statistics, or
+   experience that the user has not provided. Use the bracketed placeholder
+   format defined throughout this document instead.
+2. Never skip ahead to a later phase before the current phase has been
+   verified as working.
+3. Never rewrite or delete existing working code without a clear,
+   stated technical reason.
+4. Always check the installed/available skills before implementing a
+   feature manually — use a relevant skill if one exists, and do not
+   assume one exists if it does not.
+5. Always preserve the existing project's framework, folder structure, and
+   conventions unless this PRD explicitly requires a change.
+6. After each phase, run a self-check: verify the build compiles, check
+   the browser console for errors, check responsiveness at desktop/tablet/
+   mobile breakpoints, and check that interactive elements actually work.
+7. If a requirement in this PRD conflicts with a technical constraint of
+   the existing project, flag the conflict and propose the closest
+   alternative that preserves the design intent — do not silently ignore
+   the requirement.
+8. Report progress at the end of each phase before proceeding, using the
+   Definition of Done checklist below.
+
+================================================================================
+43. DEFINITION OF DONE
+================================================================================
+
+A phase is considered complete only when ALL of the following are true:
+
+[ ] All requirements listed for that phase in Section 40 are implemented.
+[ ] No console errors on load or during interaction.
+[ ] Layout is responsive across desktop, tablet, and mobile.
+[ ] All interactive elements (buttons, tabs, filters, modals, nav) respond
+    correctly.
+[ ] No hardcoded fictional personal data — placeholders are used correctly.
+[ ] No "AI slop" visual patterns from Section 30 are present.
+[ ] Code is modular and follows the component structure in Section 35.
+[ ] Reduced-motion and basic accessibility requirements are respected.
+[ ] The phase has been visually reviewed and confirmed before moving to the
+    next phase.
+
+The entire project is considered done only when every phase (1–7) meets
+this Definition of Done and the Quality Bar in Section 39 is satisfied.
+
+================================================================================
+END OF MASTER PRD
+================================================================================
