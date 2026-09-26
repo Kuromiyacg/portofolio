@@ -14,6 +14,8 @@ const jetbrainsMono = JetBrains_Mono({
   display: "swap",
 });
 
+import portfolio from "@/data/portfolio";
+
 export const viewport: Viewport = {
   themeColor: "#0A0A0A",
   colorScheme: "dark",
@@ -22,8 +24,9 @@ export const viewport: Viewport = {
 };
 
 export const metadata: Metadata = {
-  title: "[YOUR NAME] — Full-Stack Developer",
+  title: `${portfolio.personal.name || "Jordan Christian G."} — Full-Stack Developer & Web Builder`,
   description:
+    portfolio.personal.shortBio ||
     "Full-stack developer building functional digital experiences, websites, and software products.",
   keywords: [
     "Full-Stack Developer",
@@ -34,23 +37,25 @@ export const metadata: Metadata = {
     "TypeScript",
     "Three.js",
   ],
-  authors: [{ name: "[YOUR NAME]" }],
+  authors: [{ name: portfolio.personal.name || "Jordan Christian G." }],
   robots: {
     index: true,
     follow: true,
   },
   openGraph: {
-    title: "[YOUR NAME] — Full-Stack Developer",
+    title: `${portfolio.personal.name || "Jordan Christian G."} — Full-Stack Developer & Web Builder`,
     description:
+      portfolio.personal.shortBio ||
       "Full-stack developer building functional digital experiences, websites, and software products.",
     type: "website",
     locale: "en_US",
-    siteName: "[YOUR NAME] Portfolio",
+    siteName: `${portfolio.personal.name || "Jordan Christian G."} Portfolio`,
   },
   twitter: {
     card: "summary_large_image",
-    title: "[YOUR NAME] — Full-Stack Developer",
+    title: `${portfolio.personal.name || "Jordan Christian G."} — Full-Stack Developer & Web Builder`,
     description:
+      portfolio.personal.shortBio ||
       "Full-stack developer building functional digital experiences, websites, and software products.",
   },
 };

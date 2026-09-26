@@ -5,9 +5,11 @@ import * as THREE from "three";
 import { isWebGLAvailable } from "@/utils/webgl";
 import HeroFallback from "./HeroFallback";
 
+
+
 /**
  * Creates an offscreen high-res canvas texture for code editor window.
- * Resting State per MASTER_PRD.txt Section 6: Clean, organized developer syntax.
+ * Solid surfaces + soft shadows per MASTER_PRD.txt Section 6 & 20.
  */
 function createCodeTexture(): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
@@ -16,61 +18,69 @@ function createCodeTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext("2d");
 
   if (ctx) {
-    // Background: Dark editorial surface
-    ctx.fillStyle = "#11141a";
+    // Background: Solid Deep Charcoal surface (#0d1117)
+    ctx.fillStyle = "#0d1117";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Border
-    ctx.strokeStyle = "#252b36";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
+    // Header Chrome: Solid Primary Surface (#161b22)
+    ctx.fillStyle = "#161b22";
+    ctx.fillRect(0, 0, canvas.width, 68);
 
-    // Title bar
-    ctx.fillStyle = "#161b24";
-    ctx.fillRect(0, 0, canvas.width, 70);
-    ctx.strokeStyle = "#252b36";
-    ctx.beginPath();
-    ctx.moveTo(0, 70);
-    ctx.lineTo(canvas.width, 70);
-    ctx.stroke();
+    // Subtle header bottom divider
+    ctx.fillStyle = "#21262d";
+    ctx.fillRect(0, 66, canvas.width, 2);
 
-    // Window controls
-    ctx.fillStyle = "#333b47";
+    // Window controls (macOS style dots)
+    ctx.fillStyle = "#ff5f56";
     ctx.beginPath();
-    ctx.arc(36, 35, 10, 0, Math.PI * 2);
-    ctx.arc(68, 35, 10, 0, Math.PI * 2);
-    ctx.arc(100, 35, 10, 0, Math.PI * 2);
+    ctx.arc(36, 34, 7, 0, Math.PI * 2);
     ctx.fill();
 
-    // File name
+    ctx.fillStyle = "#ffbd2e";
+    ctx.beginPath();
+    ctx.arc(60, 34, 7, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.fillStyle = "#27c93f";
+    ctx.beginPath();
+    ctx.arc(84, 34, 7, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Tab active pill
+    ctx.fillStyle = "#0d1117";
+    ctx.fillRect(120, 16, 170, 50);
     ctx.fillStyle = "#8ab4ff";
-    ctx.font = "bold 24px monospace";
-    ctx.fillText("engine.ts", 136, 43);
+    ctx.fillRect(120, 16, 170, 3); // Active tab indicator
 
-    ctx.fillStyle = "#64748b";
-    ctx.font = "20px monospace";
-    ctx.fillText("// Production build engine", 300, 43);
+    // File name
+    ctx.fillStyle = "#f0f6fc";
+    ctx.font = "bold 18px monospace";
+    ctx.fillText("engine.ts", 150, 46);
 
-    // Code lines: clean, structured syntax highlights
-    ctx.font = "24px monospace";
+    ctx.fillStyle = "#6e7681";
+    ctx.font = "16px monospace";
+    ctx.fillText("// Production build engine", 320, 46);
+
+    // Code lines: clean, structured syntax highlights with generous line-height
+    ctx.font = "22px monospace";
     const lines = [
-      { num: "01", text: "import { Ship, Engine } from '@core/system';", color: "#94a3b8" },
+      { num: "01", text: "import { Ship, Engine } from '@core/system';", color: "#8b949e" },
       { num: "02", text: "", color: "#ffffff" },
-      { num: "03", text: "export async function orchestrate(): Promise<Ship> {", color: "#e2e8f0" },
-      { num: "04", text: "  const environment = await Engine.initialize({", color: "#94a3b8" },
+      { num: "03", text: "export async function orchestrate(): Promise<Ship> {", color: "#e6edf3" },
+      { num: "04", text: "  const environment = await Engine.initialize({", color: "#8b949e" },
       { num: "05", text: "    mode: 'production',", color: "#8ab4ff" },
       { num: "06", text: "    telemetry: true,", color: "#8ab4ff" },
-      { num: "07", text: "    optimization: 'high-performance',", color: "#60a5fa" },
-      { num: "08", text: "  });", color: "#94a3b8" },
+      { num: "07", text: "    optimization: 'high-performance',", color: "#79c0ff" },
+      { num: "08", text: "  });", color: "#8b949e" },
       { num: "09", text: "", color: "#ffffff" },
-      { num: "10", text: "  // Pipeline verified and stable", color: "#64748b" },
+      { num: "10", text: "  // Pipeline verified and stable", color: "#6e7681" },
       { num: "11", text: "  return environment.deploy();", color: "#8ab4ff" },
-      { num: "12", text: "}", color: "#e2e8f0" },
+      { num: "12", text: "}", color: "#e6edf3" },
     ];
 
     let y = 125;
     lines.forEach((line) => {
-      ctx.fillStyle = "#475569";
+      ctx.fillStyle = "#484f58";
       ctx.fillText(line.num, 36, y);
 
       ctx.fillStyle = line.color;
@@ -78,18 +88,21 @@ function createCodeTexture(): THREE.CanvasTexture {
       y += 40;
     });
 
-    // Status footer
-    ctx.fillStyle = "#161b24";
-    ctx.fillRect(0, canvas.height - 50, canvas.width, 50);
+    // Status footer: Solid Primary Surface (#161b22)
+    ctx.fillStyle = "#161b22";
+    ctx.fillRect(0, canvas.height - 48, canvas.width, 48);
 
-    ctx.fillStyle = "#8ab4ff";
+    ctx.fillStyle = "#21262d";
+    ctx.fillRect(0, canvas.height - 48, canvas.width, 1);
+
+    ctx.fillStyle = "#2ea043";
     ctx.beginPath();
-    ctx.arc(36, canvas.height - 25, 6, 0, Math.PI * 2);
+    ctx.arc(36, canvas.height - 24, 5, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "#94a3b8";
-    ctx.font = "20px monospace";
-    ctx.fillText("status: build operational (100% stable)", 56, canvas.height - 18);
+    ctx.fillStyle = "#8b949e";
+    ctx.font = "16px monospace";
+    ctx.fillText("status: build operational (100% stable)", 54, canvas.height - 18);
   }
 
   const texture = new THREE.CanvasTexture(canvas);
@@ -100,7 +113,8 @@ function createCodeTexture(): THREE.CanvasTexture {
 
 /**
  * Creates an offscreen high-res canvas texture for a floating browser UI mockup.
- * Adds non-code visual diversity per MASTER_PRD.txt Section 6 revision.
+ * Built with SOLID surfaces + soft drop shadows per MASTER_PRD.txt Section 6 & 20.
+ * Replaces thin-outline sci-fi HUD styling with a modern professional dashboard.
  */
 function createBrowserMockupTexture(): THREE.CanvasTexture {
   const canvas = document.createElement("canvas");
@@ -109,23 +123,17 @@ function createBrowserMockupTexture(): THREE.CanvasTexture {
   const ctx = canvas.getContext("2d");
 
   if (ctx) {
-    // Window background: Deep rich surface
-    ctx.fillStyle = "#0c1017";
+    // Window background: Deep solid surface (#0d1117)
+    ctx.fillStyle = "#0d1117";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    // Border
-    ctx.strokeStyle = "#1e2638";
-    ctx.lineWidth = 4;
-    ctx.strokeRect(2, 2, canvas.width - 4, canvas.height - 4);
-
-    // Browser Chrome Header
-    ctx.fillStyle = "#111622";
+    // Browser Chrome Header: Solid Primary Surface (#161b22)
+    ctx.fillStyle = "#161b22";
     ctx.fillRect(0, 0, canvas.width, 70);
-    ctx.strokeStyle = "#1e2638";
-    ctx.beginPath();
-    ctx.moveTo(0, 70);
-    ctx.lineTo(canvas.width, 70);
-    ctx.stroke();
+
+    // Chrome bottom border
+    ctx.fillStyle = "#21262d";
+    ctx.fillRect(0, 68, canvas.width, 2);
 
     // Window controls
     ctx.fillStyle = "#ff5f56";
@@ -143,97 +151,135 @@ function createBrowserMockupTexture(): THREE.CanvasTexture {
     ctx.arc(80, 35, 7, 0, Math.PI * 2);
     ctx.fill();
 
-    // Browser URL bar
-    ctx.fillStyle = "#0c1017";
+    // Browser URL bar: Solid inset surface (#0d1117) with soft border
+    ctx.fillStyle = "#0d1117";
     ctx.fillRect(115, 16, canvas.width - 230, 38);
-    ctx.strokeStyle = "#1e2638";
-    ctx.strokeRect(115, 16, canvas.width - 230, 38);
+    ctx.fillStyle = "#21262d";
+    ctx.fillRect(115, 16, canvas.width - 230, 1);
+    ctx.fillRect(115, 53, canvas.width - 230, 1);
+    ctx.fillRect(115, 16, 1, 38);
+    ctx.fillRect(canvas.width - 116, 16, 1, 38);
 
     // SSL Lock & URL
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#3fb950";
     ctx.beginPath();
     ctx.arc(135, 35, 4, 0, Math.PI * 2);
     ctx.fill();
 
-    ctx.fillStyle = "#cbd5e1";
-    ctx.font = "16px monospace";
+    ctx.fillStyle = "#c9d1d9";
+    ctx.font = "15px monospace";
     ctx.fillText("https://app.system.dev/overview", 155, 41);
 
-    // Live status pill on right of URL bar
+    // Live status pill on right of URL bar (Restrained highlight)
+    ctx.fillStyle = "rgba(138, 180, 255, 0.15)";
+    ctx.fillRect(canvas.width - 190, 22, 60, 24);
     ctx.fillStyle = "#8ab4ff";
-    ctx.font = "bold 14px monospace";
-    ctx.fillText("LIVE", canvas.width - 170, 41);
+    ctx.font = "bold 13px monospace";
+    ctx.fillText("LIVE", canvas.width - 173, 39);
 
-    // Inner App Header
-    ctx.fillStyle = "#111622";
-    ctx.fillRect(30, 95, canvas.width - 60, 56);
-    ctx.strokeStyle = "#1e2638";
-    ctx.strokeRect(30, 95, canvas.width - 60, 56);
+    // Inner App Header: Solid banner surface (#161b22) with soft shadow
+    const headerX = 28;
+    const headerY = 92;
+    const headerW = canvas.width - 56;
+    const headerH = 54;
 
-    ctx.fillStyle = "#f8fafc";
-    ctx.font = "bold 20px monospace";
-    ctx.fillText("SYSTEM PERFORMANCE OVERVIEW", 50, 131);
+    ctx.shadowColor = "rgba(0, 0, 0, 0.4)";
+    ctx.shadowBlur = 10;
+    ctx.shadowOffsetY = 4;
+    ctx.fillStyle = "#161b22";
+    ctx.fillRect(headerX, headerY, headerW, headerH);
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+
+    // Header subtle border
+    ctx.strokeStyle = "#21262d";
+    ctx.lineWidth = 1;
+    ctx.strokeRect(headerX, headerY, headerW, headerH);
+
+    ctx.fillStyle = "#f0f6fc";
+    ctx.font = "bold 18px monospace";
+    ctx.fillText("SYSTEM PERFORMANCE OVERVIEW", 48, 126);
 
     ctx.fillStyle = "#8ab4ff";
-    ctx.font = "15px monospace";
-    ctx.fillText("Cluster: Global Edge", canvas.width - 300, 131);
+    ctx.font = "14px monospace";
+    ctx.fillText("Cluster: Global Edge", canvas.width - 240, 126);
 
-    // 3 Metrics Cards Grid
+    // 3 Metrics Cards Grid: Solid secondary surfaces (#161b22) with soft drop shadows
     const cards = [
-      { label: "REQUEST LATENCY", val: "12 ms", sub: "p99 < 28ms", status: "#22c55e" },
-      { label: "AVAILABILITY", val: "99.99%", sub: "Zero downtime", status: "#60a5fa" },
-      { label: "EDGE CACHE HIT", val: "100%", sub: "Zero cold start", status: "#8ab4ff" },
+      { label: "REQUEST LATENCY", val: "12 ms", sub: "p99 < 28ms", status: "#3fb950" },
+      { label: "AVAILABILITY", val: "99.99%", sub: "Zero downtime", status: "#8ab4ff" },
+      { label: "EDGE CACHE HIT", val: "100%", sub: "Zero cold start", status: "#79c0ff" },
     ];
 
-    const cardW = (canvas.width - 60 - 32) / 3;
+    const cardW = (canvas.width - 56 - 32) / 3;
     cards.forEach((c, idx) => {
-      const cx = 30 + idx * (cardW + 16);
-      const cy = 168;
-      const ch = 105;
+      const cx = 28 + idx * (cardW + 16);
+      const cy = 162;
+      const ch = 106;
 
-      ctx.fillStyle = "#111622";
+      // Soft drop shadow on card
+      ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+      ctx.shadowBlur = 12;
+      ctx.shadowOffsetY = 5;
+      ctx.fillStyle = "#161b22";
       ctx.fillRect(cx, cy, cardW, ch);
-      ctx.strokeStyle = "#1e2638";
+      ctx.shadowColor = "transparent";
+      ctx.shadowBlur = 0;
+      ctx.shadowOffsetY = 0;
+
+      // Subtle border
+      ctx.strokeStyle = "#21262d";
+      ctx.lineWidth = 1;
       ctx.strokeRect(cx, cy, cardW, ch);
 
-      // Card top indicator bar
+      // Card top solid indicator bar
       ctx.fillStyle = c.status;
       ctx.fillRect(cx, cy, cardW, 3);
 
-      ctx.fillStyle = "#94a3b8";
+      ctx.fillStyle = "#8b949e";
       ctx.font = "13px monospace";
-      ctx.fillText(c.label, cx + 18, cy + 30);
+      ctx.fillText(c.label, cx + 18, cy + 28);
 
-      ctx.fillStyle = "#ffffff";
+      ctx.fillStyle = "#f0f6fc";
       ctx.font = "bold 28px monospace";
       ctx.fillText(c.val, cx + 18, cy + 68);
 
-      ctx.fillStyle = "#64748b";
+      ctx.fillStyle = "#6e7681";
       ctx.font = "13px monospace";
       ctx.fillText(c.sub, cx + 18, cy + 92);
     });
 
-    // Interactive Area Chart Box
-    const chartX = 30;
-    const chartY = 290;
-    const chartW = canvas.width - 60;
-    const chartH = 260;
+    // Interactive Area Chart Box: Solid Surface (#161b22) with elevation
+    const chartX = 28;
+    const chartY = 284;
+    const chartW = canvas.width - 56;
+    const chartH = 265;
 
-    ctx.fillStyle = "#111622";
+    ctx.shadowColor = "rgba(0, 0, 0, 0.45)";
+    ctx.shadowBlur = 14;
+    ctx.shadowOffsetY = 6;
+    ctx.fillStyle = "#161b22";
     ctx.fillRect(chartX, chartY, chartW, chartH);
-    ctx.strokeStyle = "#1e2638";
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+
+    // Subtle container border
+    ctx.strokeStyle = "#21262d";
+    ctx.lineWidth = 1;
     ctx.strokeRect(chartX, chartY, chartW, chartH);
 
-    ctx.fillStyle = "#f8fafc";
+    ctx.fillStyle = "#f0f6fc";
     ctx.font = "bold 16px monospace";
-    ctx.fillText("THROUGHPUT DISTRIBUTION (req/sec)", chartX + 20, chartY + 35);
+    ctx.fillText("THROUGHPUT DISTRIBUTION (req/sec)", chartX + 22, chartY + 34);
 
-    ctx.fillStyle = "#22c55e";
+    ctx.fillStyle = "#3fb950";
     ctx.font = "14px monospace";
-    ctx.fillText("● 14.8k ops/s nominal", chartX + chartW - 210, chartY + 35);
+    ctx.fillText("● 14.8k ops/s nominal", chartX + chartW - 220, chartY + 34);
 
-    // Chart Grid Lines
-    ctx.strokeStyle = "#1a2130";
+    // Chart Grid Lines: very subtle divider lines
+    ctx.strokeStyle = "#21262d";
     ctx.lineWidth = 1;
     for (let i = 1; i <= 4; i++) {
       const gy = chartY + 50 + (i * 180) / 5;
@@ -261,9 +307,9 @@ function createBrowserMockupTexture(): THREE.CanvasTexture {
     const innerChartBottom = chartY + chartH - 30;
     const innerChartH = 150;
 
-    // Gradient fill under line
+    // Soft gradient fill under line
     const grad = ctx.createLinearGradient(0, chartY + 60, 0, innerChartBottom);
-    grad.addColorStop(0, "rgba(138, 180, 255, 0.35)");
+    grad.addColorStop(0, "rgba(138, 180, 255, 0.28)");
     grad.addColorStop(1, "rgba(138, 180, 255, 0.0)");
 
     ctx.fillStyle = grad;
@@ -278,9 +324,9 @@ function createBrowserMockupTexture(): THREE.CanvasTexture {
     ctx.closePath();
     ctx.fill();
 
-    // Line stroke
+    // Solid line stroke
     ctx.strokeStyle = "#8ab4ff";
-    ctx.lineWidth = 3.5;
+    ctx.lineWidth = 3;
     ctx.beginPath();
     points.forEach((p, idx) => {
       const px = innerChartX + p.x * innerChartW;
@@ -290,7 +336,7 @@ function createBrowserMockupTexture(): THREE.CanvasTexture {
     });
     ctx.stroke();
 
-    // Data dots
+    // Data dots with subtle glow
     points.forEach((p) => {
       const px = innerChartX + p.x * innerChartW;
       const py = innerChartBottom - p.y * innerChartH;
@@ -300,18 +346,15 @@ function createBrowserMockupTexture(): THREE.CanvasTexture {
       ctx.fill();
     });
 
-    // Bottom Footer Bar
-    ctx.fillStyle = "#111622";
+    // Bottom Footer Bar: Solid surface (#161b22)
+    ctx.fillStyle = "#161b22";
     ctx.fillRect(0, canvas.height - 54, canvas.width, 54);
-    ctx.strokeStyle = "#1e2638";
-    ctx.beginPath();
-    ctx.moveTo(0, canvas.height - 54);
-    ctx.lineTo(canvas.width, canvas.height - 54);
-    ctx.stroke();
+    ctx.fillStyle = "#21262d";
+    ctx.fillRect(0, canvas.height - 54, canvas.width, 1);
 
-    ctx.fillStyle = "#64748b";
+    ctx.fillStyle = "#6e7681";
     ctx.font = "14px monospace";
-    ctx.fillText("Architecture: React 19 • Next.js App Router • Modern Full-Stack", 30, canvas.height - 21);
+    ctx.fillText("Architecture: React 19 • Next.js App Router • Modern Full-Stack", 28, canvas.height - 21);
 
     ctx.fillStyle = "#8ab4ff";
     ctx.font = "14px monospace";
@@ -345,7 +388,7 @@ export default function Hero3DScene() {
 
     // Camera
     const camera = new THREE.PerspectiveCamera(42, width / height, 0.1, 100);
-    camera.position.set(0, 0, 7.0);
+    camera.position.set(0, 0, 7.2);
 
     // Renderer
     let renderer: THREE.WebGLRenderer;
@@ -365,20 +408,20 @@ export default function Hero3DScene() {
 
     // ========================================================================
     // RESTING STATE LIGHTING — Section 6 & 20
-    // Soft, crisp studio lighting with signature #8AB4FF accent illumination
+    // Soft studio lighting with signature #8AB4FF accent illumination
     // ========================================================================
-    const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.65);
+    const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.7);
     scene.add(ambientLight);
 
-    const dirLight = new THREE.DirectionalLight(0xffffff, 1.15);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1.2);
     dirLight.position.set(5, 8, 5);
     scene.add(dirLight);
 
-    const accentLight = new THREE.PointLight(0x8ab4ff, 1.8, 12);
-    accentLight.position.set(-1.0, 1.0, 2.5);
+    const accentLight = new THREE.PointLight(0x8ab4ff, 1.6, 14);
+    accentLight.position.set(-1.2, 1.0, 2.5);
     scene.add(accentLight);
 
-    const rimLight = new THREE.PointLight(0x64748b, 0.8, 15);
+    const rimLight = new THREE.PointLight(0x64748b, 0.9, 15);
     rimLight.position.set(2.5, -1.5, 2.0);
     scene.add(rimLight);
 
@@ -391,46 +434,46 @@ export default function Hero3DScene() {
     const browserTexture = createBrowserMockupTexture();
 
     // ========================================================================
-    // RESTING STATE MESHES — Diversified Section 6 Composition
-    // Code Window + Floating Browser UI Mockup Window
+    // RESTING STATE MESHES — Solid Surface Panels with Intentional Whitespace
     // ========================================================================
 
-    // Panel 1: Code Window
+    // Panel 1: Code Window (Positioned with clear negative space)
     const codeGeo = new THREE.BoxGeometry(3.6, 2.25, 0.05);
     const codeMat = new THREE.MeshStandardMaterial({
       map: codeTexture,
-      roughness: 0.3,
-      metalness: 0.1,
+      roughness: 0.35,
+      metalness: 0.05,
     });
     const codeMesh = new THREE.Mesh(codeGeo, codeMat);
-    codeMesh.position.set(-0.65, 0.28, 0.15);
-    codeMesh.rotation.set(-0.05, 0.12, -0.02);
+    codeMesh.position.set(-0.85, 0.32, 0.1);
+    codeMesh.rotation.set(-0.04, 0.12, -0.02);
     workspaceGroup.add(codeMesh);
 
+    // Subtle dark edge segment to ground the solid panel (not a glowing wireframe)
     const codeEdges = new THREE.EdgesGeometry(codeGeo);
     const codeLineMat = new THREE.LineBasicMaterial({
-      color: 0x8ab4ff,
+      color: 0x30363d,
       transparent: true,
-      opacity: 0.5,
+      opacity: 0.4,
     });
     const codeWireframe = new THREE.LineSegments(codeEdges, codeLineMat);
     codeMesh.add(codeWireframe);
 
-    // Panel 2: Floating Browser UI Mockup Window (Diversified Non-Code Element)
+    // Panel 2: Floating Browser UI Mockup Window (Positioned with intentional offset)
     const browserGeo = new THREE.BoxGeometry(3.2, 2.12, 0.05);
     const browserMat = new THREE.MeshStandardMaterial({
       map: browserTexture,
-      roughness: 0.25,
-      metalness: 0.15,
+      roughness: 0.3,
+      metalness: 0.08,
     });
     const browserMesh = new THREE.Mesh(browserGeo, browserMat);
-    browserMesh.position.set(1.35, -0.38, 0.35);
-    browserMesh.rotation.set(0.06, -0.15, 0.03);
+    browserMesh.position.set(1.4, -0.42, 0.38);
+    browserMesh.rotation.set(0.05, -0.14, 0.03);
     workspaceGroup.add(browserMesh);
 
     const browserEdges = new THREE.EdgesGeometry(browserGeo);
     const browserLineMat = new THREE.LineBasicMaterial({
-      color: 0x3b82f6,
+      color: 0x30363d,
       transparent: true,
       opacity: 0.4,
     });
@@ -447,10 +490,10 @@ export default function Hero3DScene() {
 
     const nodes: THREE.Mesh[] = [];
     const nodePositions = [
-      new THREE.Vector3(-2.4, 1.6, -0.6),
-      new THREE.Vector3(2.5, 1.3, -0.4),
-      new THREE.Vector3(2.6, -1.6, 0.2),
-      new THREE.Vector3(-2.2, -1.4, 0.5),
+      new THREE.Vector3(-2.6, 1.7, -0.6),
+      new THREE.Vector3(2.7, 1.4, -0.4),
+      new THREE.Vector3(2.8, -1.7, 0.2),
+      new THREE.Vector3(-2.4, -1.5, 0.5),
     ];
 
     nodePositions.forEach((pos) => {
@@ -462,7 +505,7 @@ export default function Hero3DScene() {
 
     // Ground technical grid
     const grid = new THREE.GridHelper(10, 16, 0x1f2937, 0x111827);
-    grid.position.set(0, -2.2, -1.0);
+    grid.position.set(0, -2.3, -1.0);
     grid.rotation.x = Math.PI / 10;
     scene.add(grid);
 
@@ -528,7 +571,8 @@ export default function Hero3DScene() {
     const startTime = performance.now();
 
     // ========================================================================
-    // RENDER LOOP — RESTING STATE IDLE INTERACTION
+    // RENDER LOOP — CONTINUOUS IDLE MOTION + MOUSE PARALLAX (Section 6 & 26 Clarification)
+    // Continuous perceptible organic floating motion completely independent of cursor input
     // ========================================================================
     const animate = (time: number) => {
       animationFrameId = requestAnimationFrame(animate);
@@ -540,6 +584,16 @@ export default function Hero3DScene() {
       const elapsed = (time - startTime) / 1000;
 
       if (!prefersReducedMotion) {
+        // Continuous Idle Oscillations (clearly perceptible even with stationary cursor)
+        const idleFloatCode = Math.sin(elapsed * 0.85) * 0.14;
+        const idleFloatBrowser = Math.sin(elapsed * 0.80 + 1.8) * 0.15;
+        const idleTiltCodeY = Math.sin(elapsed * 0.6) * 0.055;
+        const idleTiltCodeX = Math.cos(elapsed * 0.7) * 0.035;
+        const idleTiltBrowserY = Math.cos(elapsed * 0.65 + 1.2) * 0.055;
+        const idleTiltBrowserX = Math.sin(elapsed * 0.75 + 0.8) * 0.035;
+        const idleGroupY = Math.sin(elapsed * 0.45) * 0.07;
+        const idleGroupX = Math.cos(elapsed * 0.4) * 0.045;
+
         // Smooth lerped mouse parallax
         currentMouseX += (targetMouseX - currentMouseX) * 0.05;
         currentMouseY += (targetMouseY - currentMouseY) * 0.05;
@@ -548,18 +602,27 @@ export default function Hero3DScene() {
         camera.position.y = -currentMouseY * 0.3 - scrollProgress * 0.6;
         camera.lookAt(0, -scrollProgress * 0.4, 0);
 
-        // Gentle synchronized floating
-        codeMesh.position.y = 0.28 + Math.sin(elapsed * 0.8) * 0.03;
-        browserMesh.position.y = -0.38 + Math.sin(elapsed * 0.8 + 1.0) * 0.03;
+        // Continuous synchronized floating + tilting
+        codeMesh.position.y = 0.32 + idleFloatCode;
+        codeMesh.rotation.y = 0.12 + idleTiltCodeY;
+        codeMesh.rotation.x = -0.04 + idleTiltCodeX;
 
-        // Tilted workspace group responsive to scroll
-        workspaceGroup.rotation.y = currentMouseX * 0.12 + scrollProgress * 0.18;
-        workspaceGroup.rotation.x = -currentMouseY * 0.08;
+        browserMesh.position.y = -0.42 + idleFloatBrowser;
+        browserMesh.rotation.y = -0.14 + idleTiltBrowserY;
+        browserMesh.rotation.x = 0.05 + idleTiltBrowserX;
 
-        // Data nodes rotation
+        // Tilted workspace group responsive to scroll AND continuous idle sway
+        workspaceGroup.rotation.y = idleGroupY + currentMouseX * 0.12 + scrollProgress * 0.18;
+        workspaceGroup.rotation.x = idleGroupX - currentMouseY * 0.08;
+
+        // Data nodes continuous rotation, float drift + breathing scale
         nodes.forEach((node, i) => {
-          node.rotation.x += delta * (0.25 + i * 0.08);
-          node.rotation.y += delta * (0.35 + i * 0.08);
+          node.rotation.x += delta * (0.45 + i * 0.1);
+          node.rotation.y += delta * (0.55 + i * 0.1);
+          node.position.y = nodePositions[i].y + Math.sin(elapsed * 0.9 + i * 1.3) * 0.14;
+          node.position.x = nodePositions[i].x + Math.cos(elapsed * 0.7 + i * 1.1) * 0.08;
+          const breathingScale = 1.0 + Math.sin(elapsed * 1.5 + i * 1.2) * 0.18;
+          node.scale.set(breathingScale, breathingScale, breathingScale);
         });
 
         // Raycasting hover state

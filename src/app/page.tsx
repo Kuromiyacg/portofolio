@@ -1,6 +1,7 @@
 import IntroOverlay from "@/components/intro/IntroOverlay";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
+import Ambient3DBackground from "@/components/Ambient3DBackground";
 import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
 import ProjectSection from "@/components/ProjectSection";
@@ -16,6 +17,7 @@ export default function Home() {
     <>
       <IntroOverlay />
       <CustomCursor />
+      <Ambient3DBackground />
       <Navbar />
 
       <main>

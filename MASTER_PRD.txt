@@ -185,12 +185,20 @@ Programming Languages:
 
 Development Experience (editable metrics):
 * +5 Projects
-* 2+ Years Using Claude / AI-Assisted Development
 * [X]+ Websites Built
 * [X]+ Technologies Used
 
 The metrics must be stored as editable values rather than being deeply
 embedded throughout the UI. Do not exaggerate the numbers.
+
+REVISED — AI-assisted development is a skill, not a headline year-count
+stat: external review flagged "2+ Years AI Dev" as a risky headline metric
+(leading with AI-assisted years invites "how much did you write yourself?"
+questions). It has been removed from this headline metrics list. AI-
+assisted development is still represented, at the appropriate weight, as
+a tag under Tools/Workflow in Section 9 ("AI-assisted development", "Claude")
+— that is sufficient; do not re-add it here or elsewhere as a standalone
+top-line stat/number.
 
 ================================================================================
 5. HERO SECTION
@@ -225,9 +233,9 @@ similar decorative labels that imply a live system status. These are not
 real information and read as "AI slop" filler per Section 30. If a
 metric/status strip is wanted below the headline, it must use ONLY the
 concrete, editable metrics already defined in Section 4 (e.g. "+5
-Projects", "2+ Years Using Claude / AI-Assisted Development") — never
-invented buzzword pairs like "Modular Core" or "Production Grade" that
-sound technical but carry no real information.
+Projects", "[X]+ Websites Built") — never invented buzzword pairs like
+"Modular Core" or "Production Grade" that sound technical but carry no
+real information.
 
 ================================================================================
 6. 3D / IMMERSIVE VISUAL DIRECTION
@@ -286,6 +294,37 @@ from a DIFFERENT category to create real visual variety, for example:
 Do not build the Hero scene as "the same code-panel component, repeated
 with different text" — vary the element TYPE, not just its content.
 
+REVISED — 3D PRESENCE MUST NOT BE HERO-ONLY OR INTERACTION-ONLY:
+Currently the only motion is the Hero's floating panels plus mouse-follow
+parallax — once the cursor stops moving and the visitor scrolls past the
+Hero, all "3D immersive" feeling disappears. Two fixes are required:
+
+1. IDLE MOTION (independent of cursor): the Hero's 3D panels/elements
+   must have their own continuous, subtle idle animation (gentle
+   float/bob, slow rotation, breathing scale) even when the mouse is
+   completely still. Mouse parallax should ADD to this idle motion, not
+   BE the only source of motion. Keep idle motion slow and restrained
+   (per Section 22's "no excessive looping animation" rule) — subtle
+   continuous life, not a distraction.
+
+2. 3D PRESENCE BEYOND THE HERO: the immersive feeling must carry into
+   subsequent sections as the visitor scrolls, not stop abruptly after
+   the Hero. Options to achieve this (implement at least one):
+   * A persistent, very subtle ambient 3D layer (e.g. a faint depth grid,
+     slowly drifting particles/nodes, or a soft gradient mesh) that
+     continues at low visual weight behind content through About/Skills/
+     Projects, tying the whole page together rather than confining 3D to
+     one section.
+   * Section-specific 3D/scroll-driven accents: e.g. Skills section nodes
+     rendered with subtle 3D depth/hover-tilt instead of flat 2D cards,
+     or Project cards with a gentle 3D tilt-on-hover effect.
+   * Scroll-linked transitions between sections that use depth/parallax
+     movement (elements moving at different scroll speeds) rather than a
+     plain opacity fade, so scrolling itself continues to feel dimensional.
+   Whichever approach is used, it must stay restrained and performant per
+   Section 26 — this is about sustained atmosphere, not adding more heavy
+   3D scenes throughout the page.
+
 ================================================================================
 7. NAVIGATION
 ================================================================================
@@ -334,6 +373,24 @@ Focus: [YOUR DEVELOPMENT FOCUS]
 Experience: [YOUR EXPERIENCE]
 Current Goal: [YOUR CURRENT GOAL]
 
+REVISED — no verbatim repetition of Hero copy:
+External review flagged that this section's body copy was nearly
+identical to the Hero's supporting copy ("I build websites and digital
+products with a focus on functionality, clean interfaces..."). Each
+section must add NEW information the visitor hasn't already read — About
+should go deeper (how/why you work the way you do, what you're focused on
+right now) rather than restate the Hero's summary in slightly different
+words. Do not reuse Hero sentences here, even paraphrased closely.
+
+REVISED — no leftover dev/CMS-looking labels in visible UI:
+Labels like "EDITABLE DATA" or "DEVELOPER PROFILE" (or similar) must NOT
+appear as visible copy on the live site — these read as internal
+CMS/implementation labels accidentally left in the UI, not intentional
+visitor-facing copy. This applies site-wide, not just to this section:
+any panel/card label should describe content meaningfully to a visitor
+(e.g. a real section heading) rather than describing the underlying data
+system.
+
 ================================================================================
 9. SKILLS SECTION
 ================================================================================
@@ -380,6 +437,11 @@ Status
 Role
 Project URL
 Repository URL
+Thumbnail Image (REVISED — added): a real screenshot or rendered preview
+image of the project, used on the project card. This is required for
+visual warmth/professionalism (see Section 20 revision) — do not rely on
+text-only cards. Use a placeholder path such as [PROJECT THUMBNAIL] until
+the user supplies real screenshots; do not fabricate a fake screenshot.
 
 Use editable project data.
 
@@ -504,6 +566,19 @@ Example (2026):
 The timeline should support different project phases. Use motion to reveal
 phases while scrolling.
 
+REVISED — scope correction (this got implemented incorrectly):
+This timeline is about the phases of a SPECIFIC REAL PROJECT shown in
+Project Showcase/Upcoming Projects (e.g. how "AI Productivity Platform"
+progressed from start to deployment) — it is NOT about the meta-process of
+building this portfolio website itself. A "Lifecycle/Roadmap" describing
+the portfolio's own construction is off-topic for a recruiter/visitor and
+must not exist as its own dedicated section, or take up scroll space
+comparable to Project Showcase (Section 10), which is the priority
+section on the page. If a decorative "Code → Build → Iterate → Ship"
+motif is used inside the Hero's 3D visual (per Section 6/the PRD
+addendum), that stays a small illustrative detail inside the Hero — it
+must NOT be duplicated as a full separate page section.
+
 ================================================================================
 15. EXPERIENCE / DEVELOPMENT JOURNEY
 ================================================================================
@@ -603,6 +678,56 @@ Secondary Text: #A1A1AA
 Accent (choose ONE restrained accent color), e.g.: #8AB4FF
 
 Do not use multiple neon colors unless there is a strong design reason.
+
+REVISED — VISUAL FIDELITY & PROFESSIONALISM:
+Current mockup panels were built as thin-outline "wireframe/hologram" style
+graphics (hollow fills, thin cyan/blue stroke borders on everything) — this
+reads as generic sci-fi HUD, not a premium/professional dashboard. Fix:
+* Panels and UI mockups must use SOLID surface backgrounds from the
+  three-tier system (Base/Primary Surface/Secondary Surface), not
+  transparent/hollow fills with only an outline stroke.
+* Use soft drop shadows and subtle ambient glow for depth, not outline
+  strokes as the primary depth cue.
+* The accent color (#8AB4FF) should highlight specific meaningful
+  elements (an active state, a key metric, a border on hover) — it must
+  NOT be used as a uniform thin border around every single panel/element,
+  which is what produces the "hologram" look.
+* Any dashboard/chart mockup content must look like a plausible real
+  product screenshot (readable labels, realistic chart data, consistent
+  UI chrome) rather than a stylized line-art diagram.
+
+REVISED — WARMTH & "LIVING" FEEL:
+The site currently relies entirely on vector/line-art elements (code
+panels, wireframe UI, geometric shapes) with no photographic or textural
+warmth. To avoid feeling sterile:
+* Once the user's profile photo ([YOUR PROFILE IMAGE]) is available, give
+  it a deliberate, tasteful treatment in the Hero and/or About section
+  (e.g. a soft accent-color glow ring, subtle duotone matching the
+  palette, gentle parallax on scroll) rather than a plain cropped photo —
+  this is the single highest-impact way to add a human, "alive" feel.
+* Project cards (Section 10) should use real screenshot/thumbnail imagery
+  of each project once available, not text-only cards — see Section 10
+  update.
+* Favor soft ambient light glows and gentle gradient washes behind key
+  moments (Hero, section transitions) over flat single-tone backgrounds,
+  consistent with the depth guidance already given for the intro overlay
+  in the PRD addendum.
+
+REVISED — WHITESPACE / BREATHING ROOM:
+Panels and content have been reading as cramped/tightly packed. Apply
+generous spacing as a firm rule, not a suggestion:
+* Minimum vertical padding between major sections: comfortably large
+  (aim for something in the spirit of 96-160px desktop equivalent, scaled
+  down responsibly for smaller viewports) — sections must not feel like
+  they touch.
+* Floating/3D panels within the Hero must have clear negative space
+  around them — do not let panels overlap edge-to-edge or crowd each
+  other; if two panels overlap, the overlap should look intentional
+  (depth/layering) with visible space around the pair, not a dense
+  cluster filling the frame.
+* Text blocks (headline, supporting copy, card content) need real
+  breathing room from their container edges — avoid text sitting flush
+  against panel borders.
 
 ================================================================================
 21. TYPOGRAPHY
@@ -713,6 +838,21 @@ Requirements:
 * Code-split where appropriate
 * Lazy-load project previews
 * Do not load every project demo simultaneously
+
+CLARIFICATION — "unnecessary" render loops vs. idle motion (added after
+Section 6's idle-motion requirement was introduced; these two rules must
+NOT be read as contradicting each other):
+"Avoid unnecessary render loops" means: do not keep a 3D canvas rendering
+when it is scrolled far off-screen / not visible (use an IntersectionObserver
+or similar to pause rendering only when a scene is not in the viewport),
+and do not run multiple simultaneous heavy scenes when only one is needed.
+It does NOT mean pausing animation just because the mouse/pointer is not
+currently moving — per Section 6, idle motion (gentle float/tilt/breathing)
+must render continuously via requestAnimationFrame whenever the relevant
+3D scene is in or near the viewport, regardless of pointer activity. If
+idle motion looks like it has stopped, check first whether the render
+loop is incorrectly gated on pointer/interaction events rather than on
+visibility.
 
 Provide a graceful fallback if WebGL is unavailable. The portfolio must
 remain usable even without advanced 3D rendering.
@@ -1137,6 +1277,11 @@ through this PRD, independent of the design content above.
    the requirement.
 8. Report progress at the end of each phase before proceeding, using the
    Definition of Done checklist below.
+9. Before starting implementation work (a new phase, a fix, or a PRD
+   addendum), create a dedicated git branch off the current base branch
+   (e.g. `feature/<short-description>` or `fix/<short-description>`)
+   rather than committing directly to `main`/`master`. Do not merge into
+   the base branch without the user's explicit confirmation/review.
 
 ================================================================================
 43. DEFINITION OF DONE
@@ -1158,6 +1303,27 @@ A phase is considered complete only when ALL of the following are true:
 
 The entire project is considered done only when every phase (1–7) meets
 this Definition of Done and the Quality Bar in Section 39 is satisfied.
+
+PRE-LAUNCH CHECKLIST (added after external review) — run this specific
+check before the site is treated as ready to share publicly, separate
+from the per-phase Definition of Done above, since bracketed placeholders
+are easy to miss visually but break real-world sharing:
+
+[ ] `<title>` and meta description contain NO bracketed placeholder text
+    (e.g. no literal "[YOUR NAME]") — verify by viewing page source /
+    the rendered <head>, not just the visible page body.
+[ ] Open Graph / Twitter meta tags (title, description, image) contain no
+    bracketed placeholders — test with a social-preview debugger if
+    possible, since this is what actually renders when the link is shared.
+[ ] Every link that should be a real URL (LinkedIn, GitHub, project URLs,
+    repo URLs, email mailto) either points to a real destination or is
+    visibly/intentionally marked as "coming soon" rather than silently
+    linking to a literal "[YOUR LINKEDIN URL]" string.
+[ ] At least one project in the primary Project Showcase is a finished,
+    linked, real project (not "[BRACKETED PLACEHOLDER]" / "In Development"
+    / "Planned") — an all-placeholder or all-unfinished showcase undercuts
+    the rest of the page; prioritize filling in real project data over
+    further visual polish once placeholders are the last blocker.
 
 ================================================================================
 END OF MASTER PRD

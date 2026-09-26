@@ -13,15 +13,15 @@ export default function HeroFallback() {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#1e1e1e_1px,transparent_1px),linear-gradient(to_bottom,#1e1e1e_1px,transparent_1px)] bg-[size:2.5rem_2.5rem] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-30 pointer-events-none" />
 
       {/* Floating Workspace Layer 1: Code Editor Window */}
-      <div className="absolute w-[88%] sm:w-[360px] lg:w-[400px] -translate-x-4 -translate-y-12 sm:-translate-x-10 sm:-translate-y-16 rounded-lg bg-surface-1 border border-border/80 shadow-2xl p-4 font-mono transition-transform duration-500 hover:border-accent/40 z-10">
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-border/60 text-xs text-muted">
+      <div className="absolute w-[88%] sm:w-[360px] lg:w-[400px] -translate-x-4 -translate-y-12 sm:-translate-x-12 sm:-translate-y-16 rounded-xl bg-[#0d1117] border border-[#21262d] shadow-2xl p-4 font-mono transition-transform duration-500 hover:scale-[1.02] z-10">
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#21262d] text-xs text-muted">
           <div className="flex items-center gap-2">
             <div className="w-2.5 h-2.5 rounded-full bg-red-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-yellow-500/80" />
             <div className="w-2.5 h-2.5 rounded-full bg-green-500/80" />
-            <span className="ml-2 text-foreground/80 font-mono text-[11px]">engine.ts</span>
+            <span className="ml-2 text-foreground font-mono text-[11px] font-semibold">engine.ts</span>
           </div>
-          <span className="text-[10px] text-muted/60 font-mono">TypeScript</span>
+          <span className="text-[10px] text-muted/80 font-mono">TypeScript</span>
         </div>
 
         <div className="space-y-1 text-xs text-muted">
@@ -39,44 +39,45 @@ export default function HeroFallback() {
         </div>
       </div>
 
-      {/* Floating Workspace Layer 2: Browser UI Mockup Window (Diversified Non-Code Element) */}
-      <div className="absolute w-[88%] sm:w-[340px] lg:w-[380px] translate-x-4 translate-y-14 sm:translate-x-10 sm:translate-y-16 rounded-lg bg-surface-2/95 border border-border shadow-xl p-4 backdrop-blur-sm transition-transform duration-500 hover:border-accent/40 z-20">
+      {/* Floating Workspace Layer 2: Browser UI Mockup Window (Solid Surface + Shadow) */}
+      <div className="absolute w-[88%] sm:w-[340px] lg:w-[380px] translate-x-4 translate-y-14 sm:translate-x-12 sm:translate-y-16 rounded-xl bg-[#0d1117] border border-[#21262d] shadow-2xl p-4 transition-transform duration-500 hover:scale-[1.02] z-20">
         {/* Browser Chrome Header */}
-        <div className="flex items-center gap-2 pb-2.5 mb-3 border-b border-border/60 text-xs">
+        <div className="flex items-center gap-2 pb-2.5 mb-3 border-b border-[#21262d] text-xs">
           <div className="flex items-center gap-1.5">
-            <div className="w-2 h-2 rounded-full bg-border" />
-            <div className="w-2 h-2 rounded-full bg-border" />
-            <div className="w-2 h-2 rounded-full bg-border" />
+            <div className="w-2 h-2 rounded-full bg-red-500/80" />
+            <div className="w-2 h-2 rounded-full bg-yellow-500/80" />
+            <div className="w-2 h-2 rounded-full bg-green-500/80" />
           </div>
-          <div className="flex-1 px-2 py-0.5 rounded bg-surface-1 text-[10px] font-mono text-muted/70 truncate text-center border border-border/40">
+          <div className="flex-1 px-2.5 py-0.5 rounded bg-[#161b22] text-[10px] font-mono text-muted/90 truncate text-center border border-[#21262d]">
             https://app.system.dev/overview
           </div>
+          <span className="text-[9px] font-mono text-accent font-bold px-1 rounded bg-accent/10">LIVE</span>
         </div>
 
         {/* Mini UI Layout */}
         <div className="space-y-2.5">
           <div className="grid grid-cols-2 gap-2 text-xs font-mono">
-            <div className="p-2 rounded bg-surface-1 border border-border/50">
+            <div className="p-2.5 rounded-lg bg-[#161b22] border border-[#21262d] shadow-sm">
               <span className="text-[10px] text-muted block">BUILD TIME</span>
-              <span className="text-foreground font-semibold">1.2s</span>
+              <span className="text-foreground font-semibold text-sm">1.2s</span>
             </div>
-            <div className="p-2 rounded bg-surface-1 border border-border/50">
+            <div className="p-2.5 rounded-lg bg-[#161b22] border border-[#21262d] shadow-sm">
               <span className="text-[10px] text-muted block">UPTIME</span>
-              <span className="text-accent font-semibold">99.99%</span>
+              <span className="text-accent font-semibold text-sm">99.99%</span>
             </div>
           </div>
 
           {/* Mini Sparkline Graphic */}
-          <div className="p-2.5 rounded bg-surface-1 border border-border/50 space-y-1.5">
+          <div className="p-2.5 rounded-lg bg-[#161b22] border border-[#21262d] shadow-sm space-y-1.5">
             <div className="flex justify-between text-[10px] font-mono text-muted">
               <span>ACTIVITY</span>
-              <span className="text-accent">STABLE</span>
+              <span className="text-emerald-400 font-semibold">● 14.8k ops/s</span>
             </div>
-            <div className="h-6 flex items-end gap-1 pt-1">
-              {[40, 65, 50, 85, 60, 95, 80, 100].map((h, i) => (
+            <div className="h-7 flex items-end gap-1 pt-1">
+              {[35, 55, 42, 78, 60, 88, 72, 95, 85].map((h, i) => (
                 <div
                   key={i}
-                  className="flex-1 bg-accent/60 rounded-t-sm"
+                  className="flex-1 bg-accent/70 rounded-t-sm transition-all"
                   style={{ height: `${h}%` }}
                 />
               ))}

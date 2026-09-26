@@ -16,7 +16,7 @@ export default function ContactSection() {
   return (
     <section
       id="contact"
-      className="relative py-28 sm:py-36 px-6 lg:px-12 border-t border-border/80 overflow-hidden"
+      className="relative py-32 sm:py-40 lg:py-44 px-6 lg:px-12 border-t border-border/80 overflow-hidden"
       aria-label="Contact Section"
     >
       {/* Background subtle technical gradient glow */}

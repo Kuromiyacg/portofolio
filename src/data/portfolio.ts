@@ -33,8 +33,9 @@ export interface Project {
   technologies: string[];
   status: "completed" | "in-development" | "planned";
   role: string;
-  projectUrl: string;
-  repoUrl: string;
+  projectUrl?: string;
+  repoUrl?: string;
+  thumbnail?: string;
   previewType: "dashboard" | "landing" | "management" | "ai-prototype" | "custom";
   keyFeatures?: string[];
   architectureNotes?: string;
@@ -142,23 +143,24 @@ const portfolio: PortfolioData = {
     {
       id: "project-01",
       number: "01",
-      title: "[FULL-STACK DASHBOARD]",
+      title: "LifeTrack AI",
       type: "Full-Stack Web Application",
       description:
-        "A personal productivity platform for tracking habits, daily tasks, expenses, and financial behavior.",
-      technologies: ["JavaScript", "Python", "Database", "AI"],
+        "A personal productivity platform combining habit tracking (with quest/XP-based gamification) and personal finance management (spending, earning, savings goals) in a single dashboard.",
+      technologies: ["Next.js", "TypeScript", "React"],
       status: "in-development",
       role: "Full-Stack Developer",
-      projectUrl: "[PROJECT URL]",
-      repoUrl: "[REPO URL]",
+      projectUrl: "https://lifetrack-ai-six.vercel.app",
+      thumbnail: "[PROJECT THUMBNAIL]",
       previewType: "dashboard",
       keyFeatures: [
-        "Real-time simulated telemetry metrics and financial tracking",
-        "Interactive categorical data filtering and record search",
-        "Responsive multi-pane dashboard architecture with modal actions",
-        "Dynamic SVG chart visualization for trend tracking",
+        "Quest & XP-based gamified habit tracking with streak rewards",
+        "Unified personal finance hub for spending, earnings, and savings goals",
+        "Responsive multi-pane dashboard architecture with modal workflows",
+        "Dynamic trend visualizations and categorical financial telemetry",
       ],
-      architectureNotes: "Modular client architecture with isolated state slices, responsive grid layout, and local deterministic datasets.",
+      architectureNotes:
+        "Modular Next.js & TypeScript client architecture with local deterministic state slices, gamification mechanics, and unified financial analytics.",
       progress: undefined,
       currentPhase: "[CURRENT PHASE]",
       nextMilestone: "[NEXT MILESTONE]",
@@ -166,7 +168,7 @@ const portfolio: PortfolioData = {
     {
       id: "project-02",
       number: "02",
-      title: "Portofolio",
+      title: "[WEBSITE PROJECT]",
       type: "Website",
       description:
         "A modern, responsive website built with clean design principles and optimized performance.",
@@ -175,6 +177,7 @@ const portfolio: PortfolioData = {
       role: "Frontend Developer",
       projectUrl: "[PROJECT URL]",
       repoUrl: "[REPO URL]",
+      thumbnail: "[PROJECT THUMBNAIL]",
       previewType: "landing",
       keyFeatures: [
         "Conversion-focused responsive landing page structure",
@@ -196,6 +199,7 @@ const portfolio: PortfolioData = {
       role: "Full-Stack Developer",
       projectUrl: "[PROJECT URL]",
       repoUrl: "[REPO URL]",
+      thumbnail: "[PROJECT THUMBNAIL]",
       previewType: "management",
       keyFeatures: [
         "Interactive status filtering: All, Active, Pending, and Archived items",
@@ -220,6 +224,7 @@ const portfolio: PortfolioData = {
       role: "Full-Stack Developer",
       projectUrl: "[PROJECT URL]",
       repoUrl: "[REPO URL]",
+      thumbnail: "[PROJECT THUMBNAIL]",
       previewType: "ai-prototype",
       keyFeatures: [
         "Simulated real-time streaming LLM response interface",

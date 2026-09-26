@@ -45,7 +45,7 @@ export default function SkillsSection() {
   return (
     <section
       id="skills"
-      className="relative py-28 sm:py-36 px-6 lg:px-12 bg-surface-1/60 border-t border-border/80"
+      className="relative py-32 sm:py-40 lg:py-44 px-6 lg:px-12 bg-surface-1/60 border-t border-border/80"
       aria-label="Skills Section"
     >
       <div className="mx-auto max-w-7xl relative z-10">

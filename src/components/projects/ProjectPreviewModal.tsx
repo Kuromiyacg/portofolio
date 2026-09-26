@@ -9,6 +9,92 @@ import LandingPagePreview from "./previews/LandingPagePreview";
 import ManagementSystemPreview from "./previews/ManagementSystemPreview";
 import AiPrototypePreview from "./previews/AiPrototypePreview";
 
+function LiveIframePreview({ url, title }: { url: string; title: string }) {
+  const [device, setDevice] = useState<"desktop" | "tablet" | "mobile">("desktop");
+  const [isLoading, setIsLoading] = useState(true);
+
+  return (
+    <div className="w-full flex flex-col items-center space-y-3">
+      {/* Control bar */}
+      <div className="w-full flex flex-wrap items-center justify-between gap-3 p-3 rounded-xl bg-surface-2/80 border border-border">
+        <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1.5 px-2.5 py-1 rounded bg-accent/15 border border-accent/30 text-accent font-mono text-[11px] font-semibold">
+            <span className="w-2 h-2 rounded-full bg-accent animate-pulse" />
+            <span>LIVE VERCEL DEPLOYMENT</span>
+          </div>
+          <span className="font-mono text-xs text-muted truncate max-w-xs">{url}</span>
+        </div>
+
+        <div className="flex items-center gap-2">
+          {/* Device viewport toggle */}
+          <div className="flex items-center bg-surface-1 p-0.5 rounded-lg border border-border text-xs font-mono">
+            <button
+              onClick={() => setDevice("desktop")}
+              className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                device === "desktop" ? "bg-accent text-background font-bold" : "text-muted hover:text-foreground"
+              }`}
+            >
+              Desktop
+            </button>
+            <button
+              onClick={() => setDevice("tablet")}
+              className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                device === "tablet" ? "bg-accent text-background font-bold" : "text-muted hover:text-foreground"
+              }`}
+            >
+              Tablet
+            </button>
+            <button
+              onClick={() => setDevice("mobile")}
+              className={`px-2.5 py-1 rounded transition-colors cursor-pointer ${
+                device === "mobile" ? "bg-accent text-background font-bold" : "text-muted hover:text-foreground"
+              }`}
+            >
+              Mobile
+            </button>
+          </div>
+
+          <a
+            href={url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background font-mono text-xs font-semibold hover:bg-foreground/90 transition-colors"
+          >
+            <span>Open in Tab</span>
+            <ExternalLink size={12} />
+          </a>
+        </div>
+      </div>
+
+      {/* Frame container */}
+      <div
+        className={`relative w-full rounded-xl overflow-hidden border border-border bg-[#0d1117] transition-all duration-300 shadow-2xl flex items-center justify-center ${
+          device === "desktop"
+            ? "max-w-full h-[650px]"
+            : device === "tablet"
+            ? "max-w-[768px] h-[650px]"
+            : "max-w-[390px] h-[650px]"
+        }`}
+      >
+        {isLoading && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-[#0d1117] text-muted space-y-3 z-10">
+            <div className="w-8 h-8 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+            <span className="font-mono text-xs text-accent">CONNECTING TO LIVE APP...</span>
+          </div>
+        )}
+        <iframe
+          src={url}
+          title={title}
+          className="w-full h-full border-0 bg-background"
+          onLoad={() => setIsLoading(false)}
+          allow="accelerometer; ambient-light-sensor; camera; encrypted-media; geolocation; gyroscope; hid; microphone; midi; payment; usb; vr; xr-spatial-tracking"
+          sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+        />
+      </div>
+    </div>
+  );
+}
+
 interface ProjectPreviewModalProps {
   project: Project;
   onClose: () => void;
@@ -16,6 +102,7 @@ interface ProjectPreviewModalProps {
 
 export default function ProjectPreviewModal({ project, onClose }: ProjectPreviewModalProps) {
   const [activeLayer, setActiveLayer] = useState<"demo" | "details">("demo");
+  const hasLiveUrl = Boolean(project.projectUrl && !project.projectUrl.startsWith("["));
 
   // Handle escape key
   useEffect(() => {
@@ -33,6 +120,10 @@ export default function ProjectPreviewModal({ project, onClose }: ProjectPreview
   }, [onClose]);
 
   const renderPreviewComponent = () => {
+    if (hasLiveUrl && project.projectUrl) {
+      return <LiveIframePreview url={project.projectUrl} title={project.title} />;
+    }
+
     switch (project.previewType) {
       case "dashboard":
         return <DashboardPreview />;
@@ -215,26 +306,33 @@ export default function ProjectPreviewModal({ project, onClose }: ProjectPreview
               </div>
 
               {/* Links */}
-              <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-border">
-                <a
-                  href={project.projectUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-foreground text-background font-mono text-xs font-semibold hover:bg-foreground/90 transition-colors"
-                >
-                  <span>Visit Production URL</span>
-                  <ExternalLink size={13} />
-                </a>
-                <a
-                  href={project.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 px-4 py-2 rounded border border-border text-foreground font-mono text-xs hover:border-accent hover:text-accent transition-colors"
-                >
-                  <GithubIcon size={13} />
-                  <span>Inspect Repository</span>
-                </a>
-              </div>
+              {((project.projectUrl && !project.projectUrl.startsWith("[")) ||
+                (project.repoUrl && !project.repoUrl.startsWith("["))) && (
+                <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-border">
+                  {project.projectUrl && !project.projectUrl.startsWith("[") && (
+                    <a
+                      href={project.projectUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded bg-foreground text-background font-mono text-xs font-semibold hover:bg-foreground/90 transition-colors"
+                    >
+                      <span>Visit Production URL</span>
+                      <ExternalLink size={13} />
+                    </a>
+                  )}
+                  {project.repoUrl && !project.repoUrl.startsWith("[") && (
+                    <a
+                      href={project.repoUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 px-4 py-2 rounded border border-border text-foreground font-mono text-xs hover:border-accent hover:text-accent transition-colors"
+                    >
+                      <GithubIcon size={13} />
+                      <span>Inspect Repository</span>
+                    </a>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </div>
