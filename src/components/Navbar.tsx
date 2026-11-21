@@ -1,25 +1,19 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Menu, X } from "lucide-react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import portfolio from "@/data/portfolio";
 
+const springTransition = { type: "spring" as const, bounce: 0, duration: 0.36 };
+
 export default function Navbar() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
+  const [activeSection, setActiveSection] = useState("work");
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
 
-  // Track scroll position for navbar visibility
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 100);
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
-
-  // Track active section via IntersectionObserver
   useEffect(() => {
     const sections = portfolio.navItems
       .map((item) => document.querySelector(item.href))
@@ -31,19 +25,14 @@ export default function Navbar() {
       (entries) => {
         const visible = entries
           .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => {
-            // Prefer the section closest to the top of viewport
-            return (
-              a.boundingClientRect.top - b.boundingClientRect.top
-            );
-          });
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
 
         if (visible.length > 0) {
           setActiveSection(visible[0].target.id);
         }
       },
       {
-        rootMargin: "-20% 0px -60% 0px",
+        rootMargin: "-22% 0px -58% 0px",
         threshold: 0,
       }
     );
@@ -52,16 +41,19 @@ export default function Navbar() {
     return () => observer.disconnect();
   }, []);
 
-  // Close mobile menu on escape
   useEffect(() => {
+    if (!isMobileOpen) return;
+
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setIsMobileOpen(false);
+      if (e.key === "Escape") {
+        setIsMobileOpen(false);
+        menuButtonRef.current?.focus();
+      }
     };
 
-    if (isMobileOpen) {
-      document.addEventListener("keydown", handleEscape);
-      document.body.style.overflow = "hidden";
-    }
+    document.addEventListener("keydown", handleEscape);
+    document.body.style.overflow = "hidden";
+    closeButtonRef.current?.focus();
 
     return () => {
       document.removeEventListener("keydown", handleEscape);
@@ -74,134 +66,182 @@ export default function Navbar() {
       e.preventDefault();
       const target = document.querySelector(href);
       if (target) {
-        target.scrollIntoView({ behavior: "smooth" });
+        target.scrollIntoView({
+          behavior: prefersReducedMotion ? "auto" : "smooth",
+        });
+      }
+      if (href.startsWith("#") && href !== "#home") {
+        setActiveSection(href.slice(1));
       }
       setIsMobileOpen(false);
     },
-    []
+    [prefersReducedMotion]
   );
 
   return (
     <>
-      {/* Desktop Navigation */}
-      <nav
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? "bg-background/80 backdrop-blur-md border-b border-border"
-            : "bg-transparent"
-        }`}
-        role="navigation"
-        aria-label="Main navigation"
-      >
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="flex h-16 items-center justify-between">
-            {/* Logo / Name */}
-            <a
-              href="#home"
-              onClick={(e) => handleNavClick(e, "#home")}
-              className="font-mono text-sm tracking-wider text-foreground hover:text-accent transition-colors cursor-pointer"
-            >
-              {portfolio.personal.name === "[YOUR NAME]"
-                ? "PORTFOLIO"
-                : portfolio.personal.name.toUpperCase()}
-            </a>
+      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-4 sm:pt-5 pointer-events-none">
+        <nav
+          className="pointer-events-auto mx-auto max-w-xl sm:max-w-2xl glass-chrome rounded-full pl-5 pr-2 sm:pl-6 sm:pr-2.5 h-13 flex items-center justify-between gap-4"
+          aria-label="Main navigation"
+        >
+          <a
+            href="#home"
+            onClick={(e) => handleNavClick(e, "#home")}
+            className="font-serif text-xl sm:text-[22px] leading-none tracking-[-0.01em] text-foreground hover:text-accent transition-colors duration-150 shrink-0"
+          >
+            {portfolio.personal.name}
+          </a>
 
-            {/* Desktop Links */}
-            <div className="hidden md:flex items-center gap-8">
-              {portfolio.navItems.map((item) => (
+          {/* Desktop segmented pill links */}
+          <div className="hidden sm:flex items-center gap-1">
+            {portfolio.navItems.map((item) => {
+              const id = item.href.replace("#", "");
+              const isActive = activeSection === id;
+              return (
                 <a
                   key={item.href}
                   href={item.href}
                   onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative text-sm tracking-wide transition-all cursor-pointer py-1 ${
-                    activeSection === item.href.replace("#", "")
-                      ? "text-accent font-medium"
-                      : "text-muted hover:text-accent"
-                  }`}
-                >
-                  {item.label}
-                  {activeSection === item.href.replace("#", "") && (
-                    <span className="absolute -bottom-0.5 left-0 right-0 h-[2px] bg-accent shadow-[0_0_8px_rgba(138,180,255,0.8)] rounded-full" />
-                  )}
-                </a>
-              ))}
-            </div>
-
-            {/* Mobile Menu Button */}
-            <button
-              className="md:hidden min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-muted hover:text-foreground transition-colors cursor-pointer"
-              onClick={() => setIsMobileOpen(!isMobileOpen)}
-              aria-expanded={isMobileOpen}
-              aria-controls="mobile-menu"
-              aria-label={isMobileOpen ? "Close menu" : "Open menu"}
-            >
-              {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
-            </button>
-          </div>
-        </div>
-      </nav>
-
-      {/* Mobile Menu Overlay */}
-      {isMobileOpen && (
-        <div
-          className="fixed inset-0 z-40 bg-background/60 backdrop-blur-sm md:hidden"
-          onClick={() => setIsMobileOpen(false)}
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Mobile Menu Panel */}
-      <div
-        id="mobile-menu"
-        className={`fixed top-0 right-0 z-50 h-full w-72 bg-surface-1 border-l border-border transform transition-transform duration-300 md:hidden ${
-          isMobileOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-        role="dialog"
-        aria-modal="true"
-        aria-label="Navigation menu"
-      >
-        <div className="flex items-center justify-end p-6">
-          <button
-            onClick={() => setIsMobileOpen(false)}
-            className="min-w-[44px] min-h-[44px] flex items-center justify-center p-2 text-muted hover:text-foreground transition-colors cursor-pointer"
-            aria-label="Close menu"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        <nav className="px-6 py-4">
-          <ul className="space-y-1">
-            {portfolio.navItems.map((item) => (
-              <li key={item.href}>
-                <a
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className={`block py-3 text-lg tracking-wide transition-colors cursor-pointer ${
-                    activeSection === item.href.replace("#", "")
+                  className={`relative px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-150 ${
+                    isActive
                       ? "text-foreground"
                       : "text-muted hover:text-foreground"
                   }`}
                 >
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-active-pill"
+                      transition={
+                        prefersReducedMotion
+                          ? { duration: 0.01 }
+                          : springTransition
+                      }
+                      className="absolute inset-0 rounded-full bg-surface-2 -z-10"
+                    />
+                  )}
                   {item.label}
                 </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
+              );
+            })}
+          </div>
 
-        {/* Mobile social links */}
-        <div className="absolute bottom-8 left-6 right-6 border-t border-border pt-6">
-          <a
-            href={portfolio.personal.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-sm text-muted hover:text-accent transition-colors"
+          {/* Mobile Menu Trigger (44x44 minimum tap target) */}
+          <button
+            ref={menuButtonRef}
+            type="button"
+            onClick={() => setIsMobileOpen(true)}
+            className="sm:hidden min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-foreground hover:bg-surface-2/80 pressable cursor-pointer"
+            aria-expanded={isMobileOpen}
+            aria-controls="mobile-nav-drawer"
+            aria-label="Open navigation menu"
           >
-            LinkedIn ↗
-          </a>
-        </div>
-      </div>
+            <Menu size={18} />
+          </button>
+        </nav>
+      </header>
+
+      {/* Mobile Drawer */}
+      <AnimatePresence>
+        {isMobileOpen && (
+          <>
+            <motion.div
+              key="nav-backdrop"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: prefersReducedMotion ? 0.01 : 0.2 }}
+              className="fixed inset-0 z-50 bg-foreground/25 backdrop-blur-xs sm:hidden"
+              onClick={() => {
+                setIsMobileOpen(false);
+                menuButtonRef.current?.focus();
+              }}
+              aria-hidden="true"
+            />
+
+            <motion.div
+              key="nav-drawer"
+              id="mobile-nav-drawer"
+              role="dialog"
+              aria-modal="true"
+              aria-label="Navigation menu"
+              initial={prefersReducedMotion ? { opacity: 0 } : { x: "100%" }}
+              animate={prefersReducedMotion ? { opacity: 1 } : { x: 0 }}
+              exit={prefersReducedMotion ? { opacity: 0 } : { x: "100%" }}
+              transition={
+                prefersReducedMotion
+                  ? { duration: 0.15 }
+                  : { type: "spring", bounce: 0, duration: 0.34 }
+              }
+              className="fixed top-0 right-0 bottom-0 z-50 w-72 max-w-[85vw] bg-surface-1 border-l border-border shadow-2xl flex flex-col justify-between p-6 sm:hidden"
+            >
+              <div>
+                <div className="flex items-center justify-between pb-6 border-b border-border">
+                  <span className="font-serif text-xl text-foreground">
+                    {portfolio.personal.shortName}
+                  </span>
+                  <button
+                    ref={closeButtonRef}
+                    type="button"
+                    onClick={() => {
+                      setIsMobileOpen(false);
+                      menuButtonRef.current?.focus();
+                    }}
+                    className="min-w-[44px] min-h-[44px] -mr-2 rounded-full flex items-center justify-center text-muted hover:text-foreground hover:bg-surface-2/70 pressable cursor-pointer"
+                    aria-label="Close navigation menu"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+
+                <nav className="pt-4" aria-label="Mobile navigation">
+                  <ul className="space-y-1">
+                    {portfolio.navItems.map((item) => {
+                      const id = item.href.replace("#", "");
+                      const isActive = activeSection === id;
+                      return (
+                        <li key={item.href}>
+                          <a
+                            href={item.href}
+                            onClick={(e) => handleNavClick(e, item.href)}
+                            className={`flex items-center justify-between min-h-[48px] px-4 rounded-xl text-base font-medium transition-colors ${
+                              isActive
+                                ? "bg-surface-2 text-foreground"
+                                : "text-muted hover:text-foreground hover:bg-surface-2/50"
+                            }`}
+                          >
+                            <span>{item.label}</span>
+                            {isActive && (
+                              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
+                            )}
+                          </a>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </nav>
+              </div>
+
+              <div className="pt-6 border-t border-border space-y-3">
+                <a
+                  href={`mailto:${portfolio.personal.email}`}
+                  className="flex items-center justify-center min-h-[44px] w-full rounded-full bg-foreground text-surface-1 text-sm font-medium pressable"
+                >
+                  Email me
+                </a>
+                <a
+                  href={portfolio.personal.github}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center min-h-[44px] w-full rounded-full border border-border text-sm text-muted hover:text-foreground pressable"
+                >
+                  GitHub ↗
+                </a>
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   );
 }

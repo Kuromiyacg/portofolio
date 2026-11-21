@@ -1,34 +1,21 @@
-import IntroOverlay from "@/components/intro/IntroOverlay";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
-import Ambient3DBackground from "@/components/Ambient3DBackground";
+import ProjectSection from "@/components/ProjectSection";
 import AboutSection from "@/components/AboutSection";
 import SkillsSection from "@/components/SkillsSection";
-import ProjectSection from "@/components/ProjectSection";
-import UpcomingProjectsSection from "@/components/UpcomingProjectsSection";
-import TimelineSection from "@/components/TimelineSection";
-import ExperienceSection from "@/components/ExperienceSection";
 import ContactSection from "@/components/ContactSection";
 import Footer from "@/components/Footer";
-import CustomCursor from "@/components/CustomCursor";
 
 export default function Home() {
   return (
     <>
-      <IntroOverlay />
-      <CustomCursor />
-      <Ambient3DBackground />
       <Navbar />
 
-      <main>
+      <main id="main-content">
         <Hero />
+        <ProjectSection />
         <AboutSection />
         <SkillsSection />
-        <ProjectSection />
-        <UpcomingProjectsSection />
-        <TimelineSection />
-        <ExperienceSection />
-
         <ContactSection />
       </main>
 

@@ -29,6 +29,55 @@
       "skillPath": "skills/animation-vocabulary/SKILL.md",
       "computedHash": "e1d19134dc63dfb09379f7b42557b63b6123becdd36d15bae991d0b6ca5b2110"
     },
+    "anti-ui-slop": {
+      "source": "github/awesome-copilot",
+      "commit": "f10fdb8b2660ce85c98f220b2f1ca24653768a5c",
+      "sourceType": "github",
+      "skillPath": "skills/anti-ui-slop/SKILL.md",
+      "computedHash": "f73b0ed4a73238a0490ed147503ac259ec37675029517a5ecc4b38b5465a19b2"
+    },
+    "antislop": {
+      "source": "miqdadbadjuber/anti-slop",
+      "commit": "7f6a03df2931c12cb244dc4ab14ee4866b0ac2ba",
+      "sourceType": "github",
+      "skillPath": "skills/antislop/SKILL.md",
+      "computedHash": "4edc2d79b9dc05d48cef291ccda1d5ea5d832d5a67030e843f4f40280ae650fe"
+    },
+    "antislop-code": {
+      "source": "miqdadbadjuber/anti-slop",
+      "commit": "7f6a03df2931c12cb244dc4ab14ee4866b0ac2ba",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-code/SKILL.md",
+      "computedHash": "4a2d3d64037896a3ab4e2c3df026e7a59fa92458617c65a2e0ed7fc3c456266a"
+    },
+    "antislop-copywriting": {
+      "source": "miqdadbadjuber/anti-slop",
+      "commit": "7f6a03df2931c12cb244dc4ab14ee4866b0ac2ba",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-copywriting/SKILL.md",
+      "computedHash": "57a00dcdb416ea8ed4b2a388ef9580f120afbc3d9bf8bfa8cd4e6796443c9a22"
+    },
+    "antislop-human": {
+      "source": "miqdadbadjuber/anti-slop",
+      "commit": "7f6a03df2931c12cb244dc4ab14ee4866b0ac2ba",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-human/SKILL.md",
+      "computedHash": "0ca415eebf26bdf9691eac82076d423ab57c70f48c4cc0c35b42698e5bf9e606"
+    },
+    "antislop-layoutmobile": {
+      "source": "miqdadbadjuber/anti-slop",
+      "commit": "7f6a03df2931c12cb244dc4ab14ee4866b0ac2ba",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-layoutmobile/SKILL.md",
+      "computedHash": "c3f54f8a065e9c371a9c5bb5076b41fc06bbeaeaca125f35459a4b8b17be34f2"
+    },
+    "antislop-ui": {
+      "source": "miqdadbadjuber/anti-slop",
+      "commit": "7f6a03df2931c12cb244dc4ab14ee4866b0ac2ba",
+      "sourceType": "github",
+      "skillPath": "skills/antislop-ui/SKILL.md",
+      "computedHash": "09c3efcee47866061a1609e298068941eb1d35e73eea95ae67ea2453be3951a9"
+    },
     "apple-design": {
       "source": "emilkowalski/skills",
       "commit": "64eb3deb9a5fbfa041faf783e0bc3fd635872e9c",
@@ -49,6 +98,13 @@
       "sourceType": "github",
       "skillPath": "skills/ask-sonner/SKILL.md",
       "computedHash": "9e82788679f5f71c9e0686b66200565c3f4e47037a06b9d1e94567ed42361bbc"
+    },
+    "audit-ai-design-slop": {
+      "source": "MengTo/Skills",
+      "commit": "3ec2dc0857d36e45d032d10063f62f2c773329a3",
+      "sourceType": "github",
+      "skillPath": "agent-skills/ui/audit-ai-design-slop/SKILL.md",
+      "computedHash": "3397b8c0b2f8510f5eae67351501079e9e7a65189268ff62d7f4ce2b7da99d32"
     },
     "break-ui": {
       "source": "emilkowalski/skills",
@@ -105,6 +161,13 @@
       "sourceType": "github",
       "skillPath": "skills/mobile-native/SKILL.md",
       "computedHash": "2f55a258f185314d585cb6a3514a66c15e9cfc8cd45c936284c4fb7374603d7e"
+    },
+    "no-ai-design-slop": {
+      "source": "MengTo/Skills",
+      "commit": "3ec2dc0857d36e45d032d10063f62f2c773329a3",
+      "sourceType": "github",
+      "skillPath": "agent-skills/ui/no-ai-design-slop/SKILL.md",
+      "computedHash": "9c83a9f3855b69dab04224cec2bfc821107d3f0d1da2f5584bdfc550807446b3"
     },
     "pick-ui-library": {
       "source": "emilkowalski/skills",

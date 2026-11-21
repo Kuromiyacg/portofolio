@@ -1,94 +1,108 @@
 "use client";
 
-import React from "react";
-import dynamic from "next/dynamic";
-import { ArrowDown, ExternalLink } from "lucide-react";
+import { ArrowRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import portfolio from "@/data/portfolio";
-import HeroFallback from "./hero/HeroFallback";
-
-// Dynamically import 3D Scene with ssr: false and HeroFallback while loading
-const Hero3DScene = dynamic(() => import("./hero/Hero3DScene"), {
-  ssr: false,
-  loading: () => <HeroFallback />,
-});
+import HeroInteractivePreview from "./hero/HeroInteractivePreview";
 
 export default function Hero() {
+  const prefersReducedMotion = useReducedMotion();
+
+  const itemVariants = {
+    hidden: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 },
+    visible: (delay: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: prefersReducedMotion ? 0.15 : 0.42,
+        delay: prefersReducedMotion ? 0 : delay,
+        ease: [0.22, 1, 0.36, 1] as const,
+      },
+    }),
+  };
+
   return (
     <section
       id="home"
-      className="relative min-h-[92vh] sm:min-h-screen flex items-center justify-center px-6 lg:px-12 pt-24 pb-16 overflow-hidden"
-      aria-label="Hero Section"
+      className="relative lg:min-h-[100dvh] flex items-center pt-28 pb-16 sm:pt-32 sm:pb-24 lg:py-28 px-5 sm:px-8 lg:px-12"
+      aria-label="Introduction"
     >
-      {/* Background technical subtle cross grid */}
-      <div className="absolute inset-0 bg-[radial-gradient(#1e1e1e_1px,transparent_1px)] [background-size:32px_32px] opacity-25 pointer-events-none" />
+      <div className="mx-auto max-w-6xl w-full">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
+          {/* Left Column: Editorial Headline & Direct Copy */}
+          <div className="lg:col-span-6 space-y-6">
+            <motion.p
+              custom={0}
+              initial="hidden"
+              animate="visible"
+              variants={itemVariants}
+              className="inline-flex items-center gap-2 text-xs sm:text-sm text-muted"
+            >
+              <span
+                className="w-2 h-2 rounded-full bg-status-live shrink-0"
+                aria-hidden="true"
+              />
+              <span>
+                {portfolio.personal.location} &middot;{" "}
+                {portfolio.personal.availability}
+              </span>
+            </motion.p>
 
-      <div className="mx-auto max-w-7xl w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-          {/* Left Column: Typographic Narrative */}
-          <div className="lg:col-span-6 z-10 space-y-6">
-            {/* Primary Headline */}
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.05]">
-                {portfolio.personal.name}
-              </h1>
-              <p className="text-xl sm:text-2xl font-mono text-accent uppercase tracking-wider">
-                {portfolio.personal.title}
-              </p>
-            </div>
+            <motion.h1
+              custom={0.05}
+              initial="hidden"
+              animate="visible"
+              variants={itemVariants}
+              className="font-serif text-[clamp(3.1rem,8vw,5.25rem)] leading-[0.98] tracking-[-0.025em] text-foreground text-balance"
+            >
+              Web software built to be{" "}
+              <span className="italic text-accent">used daily.</span>
+            </motion.h1>
 
-            {/* Supporting Copy */}
-            <p className="text-base sm:text-lg text-muted max-w-xl leading-relaxed">
+            <motion.p
+              custom={0.1}
+              initial="hidden"
+              animate="visible"
+              variants={itemVariants}
+              className="text-base sm:text-[17px] text-muted leading-relaxed max-w-[46ch] text-pretty"
+            >
               {portfolio.personal.shortBio}
-            </p>
+            </motion.p>
 
-            {/* Interactive CTAs */}
-            <div className="pt-2 flex flex-wrap items-center gap-4">
+            <motion.div
+              custom={0.15}
+              initial="hidden"
+              animate="visible"
+              variants={itemVariants}
+              className="pt-2 flex flex-wrap items-center gap-3"
+            >
               <a
-                href="#projects"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium bg-foreground text-background hover:bg-foreground/90 transition-all rounded-md cursor-pointer font-mono"
+                href="#work"
+                className="inline-flex items-center justify-center gap-2 min-h-[46px] px-6 rounded-full bg-foreground text-surface-1 text-sm font-medium hover:bg-foreground/90 pressable cursor-pointer"
               >
-                <span>Explore Work</span>
-                <ArrowDown size={15} />
+                <span>See LifeTrack AI</span>
+                <ArrowRight size={15} />
               </a>
 
               <a
-                href="#contact"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 text-sm font-medium border border-border bg-surface-1 text-foreground hover:border-accent/40 hover:text-accent transition-all rounded-md cursor-pointer font-mono"
+                href={`mailto:${portfolio.personal.email}`}
+                className="inline-flex items-center justify-center min-h-[46px] px-6 rounded-full border border-border-strong bg-surface-1/60 text-foreground text-sm font-medium hover:bg-surface-1 pressable cursor-pointer"
               >
-                Contact Me
+                Email me
               </a>
-
-              <a
-                href={portfolio.personal.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 text-sm font-mono text-muted hover:text-accent transition-colors ml-1"
-                aria-label="LinkedIn Profile"
-              >
-                <span>LinkedIn</span>
-                <ExternalLink size={14} />
-              </a>
-            </div>
-
-            {/* Concrete Editable Metrics Strip (Section 4 & 5) */}
-            <div className="pt-6 border-t border-border/60 flex flex-wrap items-center gap-6 sm:gap-8 text-xs font-mono text-muted">
-              {portfolio.metrics.map((m) => (
-                <div key={m.label}>
-                  <span className="block text-foreground font-semibold text-sm">{m.value}</span>
-                  <span className="text-muted/80">{m.label}</span>
-                </div>
-              ))}
-            </div>
+            </motion.div>
           </div>
 
-          {/* Right Column: 3D Interactive Workspace */}
-          <div className="lg:col-span-6 flex items-center justify-center w-full">
-            <div className="w-full relative">
-              {/* Soft #8AB4FF ambient halo behind 3D workspace per PRD Addendum §3.2 */}
-              <div className="absolute -inset-8 bg-radial from-accent/15 via-accent/5 to-transparent blur-3xl pointer-events-none -z-10" />
-              <Hero3DScene />
-            </div>
-          </div>
+          {/* Right Column: Interactive DOM Showcase */}
+          <motion.div
+            custom={0.12}
+            initial="hidden"
+            animate="visible"
+            variants={itemVariants}
+            className="lg:col-span-6 w-full"
+          >
+            <HeroInteractivePreview />
+          </motion.div>
         </div>
       </div>
     </section>
