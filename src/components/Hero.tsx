@@ -1,12 +1,30 @@
 "use client";
 
+import { useRef } from "react";
 import { ArrowRight } from "lucide-react";
-import { motion, useReducedMotion } from "motion/react";
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+} from "motion/react";
 import portfolio from "@/data/portfolio";
 import HeroInteractivePreview from "./hero/HeroInteractivePreview";
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
+  const heroRef = useRef<HTMLElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const previewY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    prefersReducedMotion ? [0, 0] : [0, -28]
+  );
 
   const itemVariants = {
     hidden: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 },
@@ -23,6 +41,7 @@ export default function Hero() {
 
   return (
     <section
+      ref={heroRef}
       id="home"
       className="relative lg:min-h-[100dvh] flex items-center pt-28 pb-16 sm:pt-32 sm:pb-24 lg:py-28 px-5 sm:px-8 lg:px-12"
       aria-label="Introduction"
@@ -93,12 +112,13 @@ export default function Hero() {
             </motion.div>
           </div>
 
-          {/* Right Column: Interactive DOM Showcase */}
+          {/* Right Column: Interactive DOM Showcase with subtle scroll-linked depth */}
           <motion.div
             custom={0.12}
             initial="hidden"
             animate="visible"
             variants={itemVariants}
+            style={{ y: previewY }}
             className="lg:col-span-6 w-full"
           >
             <HeroInteractivePreview />

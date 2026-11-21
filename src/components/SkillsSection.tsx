@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import portfolio, { Skill } from "@/data/portfolio";
+import { Reveal } from "@/components/motion/Reveal";
 
 type CategoryFilter = "all" | Skill["category"];
 
@@ -30,7 +31,7 @@ export default function SkillsSection() {
       aria-label="Technical Stack"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
+        <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
           <div className="space-y-2.5">
             <p className="font-mono text-xs tracking-[0.14em] uppercase text-accent">
               03 &mdash; Stack
@@ -75,28 +76,51 @@ export default function SkillsSection() {
               );
             })}
           </div>
-        </div>
+        </Reveal>
 
-        {/* Clean, Scannable Typographic Grid (no heavy card-in-card clutter) */}
+        {/* Clean, Scannable Typographic Grid with Spring Reflow */}
         <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 border-t border-border">
-          {filteredSkills.map((skill) => (
-            <li
-              key={skill.name}
-              className="py-5 border-b border-border flex flex-col justify-between gap-1.5"
-            >
-              <div className="flex items-baseline justify-between gap-3">
-                <h3 className="text-base font-semibold tracking-[-0.01em] text-foreground">
-                  {skill.name}
-                </h3>
-                <span className="text-[11px] font-mono uppercase tracking-wider text-muted">
-                  {skill.category}
-                </span>
-              </div>
-              <p className="text-sm text-muted leading-relaxed">
-                {skill.note}
-              </p>
-            </li>
-          ))}
+          <AnimatePresence mode="popLayout" initial={false}>
+            {filteredSkills.map((skill) => (
+              <motion.li
+                key={skill.name}
+                layout={prefersReducedMotion ? false : "position"}
+                initial={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, scale: 0.97, y: 6 }
+                }
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, scale: 0.97 }
+                }
+                transition={
+                  prefersReducedMotion
+                    ? { duration: 0.12 }
+                    : {
+                        opacity: { duration: 0.18 },
+                        scale: { duration: 0.2 },
+                        layout: spring,
+                      }
+                }
+                className="py-5 border-b border-border flex flex-col justify-between gap-1.5"
+              >
+                <div className="flex items-baseline justify-between gap-3">
+                  <h3 className="text-base font-semibold tracking-[-0.01em] text-foreground">
+                    {skill.name}
+                  </h3>
+                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted">
+                    {skill.category}
+                  </span>
+                </div>
+                <p className="text-sm text-muted leading-relaxed">
+                  {skill.note}
+                </p>
+              </motion.li>
+            ))}
+          </AnimatePresence>
         </ul>
       </div>
     </section>

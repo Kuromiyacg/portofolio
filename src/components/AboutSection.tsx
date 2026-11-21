@@ -1,5 +1,6 @@
 import Image from "next/image";
 import portfolio from "@/data/portfolio";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
 
 export default function AboutSection() {
   return (
@@ -9,13 +10,15 @@ export default function AboutSection() {
       aria-label="About and Journey"
     >
       <div className="mx-auto max-w-6xl">
-        <p className="font-mono text-xs tracking-[0.14em] uppercase text-accent mb-3">
-          02 &mdash; About
-        </p>
+        <Reveal>
+          <p className="font-mono text-xs tracking-[0.14em] uppercase text-accent mb-3">
+            02 &mdash; About
+          </p>
+        </Reveal>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
           {/* Left Column: Editorial Bio + Profile Card */}
-          <div className="lg:col-span-7 space-y-6">
+          <Reveal delay={0.04} className="lg:col-span-7 space-y-6">
             <h2 className="font-serif text-[clamp(2.25rem,5.2vw,3.6rem)] leading-[1.06] tracking-[-0.02em] text-foreground text-balance">
               {portfolio.personal.aboutLead}
             </h2>
@@ -63,34 +66,40 @@ export default function AboutSection() {
                 </div>
               </dl>
             </div>
-          </div>
+          </Reveal>
 
-          {/* Right Column: Concise Chronological Journey */}
+          {/* Right Column: Concise Chronological Journey with staggered cascade */}
           <div className="lg:col-span-5">
-            <h3 className="text-xs font-mono uppercase tracking-[0.12em] text-muted mb-5">
-              Progression
-            </h3>
+            <Reveal delay={0.06}>
+              <h3 className="text-xs font-mono uppercase tracking-[0.12em] text-muted mb-5">
+                Progression
+              </h3>
+            </Reveal>
 
-            <ol className="divide-y divide-border border-t border-b border-border">
-              {portfolio.journey.map((step) => (
-                <li
-                  key={step.number}
-                  className="py-4 flex items-baseline gap-4"
-                >
-                  <span className="font-mono text-xs text-accent tabular-nums shrink-0">
-                    {step.number}
-                  </span>
-                  <div className="space-y-1 min-w-0">
-                    <h4 className="text-sm font-semibold text-foreground">
-                      {step.title}
-                    </h4>
-                    <p className="text-sm text-muted leading-relaxed">
-                      {step.description}
-                    </p>
-                  </div>
-                </li>
-              ))}
-            </ol>
+            <RevealGroup stagger={0.045}>
+              <ol className="divide-y divide-border border-t border-b border-border">
+                {portfolio.journey.map((step) => (
+                  <li key={step.number}>
+                    <RevealItem
+                      y={10}
+                      className="py-4 flex items-baseline gap-4"
+                    >
+                      <span className="font-mono text-xs text-accent tabular-nums shrink-0">
+                        {step.number}
+                      </span>
+                      <div className="space-y-1 min-w-0">
+                        <h4 className="text-sm font-semibold text-foreground">
+                          {step.title}
+                        </h4>
+                        <p className="text-sm text-muted leading-relaxed">
+                          {step.description}
+                        </p>
+                      </div>
+                    </RevealItem>
+                  </li>
+                ))}
+              </ol>
+            </RevealGroup>
           </div>
         </div>
       </div>

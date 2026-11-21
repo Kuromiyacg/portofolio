@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Mail, Copy, Check, ArrowUpRight } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import portfolio from "@/data/portfolio";
+import { Reveal } from "@/components/motion/Reveal";
 
 export default function ContactSection() {
   const [copied, setCopied] = useState(false);
@@ -26,7 +27,8 @@ export default function ContactSection() {
       aria-label="Contact"
     >
       <div className="mx-auto max-w-6xl">
-        <div className="paper-card rounded-3xl p-7 sm:p-12 lg:p-14 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
+        <Reveal>
+          <div className="paper-card rounded-3xl p-7 sm:p-12 lg:p-14 flex flex-col lg:flex-row lg:items-end justify-between gap-10">
           <div className="space-y-4 max-w-xl">
             <p className="font-mono text-xs tracking-[0.14em] uppercase text-accent">
               04 &mdash; Contact
@@ -134,7 +136,8 @@ export default function ContactSection() {
               )}
             </div>
           </div>
-        </div>
+          </div>
+        </Reveal>
       </div>
     </section>
   );
