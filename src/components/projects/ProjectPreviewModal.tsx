@@ -13,7 +13,8 @@ interface ProjectPreviewModalProps {
 type DeviceMode = "desktop" | "tablet" | "mobile";
 type ModalTab = "live" | "specs";
 
-const spring = { type: "spring" as const, bounce: 0, duration: 0.34 };
+const easeOut = [0.23, 1, 0.32, 1] as const;
+const spring = { type: "spring" as const, bounce: 0, duration: 0.32 };
 
 export default function ProjectPreviewModal({
   project,
@@ -155,106 +156,163 @@ export default function ProjectPreviewModal({
               </div>
             </header>
 
-            {/* Modal Body */}
+            {/* Modal Body with smooth tab crossfade */}
             <div className="flex-1 overflow-y-auto p-4 sm:p-6 bg-background/40">
-              {activeTab === "live" ? (
-                <div className="flex flex-col items-center space-y-4">
-                  {/* Device Viewport Controls */}
-                  <div className="w-full flex flex-wrap items-center justify-between gap-3">
-                    <span className="text-xs font-mono text-muted truncate max-w-full sm:max-w-md">
-                      {project.projectUrl}
-                    </span>
-
-                    <div className="hidden md:inline-flex items-center p-1 rounded-full bg-surface-2/80 border border-border/70">
-                      {devices.map((d) => {
-                        const Icon = d.icon;
-                        const active = device === d.id;
-                        return (
-                          <button
-                            key={d.id}
-                            type="button"
-                            onClick={() => setDevice(d.id)}
-                            className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors ${
-                              active
-                                ? "bg-surface-1 text-foreground shadow-xs"
-                                : "text-muted hover:text-foreground"
-                            }`}
-                          >
-                            <Icon size={13} />
-                            <span>{d.label}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Live Iframe Container */}
-                  <div
-                    className={`relative w-full rounded-xl overflow-hidden border border-border-strong bg-surface-1 shadow-lg transition-[max-width] duration-300 ${
-                      device === "desktop"
-                        ? "max-w-full h-[66dvh]"
-                        : device === "tablet"
-                        ? "max-w-[768px] h-[66dvh]"
-                        : "max-w-[390px] h-[66dvh]"
-                    }`}
+              <AnimatePresence mode="wait" initial={false}>
+                {activeTab === "live" ? (
+                  <motion.div
+                    key="modal-live"
+                    initial={
+                      prefersReducedMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: 6 }
+                    }
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={
+                      prefersReducedMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: -4 }
+                    }
+                    transition={{
+                      duration: prefersReducedMotion ? 0.1 : 0.18,
+                      ease: easeOut,
+                    }}
+                    className="flex flex-col items-center space-y-4"
                   >
-                    {isLoading && (
-                      <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-surface-1 text-muted z-10">
-                        <div className="w-6 h-6 rounded-full border-2 border-accent border-t-transparent animate-spin" />
-                        <span className="text-xs font-mono">
-                          Loading live app...
-                        </span>
-                      </div>
-                    )}
-                    <iframe
-                      src={project.projectUrl}
-                      title={`${project.title} live application`}
-                      className="w-full h-full border-0"
-                      onLoad={() => setIsLoading(false)}
-                      sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
-                    />
-                  </div>
-                </div>
-              ) : (
-                <div className="max-w-3xl mx-auto py-4 space-y-8">
-                  <div className="space-y-3">
-                    <p className="text-xs font-mono uppercase tracking-[0.12em] text-accent">
-                      Case Study Notes
-                    </p>
-                    <h3 className="font-serif text-3xl sm:text-4xl text-foreground">
-                      {project.tagline}
-                    </h3>
-                    <p className="text-sm sm:text-base text-muted leading-relaxed">
-                      {project.description}
-                    </p>
-                  </div>
+                    {/* Device Viewport Controls with sliding indicator */}
+                    <div className="w-full flex flex-wrap items-center justify-between gap-3">
+                      <span className="text-xs font-mono text-muted truncate max-w-full sm:max-w-md">
+                        {project.projectUrl}
+                      </span>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {project.keyFeatures.map((feat) => (
-                      <div
-                        key={feat.title}
-                        className="p-4 rounded-xl bg-surface-1 border border-border space-y-1.5"
-                      >
-                        <h4 className="text-sm font-semibold text-foreground">
-                          {feat.title}
-                        </h4>
-                        <p className="text-xs sm:text-sm text-muted leading-relaxed">
-                          {feat.detail}
-                        </p>
+                      <div className="hidden md:inline-flex items-center p-1 rounded-full bg-surface-2/80 border border-border/70">
+                        {devices.map((d) => {
+                          const Icon = d.icon;
+                          const active = device === d.id;
+                          return (
+                            <button
+                              key={d.id}
+                              type="button"
+                              onClick={() => setDevice(d.id)}
+                              className={`relative inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium cursor-pointer transition-colors ${
+                                active
+                                  ? "text-foreground"
+                                  : "text-muted hover:text-foreground"
+                              }`}
+                            >
+                              {active && (
+                                <motion.span
+                                  layoutId="modal-device-pill"
+                                  transition={
+                                    prefersReducedMotion
+                                      ? { duration: 0.01 }
+                                      : spring
+                                  }
+                                  className="absolute inset-0 rounded-full bg-surface-1 shadow-xs border border-border/60"
+                                />
+                              )}
+                              <Icon size={13} className="relative z-10" />
+                              <span className="relative z-10">{d.label}</span>
+                            </button>
+                          );
+                        })}
                       </div>
-                    ))}
-                  </div>
+                    </div>
 
-                  <div className="p-5 rounded-xl bg-surface-2/60 border border-border space-y-2">
-                    <h4 className="text-xs font-mono uppercase tracking-[0.1em] text-foreground">
-                      Architecture
-                    </h4>
-                    <p className="text-sm text-muted leading-relaxed">
-                      {project.architectureNotes}
-                    </p>
-                  </div>
-                </div>
-              )}
+                    {/* Live Iframe Container */}
+                    <div
+                      className={`relative w-full rounded-xl overflow-hidden border border-border-strong bg-surface-1 shadow-lg transition-[max-width] duration-300 ${
+                        device === "desktop"
+                          ? "max-w-full h-[66dvh]"
+                          : device === "tablet"
+                          ? "max-w-[768px] h-[66dvh]"
+                          : "max-w-[390px] h-[66dvh]"
+                      }`}
+                    >
+                      <AnimatePresence>
+                        {isLoading && (
+                          <motion.div
+                            key="iframe-loader"
+                            initial={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.2, ease: easeOut }}
+                            className="absolute inset-0 flex flex-col items-center justify-center gap-3 bg-surface-1 text-muted z-10 pointer-events-none"
+                          >
+                            <div className="w-6 h-6 rounded-full border-2 border-accent border-t-transparent animate-spin" />
+                            <span className="text-xs font-mono">
+                              Loading live app...
+                            </span>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                      <iframe
+                        src={project.projectUrl}
+                        title={`${project.title} live application`}
+                        className="w-full h-full border-0"
+                        onLoad={() => setIsLoading(false)}
+                        sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
+                      />
+                    </div>
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key="modal-specs"
+                    initial={
+                      prefersReducedMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: 6 }
+                    }
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={
+                      prefersReducedMotion
+                        ? { opacity: 0 }
+                        : { opacity: 0, y: -4 }
+                    }
+                    transition={{
+                      duration: prefersReducedMotion ? 0.1 : 0.18,
+                      ease: easeOut,
+                    }}
+                    className="max-w-3xl mx-auto py-4 space-y-8"
+                  >
+                    <div className="space-y-3">
+                      <p className="text-xs font-mono uppercase tracking-[0.12em] text-accent">
+                        Case Study Notes
+                      </p>
+                      <h3 className="font-serif text-3xl sm:text-4xl text-foreground">
+                        {project.tagline}
+                      </h3>
+                      <p className="text-sm sm:text-base text-muted leading-relaxed">
+                        {project.description}
+                      </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                      {project.keyFeatures.map((feat) => (
+                        <div
+                          key={feat.title}
+                          className="p-4 rounded-xl bg-surface-1 border border-border space-y-1.5"
+                        >
+                          <h4 className="text-sm font-semibold text-foreground">
+                            {feat.title}
+                          </h4>
+                          <p className="text-xs sm:text-sm text-muted leading-relaxed">
+                            {feat.detail}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="p-5 rounded-xl bg-surface-2/60 border border-border space-y-2">
+                      <h4 className="text-xs font-mono uppercase tracking-[0.1em] text-foreground">
+                        Architecture
+                      </h4>
+                      <p className="text-sm text-muted leading-relaxed">
+                        {project.architectureNotes}
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
           </motion.div>
         </motion.div>

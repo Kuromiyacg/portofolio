@@ -80,9 +80,9 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 px-4 sm:px-6 pt-4 sm:pt-5 pointer-events-none">
+      <header className="relative z-40 px-4 sm:px-6 pt-5 sm:pt-6">
         <nav
-          className="pointer-events-auto mx-auto max-w-xl sm:max-w-2xl glass-chrome rounded-full pl-5 pr-2 sm:pl-6 sm:pr-2.5 h-13 flex items-center justify-between gap-4"
+          className="mx-auto max-w-xl sm:max-w-2xl glass-chrome rounded-full pl-5 pr-2 sm:pl-6 sm:pr-2.5 h-13 flex items-center justify-between gap-4"
           aria-label="Main navigation"
         >
           <a
@@ -165,15 +165,24 @@ export default function Navbar() {
               role="dialog"
               aria-modal="true"
               aria-label="Navigation menu"
+              drag={prefersReducedMotion ? false : "x"}
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={{ left: 0, right: 0.45 }}
+              onDragEnd={(_, info) => {
+                if (info.offset.x > 80 || info.velocity.x > 400) {
+                  setIsMobileOpen(false);
+                  menuButtonRef.current?.focus();
+                }
+              }}
               initial={prefersReducedMotion ? { opacity: 0 } : { x: "100%" }}
               animate={prefersReducedMotion ? { opacity: 1 } : { x: 0 }}
               exit={prefersReducedMotion ? { opacity: 0 } : { x: "100%" }}
               transition={
                 prefersReducedMotion
                   ? { duration: 0.15 }
-                  : { type: "spring", bounce: 0, duration: 0.34 }
+                  : { type: "spring", bounce: 0, duration: 0.32 }
               }
-              className="fixed top-0 right-0 bottom-0 z-50 w-72 max-w-[85vw] bg-surface-1 border-l border-border shadow-2xl flex flex-col justify-between p-6 sm:hidden"
+              className="fixed top-0 right-0 bottom-0 z-50 w-72 max-w-[85vw] bg-surface-1 border-l border-border shadow-2xl flex flex-col justify-between p-6 touch-pan-y sm:hidden"
             >
               <div>
                 <div className="flex items-center justify-between pb-6 border-b border-border">

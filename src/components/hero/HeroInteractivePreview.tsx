@@ -21,12 +21,12 @@ const initialHabits: HabitItem[] = [
 ];
 
 const savingsBars = [
-  { month: "Jan", primary: 38, secondary: 24 },
-  { month: "Feb", primary: 58, secondary: 36 },
-  { month: "Mar", primary: 52, secondary: 32 },
-  { month: "Apr", primary: 74, secondary: 44 },
-  { month: "May", primary: 84, secondary: 52 },
-  { month: "Jun", primary: 92, secondary: 60 },
+  { month: "Jan", rate: "+11.2%", primary: 38, secondary: 24 },
+  { month: "Feb", rate: "+14.8%", primary: 58, secondary: 36 },
+  { month: "Mar", rate: "+13.5%", primary: 52, secondary: 32 },
+  { month: "Apr", rate: "+17.9%", primary: 74, secondary: 44 },
+  { month: "May", rate: "+19.6%", primary: 84, secondary: 52 },
+  { month: "Jun", rate: "+22.4%", primary: 92, secondary: 60 },
 ];
 
 const financeEntries = [
@@ -35,11 +35,13 @@ const financeEntries = [
   { label: "Monthly Savings", category: "Goal", amount: "+$480", positive: true },
 ];
 
-const spring = { type: "spring" as const, bounce: 0, duration: 0.36 };
+const easeOut = [0.23, 1, 0.32, 1] as const;
+const spring = { type: "spring" as const, bounce: 0, duration: 0.34 };
 
 export default function HeroInteractivePreview() {
   const [activeTab, setActiveTab] = useState<PreviewTab>("overview");
   const [habits, setHabits] = useState<HabitItem[]>(initialHabits);
+  const [inspectedMonth, setInspectedMonth] = useState<number | null>(null);
   const prefersReducedMotion = useReducedMotion();
 
   const toggleHabit = (id: string) => {
@@ -49,9 +51,14 @@ export default function HeroInteractivePreview() {
   };
 
   const completedCount = habits.filter((h) => h.done).length;
+  const allCompleted = completedCount === habits.length;
   const totalXp = habits.reduce((sum, h) => sum + (h.done ? h.xp : 0), 0);
   const maxXp = habits.reduce((sum, h) => sum + h.xp, 0);
-  const progressPct = Math.round((totalXp / maxXp) * 100);
+  const progressRatio = totalXp / maxXp;
+  const progressPct = Math.round(progressRatio * 100);
+
+  const activeBar =
+    inspectedMonth !== null ? savingsBars[inspectedMonth] : null;
 
   const tabs: { id: PreviewTab; label: string }[] = [
     { id: "overview", label: "Overview" },
@@ -82,9 +89,36 @@ export default function HeroInteractivePreview() {
               Live Preview
             </span>
           </div>
-          <span className="text-[11px] font-mono text-muted tabular-nums">
-            {completedCount}/{habits.length} done
-          </span>
+
+          <AnimatePresence mode="wait" initial={false}>
+            {allCompleted ? (
+              <motion.span
+                key="all-done"
+                initial={
+                  prefersReducedMotion
+                    ? { opacity: 0 }
+                    : { opacity: 0, scale: 0.94 }
+                }
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.18, ease: easeOut }}
+                className="text-[11px] font-mono text-accent bg-accent-soft px-2 py-0.5 rounded-full tabular-nums"
+              >
+                All quests complete
+              </motion.span>
+            ) : (
+              <motion.span
+                key="progress-count"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.14 }}
+                className="text-[11px] font-mono text-muted tabular-nums"
+              >
+                {completedCount}/{habits.length} done
+              </motion.span>
+            )}
+          </AnimatePresence>
         </div>
 
         {/* Apple-style Segmented Control */}
@@ -128,10 +162,14 @@ export default function HeroInteractivePreview() {
           {activeTab === "overview" && (
             <motion.div
               key="overview"
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
+              initial={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }
+              }
               animate={{ opacity: 1, y: 0 }}
-              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
-              transition={{ duration: prefersReducedMotion ? 0.1 : 0.2 }}
+              exit={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }
+              }
+              transition={{ duration: prefersReducedMotion ? 0.1 : 0.2, ease: easeOut }}
               className="grid grid-cols-1 sm:grid-cols-2 gap-3"
             >
               {/* Habit Quest Panel */}
@@ -162,7 +200,27 @@ export default function HeroInteractivePreview() {
                                 : "bg-surface-1 border-border-strong group-hover:border-accent/60"
                             }`}
                           >
-                            {habit.done && <Check size={11} strokeWidth={2.75} />}
+                            <AnimatePresence initial={false}>
+                              {habit.done && (
+                                <motion.span
+                                  key="check"
+                                  initial={
+                                    prefersReducedMotion
+                                      ? { opacity: 0 }
+                                      : { opacity: 0, scale: 0.8 }
+                                  }
+                                  animate={{ opacity: 1, scale: 1 }}
+                                  exit={
+                                    prefersReducedMotion
+                                      ? { opacity: 0 }
+                                      : { opacity: 0, scale: 0.8 }
+                                  }
+                                  transition={{ duration: 0.16, ease: easeOut }}
+                                >
+                                  <Check size={11} strokeWidth={2.75} />
+                                </motion.span>
+                              )}
+                            </AnimatePresence>
                           </span>
                           <span
                             className={`text-xs transition-colors truncate ${
@@ -181,16 +239,16 @@ export default function HeroInteractivePreview() {
 
                 <div className="mt-3.5 pt-2.5 border-t border-border/70">
                   <div className="flex items-center justify-between text-[11px] font-mono text-muted mb-1.5 tabular-nums">
-                    <span>Level 12 · {totalXp} XP</span>
+                    <span>Level 12 &middot; {totalXp} XP</span>
                     <span className="text-foreground font-medium">
                       {progressPct}%
                     </span>
                   </div>
                   <div className="h-1.5 w-full rounded-full bg-surface-2 overflow-hidden">
                     <motion.div
-                      className="h-full rounded-full bg-accent"
+                      className="h-full w-full rounded-full bg-accent origin-left"
                       initial={false}
-                      animate={{ width: `${progressPct}%` }}
+                      animate={{ scaleX: progressRatio }}
                       transition={
                         prefersReducedMotion ? { duration: 0.05 } : spring
                       }
@@ -199,37 +257,84 @@ export default function HeroInteractivePreview() {
                 </div>
               </div>
 
-              {/* Personal Finance Panel */}
+              {/* Personal Finance Panel with Interactive Monthly Inspection */}
               <div className="rounded-xl bg-background/70 border border-border p-3.5 flex flex-col justify-between">
                 <div>
                   <h3 className="text-xs font-semibold text-foreground mb-2">
                     Personal Finance
                   </h3>
-                  <p className="text-[11px] text-muted">Savings Rate</p>
-                  <p className="text-2xl font-bold tracking-[-0.02em] text-foreground tabular-nums mt-0.5">
-                    +18.4%
-                  </p>
+                  <AnimatePresence mode="wait" initial={false}>
+                    <motion.div
+                      key={activeBar ? activeBar.month : "avg"}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.14, ease: easeOut }}
+                    >
+                      <p className="text-[11px] text-muted">
+                        {activeBar ? `${activeBar.month} Savings` : "Savings Rate"}
+                      </p>
+                      <p className="text-2xl font-bold tracking-[-0.02em] text-foreground tabular-nums mt-0.5">
+                        {activeBar ? activeBar.rate : "+18.4%"}
+                      </p>
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
 
                 <div
-                  className="mt-4 h-24 flex items-end justify-between gap-2 pt-2"
+                  className="mt-4 h-24 flex items-end justify-between gap-1.5 pt-2"
+                  role="group"
                   aria-label="Six month savings trend"
+                  onPointerLeave={() => setInspectedMonth(null)}
                 >
-                  {savingsBars.map((bar) => (
-                    <div
-                      key={bar.month}
-                      className="flex-1 h-full flex items-end justify-center gap-0.5"
-                    >
-                      <div
-                        className="w-1.5 rounded-t-full bg-accent"
-                        style={{ height: `${bar.primary}%` }}
-                      />
-                      <div
-                        className="w-1.5 rounded-t-full bg-surface-2 border border-border/50"
-                        style={{ height: `${bar.secondary}%` }}
-                      />
-                    </div>
-                  ))}
+                  {savingsBars.map((bar, idx) => {
+                    const isInspected = inspectedMonth === idx;
+                    const isDimmed = inspectedMonth !== null && !isInspected;
+                    return (
+                      <button
+                        key={bar.month}
+                        type="button"
+                        aria-label={`${bar.month}: ${bar.rate}`}
+                        onPointerEnter={(e) => {
+                          if (e.pointerType === "mouse") setInspectedMonth(idx);
+                        }}
+                        onFocus={() => setInspectedMonth(idx)}
+                        onBlur={() => setInspectedMonth(null)}
+                        onClick={() =>
+                          setInspectedMonth(isInspected ? null : idx)
+                        }
+                        className="flex-1 h-full flex flex-col items-center justify-end gap-1 cursor-pointer focus-visible:outline-accent rounded-sm"
+                        style={{
+                          opacity: isDimmed ? 0.42 : 1,
+                          transition: "opacity 150ms cubic-bezier(0.23, 1, 0.32, 1)",
+                        }}
+                      >
+                        <div
+                          className="w-full flex-1 flex items-end justify-center gap-0.5 origin-bottom"
+                          style={{
+                            transform:
+                              isInspected && !prefersReducedMotion
+                                ? "scaleY(1.05)"
+                                : "scaleY(1)",
+                            transition:
+                              "transform 150ms cubic-bezier(0.23, 1, 0.32, 1)",
+                          }}
+                        >
+                          <span
+                            className="w-1.5 rounded-t-full bg-accent"
+                            style={{ height: `${bar.primary}%` }}
+                          />
+                          <span
+                            className="w-1.5 rounded-t-full bg-surface-2 border border-border/50"
+                            style={{ height: `${bar.secondary}%` }}
+                          />
+                        </div>
+                        <span className="text-[9px] font-mono text-muted">
+                          {bar.month[0]}
+                        </span>
+                      </button>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
@@ -238,10 +343,14 @@ export default function HeroInteractivePreview() {
           {activeTab === "habits" && (
             <motion.div
               key="habits"
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
+              initial={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }
+              }
               animate={{ opacity: 1, y: 0 }}
-              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
-              transition={{ duration: prefersReducedMotion ? 0.1 : 0.2 }}
+              exit={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }
+              }
+              transition={{ duration: prefersReducedMotion ? 0.1 : 0.2, ease: easeOut }}
               className="rounded-xl bg-background/70 border border-border p-4 space-y-2.5"
             >
               <div className="flex items-center justify-between text-xs">
@@ -260,7 +369,7 @@ export default function HeroInteractivePreview() {
                       type="button"
                       onClick={() => toggleHabit(habit.id)}
                       aria-pressed={habit.done}
-                      className="w-full flex items-center justify-between py-2.5 text-left cursor-pointer group"
+                      className="w-full flex items-center justify-between py-2.5 text-left cursor-pointer group pressable"
                     >
                       <span className="flex items-center gap-2.5">
                         <span
@@ -270,7 +379,27 @@ export default function HeroInteractivePreview() {
                               : "bg-surface-1 border-border-strong group-hover:border-accent/60"
                           }`}
                         >
-                          {habit.done && <Check size={11} strokeWidth={2.75} />}
+                          <AnimatePresence initial={false}>
+                            {habit.done && (
+                              <motion.span
+                                key="check"
+                                initial={
+                                  prefersReducedMotion
+                                    ? { opacity: 0 }
+                                    : { opacity: 0, scale: 0.8 }
+                                }
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={
+                                  prefersReducedMotion
+                                    ? { opacity: 0 }
+                                    : { opacity: 0, scale: 0.8 }
+                                }
+                                transition={{ duration: 0.16, ease: easeOut }}
+                              >
+                                <Check size={11} strokeWidth={2.75} />
+                              </motion.span>
+                            )}
+                          </AnimatePresence>
                         </span>
                         <span
                           className={`text-sm ${
@@ -295,10 +424,14 @@ export default function HeroInteractivePreview() {
           {activeTab === "finance" && (
             <motion.div
               key="finance"
-              initial={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }}
+              initial={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }
+              }
               animate={{ opacity: 1, y: 0 }}
-              exit={prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }}
-              transition={{ duration: prefersReducedMotion ? 0.1 : 0.2 }}
+              exit={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }
+              }
+              transition={{ duration: prefersReducedMotion ? 0.1 : 0.2, ease: easeOut }}
               className="rounded-xl bg-background/70 border border-border p-4 space-y-3"
             >
               <div className="flex items-baseline justify-between">

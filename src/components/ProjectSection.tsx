@@ -2,12 +2,18 @@
 
 import { useState } from "react";
 import { ArrowUpRight, Play } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import portfolio, { Project } from "@/data/portfolio";
-import { Reveal, RevealGroup, RevealItem } from "@/components/motion/Reveal";
+import { Reveal } from "@/components/motion/Reveal";
+import FeatureStage from "./projects/FeatureStage";
 import ProjectPreviewModal from "./projects/ProjectPreviewModal";
+
+const spring = { type: "spring" as const, bounce: 0, duration: 0.34 };
 
 export default function ProjectSection() {
   const [activeProject, setActiveProject] = useState<Project | null>(null);
+  const [selectedFeature, setSelectedFeature] = useState(0);
+  const prefersReducedMotion = useReducedMotion();
   const project = portfolio.featuredProject;
 
   return (
@@ -94,34 +100,68 @@ export default function ProjectSection() {
               </dl>
             </div>
 
-            {/* 4 Concrete Feature Blocks with choreographed stagger */}
-            <RevealGroup
-              stagger={0.05}
-              className="grid grid-cols-1 md:grid-cols-2 gap-5 sm:gap-6"
-            >
-              {project.keyFeatures.map((feature, index) => (
-                <RevealItem key={feature.title}>
-                  <div className="h-full p-5 rounded-2xl bg-background/70 border border-border/80 space-y-2 hover-lift">
-                    <div className="flex items-center justify-between gap-2">
-                      <h3 className="text-base font-semibold tracking-[-0.01em] text-foreground">
-                        {feature.title}
-                      </h3>
-                      <span className="text-xs font-mono text-muted tabular-nums">
-                        0{index + 1}
-                      </span>
-                    </div>
-                    <p className="text-sm text-muted leading-relaxed">
-                      {feature.detail}
-                    </p>
-                  </div>
-                </RevealItem>
-              ))}
-            </RevealGroup>
+            {/* Interactive Feature Showcase (Selectable list + Live Mini-Demo Stage) */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
+              <div
+                className="lg:col-span-6 space-y-2"
+                role="tablist"
+                aria-label="LifeTrack AI core features"
+              >
+                {project.keyFeatures.map((feature, index) => {
+                  const isSelected = selectedFeature === index;
+                  return (
+                    <button
+                      key={feature.title}
+                      type="button"
+                      role="tab"
+                      aria-selected={isSelected}
+                      onClick={() => setSelectedFeature(index)}
+                      className={`relative w-full text-left p-4 rounded-2xl border transition-colors duration-150 cursor-pointer pressable ${
+                        isSelected
+                          ? "border-border-strong bg-background/90"
+                          : "border-transparent hover:bg-background/50"
+                      }`}
+                    >
+                      {isSelected && (
+                        <motion.span
+                          layoutId="feature-active-bar"
+                          transition={
+                            prefersReducedMotion ? { duration: 0.01 } : spring
+                          }
+                          className="absolute left-0 top-3.5 bottom-3.5 w-[3px] rounded-full bg-accent"
+                        />
+                      )}
+                      <div className="flex items-center justify-between gap-3 pl-2">
+                        <h3
+                          className={`text-sm sm:text-base font-semibold tracking-[-0.01em] ${
+                            isSelected ? "text-foreground" : "text-muted"
+                          }`}
+                        >
+                          {feature.title}
+                        </h3>
+                        <span className="text-xs font-mono text-muted tabular-nums">
+                          0{index + 1}
+                        </span>
+                      </div>
+                      <p className="text-xs sm:text-sm text-muted leading-relaxed mt-1 pl-2">
+                        {feature.detail}
+                      </p>
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="lg:col-span-6">
+                <FeatureStage activeIndex={selectedFeature} />
+              </div>
+            </div>
 
             {/* Bottom Architecture & Stack Strip */}
             <div className="pt-6 border-t border-border flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <p className="text-sm text-muted leading-relaxed max-w-2xl">
-                <span className="font-medium text-foreground">Architecture: </span>
+                <span className="font-medium text-foreground">
+                  Architecture:{" "}
+                </span>
                 {project.architectureNotes}
               </p>
 

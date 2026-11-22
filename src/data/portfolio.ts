@@ -71,9 +71,9 @@ const portfolio: PortfolioData = {
       "I'm Jordan Christian, a full-stack developer working with Next.js and TypeScript. Right now I'm building LifeTrack AI to unify daily habits and personal finances.",
     aboutLead: "I build web software end to end, from database schema to the last interaction detail.",
     aboutBody:
-      "Over the past two years I have focused on shipping practical web applications using React, Next.js, TypeScript, and backend APIs. I care about clear information hierarchy, responsive layouts that hold up on a phone, and interfaces that feel fast the moment you touch them.",
+      "Over the past year I have focused on shipping practical web applications using React, Next.js, TypeScript, and backend APIs. I care about clear information hierarchy, responsive layouts that hold up on a phone, and interfaces that feel fast the moment you touch them.",
     focus: "Next.js, TypeScript, and practical product engineering",
-    experience: "2+ years shipping web applications",
+    experience: "1+ year shipping web applications",
     currentGoal: "Bringing LifeTrack AI to full production and collaborating on ambitious web products",
   },
 

@@ -43,7 +43,7 @@ export default function Hero() {
     <section
       ref={heroRef}
       id="home"
-      className="relative lg:min-h-[100dvh] flex items-center pt-28 pb-16 sm:pt-32 sm:pb-24 lg:py-28 px-5 sm:px-8 lg:px-12"
+      className="relative lg:min-h-[calc(100dvh-5rem)] flex items-center pt-10 pb-16 sm:pt-14 sm:pb-24 lg:py-16 px-5 sm:px-8 lg:px-12"
       aria-label="Introduction"
     >
       <div className="mx-auto max-w-6xl w-full">
