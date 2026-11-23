@@ -39,6 +39,8 @@ export interface Project {
     title: string;
     detail: string;
   }[];
+  whyBuilt: string;
+  keyDecision: string;
   architectureNotes: string;
 }
 
@@ -65,7 +67,7 @@ const portfolio: PortfolioData = {
     availability: "Available for work",
     email: "jordan.cg09@gmail.com",
     github: "https://github.com/Kuromiyacg",
-    linkedin: "",
+    linkedin: "https://www.linkedin.com/in/jordan-christian-gofendi-83554440b",
     profileImage: "/images/profile.webp",
     shortBio:
       "I'm Jordan Christian, a full-stack developer working with Next.js and TypeScript. Right now I'm building LifeTrack AI to unify daily habits and personal finances.",
@@ -115,6 +117,10 @@ const portfolio: PortfolioData = {
         detail: "Clear visual breakdowns of monthly savings rates and spending categories without spreadsheet clutter.",
       },
     ],
+    whyBuilt:
+      "Most productivity apps treat habits and money as separate worlds, which leads to juggling two dashboards and a spreadsheet. I built LifeTrack AI so daily consistency and monthly cash flow reinforce each other in one calm workspace.",
+    keyDecision:
+      "Kept the client architecture modular with deterministic local state slices and modal workflows so interactions feel instant on both desktop and mobile before layering heavier backend sync.",
     architectureNotes:
       "Built on a modular Next.js and TypeScript client architecture with predictable state slices, responsive modal workflows, and unified financial summaries deployed on Vercel.",
   },

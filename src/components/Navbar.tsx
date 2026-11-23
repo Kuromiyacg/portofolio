@@ -5,41 +5,11 @@ import { Menu, X } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import portfolio from "@/data/portfolio";
 
-const springTransition = { type: "spring" as const, bounce: 0, duration: 0.36 };
-
 export default function Navbar() {
-  const [activeSection, setActiveSection] = useState("work");
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const menuButtonRef = useRef<HTMLButtonElement>(null);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
-
-  useEffect(() => {
-    const sections = portfolio.navItems
-      .map((item) => document.querySelector(item.href))
-      .filter(Boolean) as Element[];
-
-    if (sections.length === 0) return;
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((entry) => entry.isIntersecting)
-          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-
-        if (visible.length > 0) {
-          setActiveSection(visible[0].target.id);
-        }
-      },
-      {
-        rootMargin: "-22% 0px -58% 0px",
-        threshold: 0,
-      }
-    );
-
-    sections.forEach((section) => observer.observe(section));
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     if (!isMobileOpen) return;
@@ -70,9 +40,6 @@ export default function Navbar() {
           behavior: prefersReducedMotion ? "auto" : "smooth",
         });
       }
-      if (href.startsWith("#") && href !== "#home") {
-        setActiveSection(href.slice(1));
-      }
       setIsMobileOpen(false);
     },
     [prefersReducedMotion]
@@ -93,37 +60,18 @@ export default function Navbar() {
             {portfolio.personal.name}
           </a>
 
-          {/* Desktop segmented pill links */}
+          {/* Desktop links */}
           <div className="hidden sm:flex items-center gap-1">
-            {portfolio.navItems.map((item) => {
-              const id = item.href.replace("#", "");
-              const isActive = activeSection === id;
-              return (
-                <a
-                  key={item.href}
-                  href={item.href}
-                  onClick={(e) => handleNavClick(e, item.href)}
-                  className={`relative px-3.5 py-1.5 rounded-full text-sm font-medium transition-colors duration-150 ${
-                    isActive
-                      ? "text-foreground"
-                      : "text-muted hover:text-foreground"
-                  }`}
-                >
-                  {isActive && (
-                    <motion.span
-                      layoutId="nav-active-pill"
-                      transition={
-                        prefersReducedMotion
-                          ? { duration: 0.01 }
-                          : springTransition
-                      }
-                      className="absolute inset-0 rounded-full bg-surface-2 -z-10"
-                    />
-                  )}
-                  {item.label}
-                </a>
-              );
-            })}
+            {portfolio.navItems.map((item) => (
+              <a
+                key={item.href}
+                href={item.href}
+                onClick={(e) => handleNavClick(e, item.href)}
+                className="px-3.5 py-1.5 rounded-full text-sm font-medium text-muted hover:text-foreground hover:bg-surface-2/80 transition-colors duration-150"
+              >
+                {item.label}
+              </a>
+            ))}
           </div>
 
           {/* Mobile Menu Trigger (44x44 minimum tap target) */}
@@ -205,47 +153,48 @@ export default function Navbar() {
 
                 <nav className="pt-4" aria-label="Mobile navigation">
                   <ul className="space-y-1">
-                    {portfolio.navItems.map((item) => {
-                      const id = item.href.replace("#", "");
-                      const isActive = activeSection === id;
-                      return (
-                        <li key={item.href}>
-                          <a
-                            href={item.href}
-                            onClick={(e) => handleNavClick(e, item.href)}
-                            className={`flex items-center justify-between min-h-[48px] px-4 rounded-xl text-base font-medium transition-colors ${
-                              isActive
-                                ? "bg-surface-2 text-foreground"
-                                : "text-muted hover:text-foreground hover:bg-surface-2/50"
-                            }`}
-                          >
-                            <span>{item.label}</span>
-                            {isActive && (
-                              <span className="w-1.5 h-1.5 rounded-full bg-accent" />
-                            )}
-                          </a>
-                        </li>
-                      );
-                    })}
+                    {portfolio.navItems.map((item) => (
+                      <li key={item.href}>
+                        <a
+                          href={item.href}
+                          onClick={(e) => handleNavClick(e, item.href)}
+                          className="flex items-center justify-between min-h-[48px] px-4 rounded-xl text-base font-medium text-muted hover:text-foreground hover:bg-surface-2/60 transition-colors"
+                        >
+                          <span>{item.label}</span>
+                        </a>
+                      </li>
+                    ))}
                   </ul>
                 </nav>
               </div>
 
-              <div className="pt-6 border-t border-border space-y-3">
+              <div className="pt-6 border-t border-border space-y-2.5">
                 <a
                   href={`mailto:${portfolio.personal.email}`}
                   className="flex items-center justify-center min-h-[44px] w-full rounded-full bg-foreground text-surface-1 text-sm font-medium pressable"
                 >
                   Email me
                 </a>
-                <a
-                  href={portfolio.personal.github}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center min-h-[44px] w-full rounded-full border border-border text-sm text-muted hover:text-foreground pressable"
-                >
-                  GitHub ↗
-                </a>
+                <div className="grid grid-cols-2 gap-2">
+                  <a
+                    href={portfolio.personal.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center justify-center min-h-[44px] rounded-full border border-border text-sm text-muted hover:text-foreground pressable"
+                  >
+                    GitHub ↗
+                  </a>
+                  {portfolio.personal.linkedin && (
+                    <a
+                      href={portfolio.personal.linkedin}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center justify-center min-h-[44px] rounded-full border border-border text-sm text-muted hover:text-foreground pressable"
+                    >
+                      LinkedIn ↗
+                    </a>
+                  )}
+                </div>
               </div>
             </motion.div>
           </>

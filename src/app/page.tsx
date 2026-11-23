@@ -1,4 +1,5 @@
 import ScrollProgress from "@/components/motion/ScrollProgress";
+import BackToTop from "@/components/BackToTop";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProjectSection from "@/components/ProjectSection";
@@ -22,6 +23,7 @@ export default function Home() {
       </main>
 
       <Footer />
+      <BackToTop />
     </>
   );
 }

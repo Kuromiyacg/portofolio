@@ -54,6 +54,18 @@ export default function ContactSection() {
                 <span>Send email</span>
               </a>
 
+              <a
+                href={`https://mail.google.com/mail/?view=cm&to=${encodeURIComponent(
+                  portfolio.personal.email
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-1.5 min-h-[46px] px-5 rounded-full border border-border-strong bg-surface-1 text-foreground text-sm font-medium hover:bg-surface-2/70 pressable"
+              >
+                <span>Open in Gmail</span>
+                <ArrowUpRight size={14} />
+              </a>
+
               <button
                 type="button"
                 onClick={handleCopyEmail}

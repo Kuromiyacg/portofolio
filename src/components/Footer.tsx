@@ -29,6 +29,18 @@ export default function Footer() {
             <span>GitHub</span>
           </a>
 
+          {portfolio.personal.linkedin && (
+            <a
+              href={portfolio.personal.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+            >
+              <span>LinkedIn</span>
+              <ArrowUpRight size={12} />
+            </a>
+          )}
+
           <a
             href={`mailto:${portfolio.personal.email}`}
             className="inline-flex items-center gap-1 hover:text-foreground transition-colors"

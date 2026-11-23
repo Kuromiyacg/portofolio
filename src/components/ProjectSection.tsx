@@ -156,6 +156,27 @@ export default function ProjectSection() {
               </div>
             </div>
 
+            {/* Why I Built It & Key Decisions */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6 border-t border-border">
+              <div className="space-y-1.5">
+                <h3 className="text-[11px] font-mono uppercase tracking-[0.12em] text-accent">
+                  Why I built it
+                </h3>
+                <p className="text-sm text-muted leading-relaxed">
+                  {project.whyBuilt}
+                </p>
+              </div>
+
+              <div className="space-y-1.5">
+                <h3 className="text-[11px] font-mono uppercase tracking-[0.12em] text-foreground">
+                  Key architectural decision
+                </h3>
+                <p className="text-sm text-muted leading-relaxed">
+                  {project.keyDecision}
+                </p>
+              </div>
+            </div>
+
             {/* Bottom Architecture & Stack Strip */}
             <div className="pt-6 border-t border-border flex flex-col lg:flex-row lg:items-center justify-between gap-6">
               <p className="text-sm text-muted leading-relaxed max-w-2xl">
