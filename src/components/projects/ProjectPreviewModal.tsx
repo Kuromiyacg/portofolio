@@ -219,9 +219,13 @@ export default function ProjectPreviewModal({
                       </div>
                     </div>
 
-                    {/* Live Iframe Container */}
-                    <div
-                      className={`relative w-full rounded-xl overflow-hidden border border-border-strong bg-surface-1 shadow-lg transition-[max-width] duration-300 ${
+                    {/* Live Iframe Container (GPU-clean opacity crossfade on device swap — no off-GPU max-width transition) */}
+                    <motion.div
+                      key={device}
+                      initial={{ opacity: 0.88 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.16, ease: easeOut }}
+                      className={`relative w-full rounded-xl overflow-hidden border border-border-strong bg-surface-1 shadow-lg ${
                         device === "desktop"
                           ? "max-w-full h-[66dvh]"
                           : device === "tablet"
@@ -252,7 +256,7 @@ export default function ProjectPreviewModal({
                         onLoad={() => setIsLoading(false)}
                         sandbox="allow-forms allow-modals allow-popups allow-presentation allow-same-origin allow-scripts"
                       />
-                    </div>
+                    </motion.div>
                   </motion.div>
                 ) : (
                   <motion.div

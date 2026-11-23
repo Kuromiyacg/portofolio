@@ -1,28 +1,35 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   Design Tokens — Warm Paper & Espresso Ink (3-Color Niche Editorial System)
-   1. Main Primary (60%): Warm Paper #F5F1EA / Ivory #FCFBF8 / Warm Sand #EAE3D7
-   2. Secondary (30%):    Espresso Ink #171614 / Warm Taupe #5F5A52
-   3. Accent / Vibe (10%): Deep International Cobalt #2249C6
+   Design Tokens — Concept A "The Living Monograph" (Swiss Editorial System)
+   1. Main Primary (60%): Warm Archival Paper #F5F1EA / Ivory #FCFBF8 / Sand #EAE3D7
+   2. Secondary (30%):    Deep Espresso Ink #171614 / Warm Taupe #5F5A52
+   3. Primary Accent (7%): Deep International Cobalt #2249C6
+   4. Minor Spark (<3%):  Signal Vermilion #D94E2A
    ============================================================================ */
 
 :root {
   --bg: #F5F1EA;
   --surface-1: #FCFBF8;
   --surface-2: #EAE3D7;
-  --surface-glass: rgba(252, 251, 248, 0.78);
+  --surface-glass: rgba(252, 251, 248, 0.84);
+  --ink-surface: #171614;
+  --ink-elevated: #211F1C;
   --text: #171614;
   --text-muted: #5F5A52;
   --accent: #2249C6;
   --accent-hover: #1A3BA8;
   --accent-soft: rgba(34, 73, 198, 0.10);
+  --spark: #D94E2A;
+  --spark-hover: #C04020;
+  --spark-soft: rgba(217, 78, 42, 0.12);
   --border: rgba(23, 22, 20, 0.10);
   --border-strong: rgba(23, 22, 20, 0.18);
+  --grid-line: rgba(23, 22, 20, 0.065);
   --status-live: #2A7B56;
 
-  /* Apple-inspired easing & timing tokens */
-  --ease-out-fluid: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Easing & timing tokens (Emil Kowalski / Apple Fluid standards) */
+  --ease-out-fluid: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-press: cubic-bezier(0.2, 0, 0, 1);
 
   /* Semantic aliases */
@@ -35,10 +42,15 @@
   --color-foreground: var(--text);
   --color-surface-1: var(--surface-1);
   --color-surface-2: var(--surface-2);
+  --color-ink-surface: var(--ink-surface);
+  --color-ink-elevated: var(--ink-elevated);
   --color-muted: var(--text-muted);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
   --color-accent-soft: var(--accent-soft);
+  --color-spark: var(--spark);
+  --color-spark-hover: var(--spark-hover);
+  --color-spark-soft: var(--spark-soft);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
   --color-status-live: var(--status-live);
@@ -61,8 +73,8 @@ html {
 body {
   background-color: var(--bg);
   background-image:
-    radial-gradient(ellipse 80% 45% at 50% -8%, rgba(255, 255, 255, 0.75) 0%, rgba(245, 241, 234, 0) 70%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)' opacity='0.028'/%3E%3C/svg%3E");
+    radial-gradient(ellipse 85% 42% at 50% -6%, rgba(255, 255, 255, 0.72) 0%, rgba(245, 241, 234, 0) 70%),
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)' opacity='0.026'/%3E%3C/svg%3E");
   color: var(--text);
   font-family: var(--font-plus-jakarta-sans), system-ui, -apple-system, sans-serif;
   line-height: 1.6;
@@ -71,8 +83,23 @@ body {
 }
 
 /* ============================================================================
-   Materials & Tactile Interaction
+   Swiss Architectural Hairline Grid & Surfaces
    ============================================================================ */
+
+.swiss-grid-bg {
+  background-image: linear-gradient(
+    to right,
+    var(--grid-line) 1px,
+    transparent 1px
+  );
+  background-size: 50% 100%;
+}
+
+@media (min-width: 1024px) {
+  .swiss-grid-bg {
+    background-size: 25% 100%;
+  }
+}
 
 .glass-chrome {
   background-color: var(--surface-glass);
@@ -81,7 +108,7 @@ body {
   border: 1px solid var(--border);
   box-shadow:
     0 1px 0 rgba(255, 255, 255, 0.8) inset,
-    0 10px 30px -12px rgba(23, 22, 20, 0.10);
+    0 10px 30px -12px rgba(23, 22, 20, 0.12);
 }
 
 .paper-card {
@@ -92,9 +119,19 @@ body {
     0 18px 40px -24px rgba(23, 22, 20, 0.14);
 }
 
+.ink-monolith {
+  background-color: var(--ink-surface);
+  color: #F5F1EA;
+  border: 1px solid rgba(245, 241, 234, 0.12);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.06) inset,
+    0 28px 60px -24px rgba(23, 22, 20, 0.48);
+}
+
+/* Asymmetric press timing: snappy 90ms press down, 160ms organic release */
 .pressable {
   transition:
-    transform 120ms var(--ease-press),
+    transform 160ms var(--ease-out-fluid),
     background-color 180ms var(--ease-out-fluid),
     border-color 180ms var(--ease-out-fluid),
     color 180ms var(--ease-out-fluid),
@@ -103,6 +140,8 @@ body {
 
 .pressable:active {
   transform: scale(0.97);
+  transition-duration: 90ms;
+  transition-timing-function: var(--ease-press);
 }
 
 @media (hover: hover) and (pointer: fine) {

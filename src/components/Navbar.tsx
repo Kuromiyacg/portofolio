@@ -47,29 +47,46 @@ export default function Navbar() {
 
   return (
     <>
-      <header className="relative z-40 px-4 sm:px-6 pt-5 sm:pt-6">
+      {/* Full-width static Swiss architectural index header */}
+      <header className="relative z-40 border-b border-border bg-background/85">
         <nav
-          className="mx-auto max-w-xl sm:max-w-2xl glass-chrome rounded-full pl-5 pr-2 sm:pl-6 sm:pr-2.5 h-13 flex items-center justify-between gap-4"
+          className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-12 h-15 flex items-center justify-between gap-4"
           aria-label="Main navigation"
         >
-          <a
-            href="#home"
-            onClick={(e) => handleNavClick(e, "#home")}
-            className="font-serif text-xl sm:text-[22px] leading-none tracking-[-0.01em] text-foreground hover:text-accent transition-colors duration-150 shrink-0"
-          >
-            {portfolio.personal.name}
-          </a>
+          {/* Left: Author name + monograph coordinates */}
+          <div className="flex items-center gap-6 lg:gap-10 min-w-0">
+            <a
+              href="#home"
+              onClick={(e) => handleNavClick(e, "#home")}
+              className="font-mono text-xs sm:text-[13px] font-medium tracking-[0.14em] uppercase text-foreground hover:text-accent transition-colors duration-150 min-w-0 truncate"
+            >
+              {portfolio.personal.name}
+            </a>
 
-          {/* Desktop links */}
-          <div className="hidden sm:flex items-center gap-1">
-            {portfolio.navItems.map((item) => (
+            <span className="hidden md:inline-flex items-center gap-2 font-mono text-[11px] tracking-[0.12em] uppercase text-muted shrink-0">
+              <span className="w-1 h-1 rounded-full bg-border-strong" aria-hidden="true" />
+              <span>{portfolio.personal.coordinates}</span>
+            </span>
+          </div>
+
+          {/* Right: Architectural uppercase index links */}
+          <div className="hidden sm:flex items-center gap-6 lg:gap-8 shrink-0">
+            {portfolio.navItems.map((item, idx) => (
               <a
                 key={item.href}
                 href={item.href}
                 onClick={(e) => handleNavClick(e, item.href)}
-                className="px-3.5 py-1.5 rounded-full text-sm font-medium text-muted hover:text-foreground hover:bg-surface-2/80 transition-colors duration-150"
+                className="inline-flex items-center gap-2 font-mono text-xs tracking-[0.12em] uppercase text-muted hover:text-foreground transition-colors duration-150 py-1"
               >
-                {item.label}
+                {idx === 0 && (
+                  <span
+                    className="w-2 h-2 rounded-full bg-spark shrink-0"
+                    aria-hidden="true"
+                  />
+                )}
+                <span className={idx === 0 ? "text-foreground font-medium" : ""}>
+                  {idx === 0 ? `${item.label} (01)` : item.label}
+                </span>
               </a>
             ))}
           </div>
@@ -79,7 +96,7 @@ export default function Navbar() {
             ref={menuButtonRef}
             type="button"
             onClick={() => setIsMobileOpen(true)}
-            className="sm:hidden min-w-[44px] min-h-[44px] rounded-full flex items-center justify-center text-foreground hover:bg-surface-2/80 pressable cursor-pointer"
+            className="sm:hidden min-w-[44px] min-h-[44px] -mr-2 rounded-full flex items-center justify-center text-foreground hover:bg-surface-2/80 pressable cursor-pointer shrink-0"
             aria-expanded={isMobileOpen}
             aria-controls="mobile-nav-drawer"
             aria-label="Open navigation menu"
@@ -89,7 +106,7 @@ export default function Navbar() {
         </nav>
       </header>
 
-      {/* Mobile Drawer */}
+      {/* Mobile Drawer with Apple swipe-to-dismiss */}
       <AnimatePresence>
         {isMobileOpen && (
           <>
@@ -133,8 +150,8 @@ export default function Navbar() {
               className="fixed top-0 right-0 bottom-0 z-50 w-72 max-w-[85vw] bg-surface-1 border-l border-border shadow-2xl flex flex-col justify-between p-6 touch-pan-y sm:hidden"
             >
               <div>
-                <div className="flex items-center justify-between pb-6 border-b border-border">
-                  <span className="font-serif text-xl text-foreground">
+                <div className="flex items-center justify-between pb-5 border-b border-border">
+                  <span className="font-mono text-xs tracking-[0.14em] uppercase text-foreground">
                     {portfolio.personal.shortName}
                   </span>
                   <button
@@ -153,14 +170,17 @@ export default function Navbar() {
 
                 <nav className="pt-4" aria-label="Mobile navigation">
                   <ul className="space-y-1">
-                    {portfolio.navItems.map((item) => (
+                    {portfolio.navItems.map((item, idx) => (
                       <li key={item.href}>
                         <a
                           href={item.href}
                           onClick={(e) => handleNavClick(e, item.href)}
-                          className="flex items-center justify-between min-h-[48px] px-4 rounded-xl text-base font-medium text-muted hover:text-foreground hover:bg-surface-2/60 transition-colors"
+                          className="flex items-center justify-between min-h-[48px] px-3 rounded-xl font-mono text-xs tracking-[0.12em] uppercase text-muted hover:text-foreground hover:bg-surface-2/60 transition-colors"
                         >
-                          <span>{item.label}</span>
+                          <span className="inline-flex items-center gap-2.5">
+                            <span className="text-spark">0{idx + 1}</span>
+                            <span className="text-foreground">{item.label}</span>
+                          </span>
                         </a>
                       </li>
                     ))}
@@ -180,7 +200,7 @@ export default function Navbar() {
                     href={portfolio.personal.github}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center justify-center min-h-[44px] rounded-full border border-border text-sm text-muted hover:text-foreground pressable"
+                    className="flex items-center justify-center min-h-[44px] rounded-full border border-border text-xs font-mono text-muted hover:text-foreground pressable"
                   >
                     GitHub ↗
                   </a>
@@ -189,7 +209,7 @@ export default function Navbar() {
                       href={portfolio.personal.linkedin}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="flex items-center justify-center min-h-[44px] rounded-full border border-border text-sm text-muted hover:text-foreground pressable"
+                      className="flex items-center justify-center min-h-[44px] rounded-full border border-border text-xs font-mono text-muted hover:text-foreground pressable"
                     >
                       LinkedIn ↗
                     </a>

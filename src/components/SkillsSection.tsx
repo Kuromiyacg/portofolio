@@ -14,6 +14,7 @@ const categories: { id: CategoryFilter; label: string }[] = [
   { id: "workflow", label: "Workflow" },
 ];
 
+const easeOut = [0.23, 1, 0.32, 1] as const;
 const spring = { type: "spring" as const, bounce: 0, duration: 0.34 };
 
 export default function SkillsSection() {
@@ -27,21 +28,21 @@ export default function SkillsSection() {
   return (
     <section
       id="stack"
-      className="py-16 sm:py-24 lg:py-28 px-5 sm:px-8 lg:px-12 border-t border-border"
+      className="border-t border-border"
       aria-label="Technical Stack"
     >
-      <div className="mx-auto max-w-6xl">
+      <div className="mx-auto max-w-7xl border-x border-border/60 px-5 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
         <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
           <div className="space-y-2.5">
-            <p className="font-mono text-xs tracking-[0.14em] uppercase text-accent">
-              03 &mdash; Stack
+            <p className="font-mono text-xs tracking-[0.14em] uppercase text-muted">
+              <span className="text-spark font-medium">03</span> &mdash; Stack
             </p>
-            <h2 className="font-serif text-[clamp(2.25rem,5vw,3.6rem)] leading-[1.04] tracking-[-0.02em] text-foreground">
-              Tools I work with.
+            <h2 className="font-serif text-[clamp(2.35rem,5vw,3.8rem)] leading-[1.04] tracking-[-0.025em] text-foreground">
+              Tools I work with<span className="text-spark">.</span>
             </h2>
           </div>
 
-          {/* Apple-style Segmented Filter */}
+          {/* Segmented Filter */}
           <div
             className="inline-flex flex-wrap p-1 rounded-full bg-surface-2/85 border border-border/70 self-start md:self-auto"
             role="tablist"
@@ -78,50 +79,45 @@ export default function SkillsSection() {
           </div>
         </Reveal>
 
-        {/* Clean, Scannable Typographic Grid with Spring Reflow */}
-        <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8 border-t border-border">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {filteredSkills.map((skill) => (
-              <motion.li
-                key={skill.name}
-                layout={prefersReducedMotion ? false : "position"}
-                initial={
-                  prefersReducedMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.97, y: 6 }
-                }
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={
-                  prefersReducedMotion
-                    ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.97 }
-                }
-                transition={
-                  prefersReducedMotion
-                    ? { duration: 0.12 }
-                    : {
-                        opacity: { duration: 0.18 },
-                        scale: { duration: 0.2 },
-                        layout: spring,
-                      }
-                }
-                className="py-5 border-b border-border flex flex-col justify-between gap-1.5"
-              >
-                <div className="flex items-baseline justify-between gap-3">
-                  <h3 className="text-base font-semibold tracking-[-0.01em] text-foreground">
-                    {skill.name}
-                  </h3>
-                  <span className="text-[11px] font-mono uppercase tracking-wider text-muted">
-                    {skill.category}
-                  </span>
-                </div>
-                <p className="text-sm text-muted leading-relaxed">
-                  {skill.note}
-                </p>
-              </motion.li>
-            ))}
+        {/* Stabilized container prevents vertical jump of ContactSection when switching categories */}
+        <div className="min-h-[280px] border-t border-border">
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.ul
+              key={activeCategory}
+              initial={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 6 }
+              }
+              animate={{ opacity: 1, y: 0 }}
+              exit={
+                prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: -4 }
+              }
+              transition={{
+                duration: prefersReducedMotion ? 0.1 : 0.18,
+                ease: easeOut,
+              }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8"
+            >
+              {filteredSkills.map((skill) => (
+                <li
+                  key={skill.name}
+                  className="py-5 border-b border-border flex flex-col justify-between gap-1.5 min-w-0"
+                >
+                  <div className="flex items-baseline justify-between gap-3">
+                    <h3 className="text-base font-semibold tracking-[-0.01em] text-foreground">
+                      {skill.name}
+                    </h3>
+                    <span className="text-[11px] font-mono uppercase tracking-wider text-muted shrink-0">
+                      {skill.category}
+                    </span>
+                  </div>
+                  <p className="text-sm text-muted leading-relaxed">
+                    {skill.note}
+                  </p>
+                </li>
+              ))}
+            </motion.ul>
           </AnimatePresence>
-        </ul>
+        </div>
       </div>
     </section>
   );

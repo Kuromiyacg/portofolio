@@ -3,6 +3,7 @@ export interface PersonalInfo {
   shortName: string;
   role: string;
   location: string;
+  coordinates: string;
   availability: string;
   email: string;
   github: string;
@@ -64,13 +65,14 @@ const portfolio: PortfolioData = {
     shortName: "Jordan Christian",
     role: "Full-Stack Developer",
     location: "Tangerang, ID",
+    coordinates: "06°10'S · TANGERANG, ID",
     availability: "Available for work",
     email: "jordan.cg09@gmail.com",
     github: "https://github.com/Kuromiyacg",
     linkedin: "https://www.linkedin.com/in/jordan-christian-gofendi-83554440b",
     profileImage: "/images/profile.webp",
     shortBio:
-      "I'm Jordan Christian, a full-stack developer working with Next.js and TypeScript. Right now I'm building LifeTrack AI to unify daily habits and personal finances.",
+      "Full-stack developer working with Next.js and TypeScript. Focused on shipping fast, structured web products from interface to backend.",
     aboutLead: "I build web software end to end, from database schema to the last interaction detail.",
     aboutBody:
       "Over the past year I have focused on shipping practical web applications using React, Next.js, TypeScript, and backend APIs. I care about clear information hierarchy, responsive layouts that hold up on a phone, and interfaces that feel fast the moment you touch them.",

@@ -4,12 +4,12 @@ import GithubIcon from "@/components/icons/GithubIcon";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border py-10 px-5 sm:px-8 lg:px-12">
-      <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-muted">
+    <footer className="border-t border-border">
+      <div className="mx-auto max-w-7xl border-x border-border/60 px-5 sm:px-8 lg:px-12 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-muted">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <a
             href="#home"
-            className="font-serif text-xl text-foreground hover:text-accent transition-colors"
+            className="font-mono text-xs tracking-[0.14em] uppercase text-foreground hover:text-accent transition-colors"
           >
             {portfolio.personal.name}
           </a>
@@ -51,9 +51,9 @@ export default function Footer() {
 
           <a
             href="#home"
-            className="text-foreground hover:text-accent transition-colors"
+            className="text-foreground hover:text-spark transition-colors"
           >
-            Back to top &uarr;
+            Top &uarr;
           </a>
         </div>
       </div>
