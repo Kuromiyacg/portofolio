@@ -35,6 +35,7 @@ export interface Project {
   role: string;
   year: string;
   projectUrl: string;
+  videoUrl?: string;
   repoUrl?: string;
   keyFeatures: {
     title: string;

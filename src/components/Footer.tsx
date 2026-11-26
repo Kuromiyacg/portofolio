@@ -4,26 +4,26 @@ import GithubIcon from "@/components/icons/GithubIcon";
 
 export default function Footer() {
   return (
-    <footer className="border-t border-border">
-      <div className="mx-auto max-w-7xl border-x border-border/60 px-5 sm:px-8 lg:px-12 py-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-sm text-muted">
+    <footer className="bg-ink-surface text-[#A39D93] border-t border-white/10 py-8 px-5 sm:px-8 lg:px-12">
+      <div className="mx-auto max-w-6xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 text-xs font-mono">
         <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1">
           <a
             href="#home"
-            className="font-mono text-xs tracking-[0.14em] uppercase text-foreground hover:text-accent transition-colors"
+            className="font-serif text-lg tracking-normal text-[#F5F1EA] hover:text-white transition-colors"
           >
             {portfolio.personal.name}
           </a>
-          <span className="text-xs font-mono">
+          <span>
             &copy; {new Date().getFullYear()} &middot; {portfolio.personal.location}
           </span>
         </div>
 
-        <div className="flex flex-wrap items-center gap-5 text-xs font-mono">
+        <div className="flex flex-wrap items-center gap-6">
           <a
             href={portfolio.personal.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-1.5 hover:text-[#F5F1EA] transition-colors"
           >
             <GithubIcon size={13} />
             <span>GitHub</span>
@@ -34,7 +34,7 @@ export default function Footer() {
               href={portfolio.personal.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-1 hover:text-[#F5F1EA] transition-colors"
             >
               <span>LinkedIn</span>
               <ArrowUpRight size={12} />
@@ -42,16 +42,8 @@ export default function Footer() {
           )}
 
           <a
-            href={`mailto:${portfolio.personal.email}`}
-            className="inline-flex items-center gap-1 hover:text-foreground transition-colors"
-          >
-            <span>Email</span>
-            <ArrowUpRight size={12} />
-          </a>
-
-          <a
             href="#home"
-            className="text-foreground hover:text-spark transition-colors"
+            className="text-[#F5F1EA] hover:underline underline-offset-4"
           >
             Top &uarr;
           </a>

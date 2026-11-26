@@ -1,30 +1,13 @@
 "use client";
 
-import { useRef } from "react";
-import { ArrowRight } from "lucide-react";
-import {
-  motion,
-  useReducedMotion,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { ArrowDownRight } from "lucide-react";
+import { motion, useReducedMotion } from "motion/react";
 import portfolio from "@/data/portfolio";
-import HeroInteractivePreview from "./hero/HeroInteractivePreview";
+
+const easeOut = [0.23, 1, 0.32, 1] as const;
 
 export default function Hero() {
   const prefersReducedMotion = useReducedMotion();
-  const heroRef = useRef<HTMLElement>(null);
-
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
-
-  const stageY = useTransform(
-    scrollYProgress,
-    [0, 1],
-    prefersReducedMotion ? [0, 0] : [0, -24]
-  );
 
   const itemVariants = {
     hidden: prefersReducedMotion ? { opacity: 0 } : { opacity: 0, y: 12 },
@@ -32,106 +15,90 @@ export default function Hero() {
       opacity: 1,
       y: 0,
       transition: {
-        duration: prefersReducedMotion ? 0.15 : 0.4,
+        duration: prefersReducedMotion ? 0.15 : 0.42,
         delay: prefersReducedMotion ? 0 : delay,
-        ease: [0.23, 1, 0.32, 1] as const,
+        ease: easeOut,
       },
     }),
   };
 
   return (
     <section
-      ref={heroRef}
       id="home"
-      className="relative overflow-x-clip"
+      className="pt-14 pb-20 sm:pt-20 sm:pb-28 lg:pt-24 lg:pb-32 px-5 sm:px-8 lg:px-12"
       aria-label="Introduction"
     >
-      {/* Swiss architectural hairline vertical grid across the Hero canvas */}
-      <div className="mx-auto max-w-7xl swiss-grid-bg border-x border-border/60 px-5 sm:px-8 lg:px-12 pt-10 pb-16 sm:pt-14 sm:pb-24 lg:pt-16 lg:pb-24">
-        {/* Upper Band: Monumental Edge-to-Edge Editorial Headline (zero card clipping) */}
-        <motion.div
+      <div className="mx-auto max-w-6xl">
+        {/* Monumental Editorial Display Headline — Pure Typography, Zero Decorative Clutter */}
+        <motion.h1
           custom={0}
           initial="hidden"
           animate="visible"
           variants={itemVariants}
-          className="pb-10 sm:pb-12 lg:pb-14 border-b border-border"
+          className="font-serif text-[clamp(3.25rem,9.2vw,7.4rem)] leading-[0.94] tracking-[-0.03em] text-foreground max-w-[14ch]"
         >
-          <h1 className="font-serif text-[clamp(3.1rem,9vw,7.5rem)] leading-[0.94] tracking-[-0.03em] text-foreground text-balance">
-            Web software built{" "}
-            <br className="hidden sm:block" />
-            to be{" "}
-            <span className="italic text-accent">used daily</span>
-            <span className="text-spark">.</span>
-          </h1>
-        </motion.div>
+          Web software built to be{" "}
+          <span className="italic text-accent">used daily.</span>
+        </motion.h1>
 
-        {/* Lower Band: Asymmetric Editorial Column + 3-Layer Overlapping React Bento Stage */}
-        <div className="pt-10 sm:pt-12 grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 items-end">
-          {/* Bottom-Left Architectural Cell: Bio, CTAs & Monumental 01 Watermark */}
-          <motion.div
-            custom={0.08}
-            initial="hidden"
-            animate="visible"
-            variants={itemVariants}
-            className="lg:col-span-5 flex flex-col justify-between gap-8 lg:gap-12"
-          >
-            <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 text-xs font-mono uppercase tracking-[0.12em] text-muted">
+        {/* Asymmetric Editorial Lower Band separated by single hairline rule */}
+        <motion.div
+          custom={0.08}
+          initial="hidden"
+          animate="visible"
+          variants={itemVariants}
+          className="mt-12 sm:mt-16 pt-8 sm:pt-10 border-t border-border grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start"
+        >
+          {/* Left: Concise Human Bio + 1 Solid Action + 1 Plain Text Link */}
+          <div className="lg:col-span-6 space-y-7">
+            <p className="text-base sm:text-lg text-foreground/85 leading-relaxed max-w-[46ch] text-pretty">
+              {portfolio.personal.shortBio}
+            </p>
+
+            <div className="flex flex-wrap items-center gap-6">
+              <a
+                href="#work"
+                className="inline-flex items-center justify-center gap-2 min-h-[46px] px-6 rounded-md bg-foreground text-surface-1 text-sm font-medium hover:bg-foreground/90 pressable cursor-pointer"
+              >
+                <span>See LifeTrack AI</span>
+                <ArrowDownRight size={15} />
+              </a>
+
+              <a
+                href={`mailto:${portfolio.personal.email}`}
+                className="inline-flex items-center min-h-[44px] text-sm font-medium text-foreground underline underline-offset-4 decoration-border-strong hover:decoration-accent hover:text-accent transition-colors duration-150"
+              >
+                {portfolio.personal.email}
+              </a>
+            </div>
+          </div>
+
+          {/* Right: Quiet Tabular Fact List (real data only — zero fake charts) */}
+          <dl className="lg:col-span-5 lg:col-start-8 divide-y divide-border border-y border-border text-sm">
+            <div className="py-3.5 flex items-baseline justify-between gap-4">
+              <dt className="text-muted">Role</dt>
+              <dd className="font-medium text-foreground text-right">
+                {portfolio.personal.role}
+              </dd>
+            </div>
+            <div className="py-3.5 flex items-baseline justify-between gap-4">
+              <dt className="text-muted">Location</dt>
+              <dd className="font-medium text-foreground text-right">
+                {portfolio.personal.location}
+              </dd>
+            </div>
+            <div className="py-3.5 flex items-baseline justify-between gap-4">
+              <dt className="text-muted">Currently building</dt>
+              <dd className="inline-flex items-center gap-2 font-medium text-foreground text-right">
                 <span
-                  className="w-2 h-2 rounded-full bg-status-live shrink-0"
+                  className="w-1.5 h-1.5 rounded-full bg-spark shrink-0"
                   aria-hidden="true"
                 />
-                <span>{portfolio.personal.availability}</span>
-              </div>
-
-              <p className="text-base sm:text-[17px] text-foreground/85 leading-relaxed max-w-[40ch] text-pretty">
-                {portfolio.personal.shortBio}
-              </p>
-
-              <div className="flex flex-wrap items-center gap-3 pt-1">
-                <a
-                  href="#work"
-                  className="inline-flex items-center justify-center gap-2 min-h-[46px] px-6 rounded-full bg-foreground text-surface-1 text-sm font-medium hover:bg-foreground/90 pressable cursor-pointer"
-                >
-                  <span>Explore LifeTrack AI</span>
-                  <ArrowRight size={15} />
-                </a>
-
-                <a
-                  href={`mailto:${portfolio.personal.email}`}
-                  className="inline-flex items-center justify-center min-h-[46px] px-6 rounded-full border border-border-strong bg-surface-1/75 text-foreground text-sm font-medium hover:bg-surface-1 pressable cursor-pointer"
-                >
-                  Email me
-                </a>
-              </div>
+                <span>{portfolio.featuredProject.title}</span>
+              </dd>
             </div>
-
-            {/* Oversized Swiss Editorial Watermark Index (00 -> 01 Work -> 02 About -> 03 Stack -> 04 Contact) */}
-            <div
-              className="hidden lg:flex items-baseline justify-between pt-6 border-t border-border/70 select-none"
-              aria-hidden="true"
-            >
-              <span className="font-serif text-7xl leading-none tracking-[-0.04em] text-foreground/[0.09] tabular-nums">
-                00
-              </span>
-              <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-muted">
-                Index &middot; 2026
-              </span>
-            </div>
-          </motion.div>
-
-          {/* Bottom-Right Cell: 3-Layer Overlapping Interactive LifeTrack AI Stage */}
-          <motion.div
-            custom={0.14}
-            initial="hidden"
-            animate="visible"
-            variants={itemVariants}
-            style={{ y: stageY }}
-            className="lg:col-span-7 w-full"
-          >
-            <HeroInteractivePreview />
-          </motion.div>
-        </div>
+          </dl>
+        </motion.div>
       </div>
     </section>
   );

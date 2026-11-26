@@ -96,7 +96,7 @@ export default function ProjectPreviewModal({
               <div className="flex items-center gap-2">
                 {/* Tab Switcher */}
                 <div
-                  className="inline-flex p-1 rounded-full bg-surface-2/85 border border-border/70"
+                  className="inline-flex p-1 rounded-md bg-surface-2/85 border border-border/70"
                   role="tablist"
                 >
                   {(
@@ -113,7 +113,7 @@ export default function ProjectPreviewModal({
                         role="tab"
                         aria-selected={isActive}
                         onClick={() => setActiveTab(tab.id)}
-                        className={`relative px-3.5 py-1.5 rounded-full text-xs font-medium cursor-pointer transition-colors ${
+                        className={`relative px-3.5 py-1.5 rounded-[5px] text-xs font-medium cursor-pointer transition-colors ${
                           isActive
                             ? "text-foreground"
                             : "text-muted hover:text-foreground"
@@ -125,7 +125,7 @@ export default function ProjectPreviewModal({
                             transition={
                               prefersReducedMotion ? { duration: 0.01 } : spring
                             }
-                            className="absolute inset-0 rounded-full bg-surface-1 shadow-xs border border-border/60"
+                            className="absolute inset-0 rounded-[5px] bg-surface-1 shadow-xs border border-border/60"
                           />
                         )}
                         <span className="relative z-10">{tab.label}</span>
@@ -138,7 +138,7 @@ export default function ProjectPreviewModal({
                   href={project.projectUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hidden sm:inline-flex items-center gap-1.5 min-h-[38px] px-4 rounded-full bg-foreground text-surface-1 text-xs font-medium hover:bg-foreground/90 pressable"
+                  className="hidden sm:inline-flex items-center gap-1.5 min-h-[38px] px-4 rounded-md bg-foreground text-surface-1 text-xs font-medium hover:bg-foreground/90 pressable"
                 >
                   <span>Open tab</span>
                   <ExternalLink size={12} />
@@ -148,7 +148,7 @@ export default function ProjectPreviewModal({
                   ref={closeButtonRef}
                   type="button"
                   onClick={onClose}
-                  className="min-w-[40px] min-h-[40px] rounded-full flex items-center justify-center text-muted hover:text-foreground hover:bg-surface-2 pressable cursor-pointer"
+                  className="min-w-[40px] min-h-[40px] rounded-md flex items-center justify-center text-muted hover:text-foreground hover:bg-surface-2 pressable cursor-pointer"
                   aria-label="Close preview"
                 >
                   <X size={18} />

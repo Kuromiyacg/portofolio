@@ -15,7 +15,7 @@ const categories: { id: CategoryFilter; label: string }[] = [
 ];
 
 const easeOut = [0.23, 1, 0.32, 1] as const;
-const spring = { type: "spring" as const, bounce: 0, duration: 0.34 };
+const spring = { type: "spring" as const, bounce: 0, duration: 0.32 };
 
 export default function SkillsSection() {
   const [activeCategory, setActiveCategory] = useState<CategoryFilter>("all");
@@ -28,23 +28,23 @@ export default function SkillsSection() {
   return (
     <section
       id="stack"
-      className="border-t border-border"
+      className="py-14 sm:py-20 lg:py-24 px-5 sm:px-8 lg:px-12 border-t border-border"
       aria-label="Technical Stack"
     >
-      <div className="mx-auto max-w-7xl border-x border-border/60 px-5 sm:px-8 lg:px-12 py-16 sm:py-24 lg:py-28">
-        <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-12">
-          <div className="space-y-2.5">
-            <p className="font-mono text-xs tracking-[0.14em] uppercase text-muted">
-              <span className="text-spark font-medium">03</span> &mdash; Stack
+      <div className="mx-auto max-w-6xl">
+        <Reveal className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10">
+          <div className="space-y-2">
+            <p className="text-xs font-mono uppercase tracking-[0.12em] text-muted">
+              Stack
             </p>
-            <h2 className="font-serif text-[clamp(2.35rem,5vw,3.8rem)] leading-[1.04] tracking-[-0.025em] text-foreground">
-              Tools I work with<span className="text-spark">.</span>
+            <h2 className="font-serif text-[clamp(2.2rem,5vw,3.4rem)] leading-[1.05] tracking-[-0.02em] text-foreground">
+              Tools I work with
             </h2>
           </div>
 
-          {/* Segmented Filter */}
+          {/* Crisp Underlined Editorial Filter Tabs — Zero Pill Soup */}
           <div
-            className="inline-flex flex-wrap p-1 rounded-full bg-surface-2/85 border border-border/70 self-start md:self-auto"
+            className="flex flex-wrap items-center gap-6 border-b border-border self-start md:self-auto"
             role="tablist"
             aria-label="Filter technologies by category"
           >
@@ -57,30 +57,30 @@ export default function SkillsSection() {
                   role="tab"
                   aria-selected={isActive}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`relative min-h-[38px] px-4 rounded-full text-xs sm:text-sm font-medium cursor-pointer transition-colors duration-150 ${
+                  className={`relative min-h-[44px] pb-2 text-sm font-medium cursor-pointer transition-colors duration-150 ${
                     isActive
                       ? "text-foreground"
                       : "text-muted hover:text-foreground"
                   }`}
                 >
+                  <span>{cat.label}</span>
                   {isActive && (
                     <motion.span
-                      layoutId="stack-filter-pill"
+                      layoutId="stack-underline"
                       transition={
                         prefersReducedMotion ? { duration: 0.01 } : spring
                       }
-                      className="absolute inset-0 rounded-full bg-surface-1 shadow-xs border border-border/60"
+                      className="absolute left-0 right-0 -bottom-px h-[2px] bg-accent"
                     />
                   )}
-                  <span className="relative z-10">{cat.label}</span>
                 </button>
               );
             })}
           </div>
         </Reveal>
 
-        {/* Stabilized container prevents vertical jump of ContactSection when switching categories */}
-        <div className="min-h-[280px] border-t border-border">
+        {/* Stabilized container prevents vertical jump of Contact below */}
+        <div className="min-h-[260px] border-t border-border">
           <AnimatePresence mode="wait" initial={false}>
             <motion.ul
               key={activeCategory}
@@ -95,7 +95,7 @@ export default function SkillsSection() {
                 duration: prefersReducedMotion ? 0.1 : 0.18,
                 ease: easeOut,
               }}
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-8"
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-10"
             >
               {filteredSkills.map((skill) => (
                 <li

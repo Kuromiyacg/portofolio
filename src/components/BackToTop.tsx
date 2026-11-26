@@ -46,7 +46,7 @@ export default function BackToTop() {
               : { opacity: 0, y: 8, scale: 0.96 }
           }
           transition={{ duration: 0.18, ease: easeOut }}
-          className="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40 inline-flex items-center justify-center gap-1.5 min-w-[44px] min-h-[44px] px-3.5 rounded-full glass-chrome text-xs font-mono text-foreground hover:text-accent pressable cursor-pointer"
+          className="fixed bottom-5 right-5 sm:bottom-7 sm:right-7 z-40 inline-flex items-center justify-center gap-1.5 min-w-[44px] min-h-[44px] px-3.5 rounded-md glass-chrome text-xs font-mono text-foreground hover:text-accent pressable cursor-pointer"
           aria-label="Back to top"
         >
           <ArrowUp size={15} />

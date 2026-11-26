@@ -1,38 +1,33 @@
 @import "tailwindcss";
 
 /* ============================================================================
-   Design Tokens — Concept A "The Living Monograph" (Swiss Editorial System)
-   1. Main Primary (60%): Warm Archival Paper #F5F1EA / Ivory #FCFBF8 / Sand #EAE3D7
-   2. Secondary (30%):    Deep Espresso Ink #171614 / Warm Taupe #5F5A52
-   3. Primary Accent (7%): Deep International Cobalt #2249C6
-   4. Minor Spark (<3%):  Signal Vermilion #D94E2A
+   Design Tokens — Warm Paper & Espresso Ink Editorial System
+   Core: Warm Archival Paper (#F5F1EA) + Espresso Ink (#171614)
+   Primary Accent: Deep International Cobalt (#2249C6)
+   Minor Live Spark: Signal Vermilion (#D94E2A) — max 1-2 functional uses
    ============================================================================ */
 
 :root {
   --bg: #F5F1EA;
   --surface-1: #FCFBF8;
   --surface-2: #EAE3D7;
-  --surface-glass: rgba(252, 251, 248, 0.84);
+  --surface-glass: rgba(245, 241, 234, 0.88);
   --ink-surface: #171614;
-  --ink-elevated: #211F1C;
+  --ink-elevated: #22201D;
   --text: #171614;
   --text-muted: #5F5A52;
   --accent: #2249C6;
   --accent-hover: #1A3BA8;
-  --accent-soft: rgba(34, 73, 198, 0.10);
+  --accent-soft: rgba(34, 73, 198, 0.08);
   --spark: #D94E2A;
   --spark-hover: #C04020;
-  --spark-soft: rgba(217, 78, 42, 0.12);
-  --border: rgba(23, 22, 20, 0.10);
-  --border-strong: rgba(23, 22, 20, 0.18);
-  --grid-line: rgba(23, 22, 20, 0.065);
-  --status-live: #2A7B56;
+  --border: rgba(23, 22, 20, 0.12);
+  --border-strong: rgba(23, 22, 20, 0.24);
 
-  /* Easing & timing tokens (Emil Kowalski / Apple Fluid standards) */
+  /* Easing tokens */
   --ease-out-fluid: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-press: cubic-bezier(0.2, 0, 0, 1);
 
-  /* Semantic aliases */
   --background: var(--bg);
   --foreground: var(--text);
 }
@@ -50,10 +45,8 @@
   --color-accent-soft: var(--accent-soft);
   --color-spark: var(--spark);
   --color-spark-hover: var(--spark-hover);
-  --color-spark-soft: var(--spark-soft);
   --color-border: var(--border);
   --color-border-strong: var(--border-strong);
-  --color-status-live: var(--status-live);
 
   --font-serif: var(--font-instrument-serif);
   --font-sans: var(--font-plus-jakarta-sans);
@@ -66,99 +59,43 @@
 
 html {
   scroll-behavior: smooth;
-  scrollbar-color: #D4CCC0 var(--bg);
+  scrollbar-color: #CFC7BA var(--bg);
   -webkit-tap-highlight-color: transparent;
 }
 
 body {
   background-color: var(--bg);
-  background-image:
-    radial-gradient(ellipse 85% 42% at 50% -6%, rgba(255, 255, 255, 0.72) 0%, rgba(245, 241, 234, 0) 70%),
-    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='paperGrain'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23paperGrain)' opacity='0.026'/%3E%3C/svg%3E");
   color: var(--text);
   font-family: var(--font-plus-jakarta-sans), system-ui, -apple-system, sans-serif;
-  line-height: 1.6;
+  line-height: 1.62;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* ============================================================================
-   Swiss Architectural Hairline Grid & Surfaces
+   Tactile Surfaces & Asymmetric Press Timing
    ============================================================================ */
-
-.swiss-grid-bg {
-  background-image: linear-gradient(
-    to right,
-    var(--grid-line) 1px,
-    transparent 1px
-  );
-  background-size: 50% 100%;
-}
-
-@media (min-width: 1024px) {
-  .swiss-grid-bg {
-    background-size: 25% 100%;
-  }
-}
 
 .glass-chrome {
   background-color: var(--surface-glass);
-  backdrop-filter: blur(20px) saturate(160%);
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--border);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.8) inset,
-    0 10px 30px -12px rgba(23, 22, 20, 0.12);
 }
 
-.paper-card {
-  background-color: var(--surface-1);
-  border: 1px solid var(--border);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.9) inset,
-    0 18px 40px -24px rgba(23, 22, 20, 0.14);
-}
-
-.ink-monolith {
-  background-color: var(--ink-surface);
-  color: #F5F1EA;
-  border: 1px solid rgba(245, 241, 234, 0.12);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.06) inset,
-    0 28px 60px -24px rgba(23, 22, 20, 0.48);
-}
-
-/* Asymmetric press timing: snappy 90ms press down, 160ms organic release */
+/* Snappy 90ms press down, 160ms organic release */
 .pressable {
   transition:
     transform 160ms var(--ease-out-fluid),
     background-color 180ms var(--ease-out-fluid),
     border-color 180ms var(--ease-out-fluid),
-    color 180ms var(--ease-out-fluid),
-    box-shadow 200ms var(--ease-out-fluid);
+    color 180ms var(--ease-out-fluid);
 }
 
 .pressable:active {
-  transform: scale(0.97);
+  transform: scale(0.98);
   transition-duration: 90ms;
   transition-timing-function: var(--ease-press);
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .hover-lift {
-    transition:
-      transform 220ms var(--ease-out-fluid),
-      border-color 200ms var(--ease-out-fluid),
-      box-shadow 240ms var(--ease-out-fluid);
-  }
-
-  .hover-lift:hover {
-    transform: translateY(-2px);
-    border-color: var(--border-strong);
-    box-shadow:
-      0 1px 0 rgba(255, 255, 255, 0.95) inset,
-      0 22px 44px -22px rgba(23, 22, 20, 0.18);
-  }
 }
 
 /* ============================================================================
@@ -184,12 +121,11 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D4CCC0;
-  border-radius: 4px;
+  background: #CFC7BA;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #B9B0A2;
+  background: #B3AA9C;
 }
 
 @media (prefers-reduced-transparency: reduce) {
@@ -205,8 +141,7 @@ body {
     scroll-behavior: auto;
   }
 
-  .pressable:active,
-  .hover-lift:hover {
+  .pressable:active {
     transform: none;
   }
 }
